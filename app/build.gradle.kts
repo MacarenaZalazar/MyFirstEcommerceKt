@@ -2,8 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+    kotlin("kapt")
+    kotlin("plugin.serialization") version "1.9.24"
+
 }
 
 android {
@@ -59,7 +64,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.foundation)
+    implementation(libs.material3)
+    implementation(libs.hilt.android.v2511)
+    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.kotlinx.serialization.json)
 
 }
