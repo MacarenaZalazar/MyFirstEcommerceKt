@@ -1,24 +1,14 @@
 package com.example.myfirstecommercekt.ui.screens
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.myfirstecommercekt.ui.components.AppTitle
-import com.example.myfirstecommercekt.ui.components.EmailField
-import com.example.myfirstecommercekt.ui.components.PasswordField
-import com.example.myfirstecommercekt.viewmodel.LoginViewModel
-import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.unit.*
+import androidx.hilt.navigation.compose.*
+import com.example.myfirstecommercekt.ui.components.*
+import com.example.myfirstecommercekt.viewmodel.*
 
 
 @Composable
@@ -86,7 +76,7 @@ fun Login(
 
 @Composable
 fun ForgotPassword(modifier: Modifier, forgotPass: () -> Unit) {
-    Text("¿Olvidaste tu contraseña?", modifier = modifier.clickable {})
+    Text("¿Olvidaste tu contraseña?", modifier = modifier.clickable { forgotPass() })
 }
 
 

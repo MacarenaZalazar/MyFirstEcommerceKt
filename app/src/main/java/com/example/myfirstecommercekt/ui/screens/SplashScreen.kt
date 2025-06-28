@@ -1,25 +1,21 @@
 package com.example.myfirstecommercekt.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.myfirstecommercekt.ui.components.AppTitle
-import com.example.myfirstecommercekt.viewmodel.SplashViewModel
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.text.style.*
+import androidx.compose.ui.unit.*
+import androidx.hilt.navigation.compose.*
+import com.example.myfirstecommercekt.ui.components.*
+import com.example.myfirstecommercekt.viewmodel.*
 
 @Composable
-fun SplashScreen(viewModel: SplashViewModel = hiltViewModel(), toLogin :()-> Unit,toRegister :()-> Unit) {
+fun SplashScreen(
+    viewModel: SplashViewModel = hiltViewModel(),
+    toLogin: () -> Unit,
+    toRegister: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,7 +36,7 @@ fun SplashScreen(viewModel: SplashViewModel = hiltViewModel(), toLogin :()-> Uni
             Spacer(Modifier.padding(25.dp))
             LogInButton(toLogin)
             Spacer(modifier = Modifier.padding(16.dp))
-            Text("o si todavía no tenés una cuenta")
+            Text("O si todavía no tenés una cuenta:")
             Spacer(modifier = Modifier.padding(16.dp))
             RegisterButton(toRegister)
         }
@@ -48,15 +44,15 @@ fun SplashScreen(viewModel: SplashViewModel = hiltViewModel(), toLogin :()-> Uni
 }
 
 @Composable
-fun LogInButton(onClick: ()-> Unit) {
-    Button(onClick = onClick) {
+fun LogInButton(onClick: () -> Unit) {
+    Button(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
         Text("Iniciá sesión")
     }
 }
 
 @Composable
-fun RegisterButton(onClick: ()-> Unit) {
-    Button(onClick = onClick) {
+fun RegisterButton(onClick: () -> Unit) {
+    Button(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
         Text("Registrate")
     }
 }
