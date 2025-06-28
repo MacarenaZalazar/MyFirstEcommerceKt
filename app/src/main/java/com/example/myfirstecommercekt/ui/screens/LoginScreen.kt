@@ -1,7 +1,5 @@
-package com.example.myfirstecommercekt.presentation
+package com.example.myfirstecommercekt.ui.screens
 
-import android.annotation.SuppressLint
-import android.util.Log.i
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,18 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.myfirstecommercekt.components.AppTitle
-import com.example.myfirstecommercekt.components.EmailField
-import com.example.myfirstecommercekt.components.PasswordField
+import com.example.myfirstecommercekt.ui.components.AppTitle
+import com.example.myfirstecommercekt.ui.components.EmailField
+import com.example.myfirstecommercekt.ui.components.PasswordField
 import com.example.myfirstecommercekt.viewmodel.LoginViewModel
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
+fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel(),
+    toHome: () -> Unit,
+    forgotPass: () -> Unit
+) {
 
     val isLoading by viewModel.isLoading.collectAsState()
 
@@ -47,7 +48,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
             ) {
                 AppTitle()
                 Spacer(Modifier.padding(36.dp))
-                Login(Modifier, viewModel)
+                Login(Modifier, viewModel, toHome, forgotPass)
             }
         }
     }
@@ -55,7 +56,12 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel) {
+fun Login(
+    modifier: Modifier,
+    viewModel: LoginViewModel,
+    toHome: () -> Unit,
+    forgotPass: () -> Unit
+) {
 
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
@@ -68,10 +74,10 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.padding(16.dp))
         PasswordField(password) { viewModel.onLoginChange(email = email, password = it) }
         Spacer(modifier = Modifier.padding(8.dp))
-        ForgotPassword(modifier = Modifier.align(Alignment.End))
+        ForgotPassword(modifier = Modifier.align(Alignment.End), forgotPass)
         Spacer(modifier = Modifier.padding(16.dp))
         LoginButton(enabled) {
-            viewModel.logIn()
+            viewModel.logIn(toHome)
         }
     }
 
@@ -79,7 +85,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
 
 
 @Composable
-fun ForgotPassword(modifier: Modifier) {
+fun ForgotPassword(modifier: Modifier, forgotPass: () -> Unit) {
     Text("¿Olvidaste tu contraseña?", modifier = modifier.clickable {})
 }
 

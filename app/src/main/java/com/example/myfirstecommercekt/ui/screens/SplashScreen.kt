@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.presentation
+package com.example.myfirstecommercekt.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,8 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.myfirstecommercekt.components.AppTitle
+import com.example.myfirstecommercekt.ui.components.AppTitle
 import com.example.myfirstecommercekt.viewmodel.SplashViewModel
 
 @Composable

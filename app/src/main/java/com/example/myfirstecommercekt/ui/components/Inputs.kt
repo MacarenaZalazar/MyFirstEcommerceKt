@@ -1,14 +1,9 @@
-package com.example.myfirstecommercekt.components
+package com.example.myfirstecommercekt.ui.components
 
-import android.R.attr.label
-import android.R.attr.maxLines
-import android.R.attr.password
-import android.R.attr.singleLine
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType

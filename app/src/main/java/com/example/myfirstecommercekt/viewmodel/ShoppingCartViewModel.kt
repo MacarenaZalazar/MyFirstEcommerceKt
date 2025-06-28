@@ -2,10 +2,13 @@ package com.example.myfirstecommercekt.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.myfirstecommercekt.model.CartItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-class ShoppingCartViewModel: ViewModel() {
-    private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList());
+@HiltViewModel()
+class ShoppingCartViewModel @Inject constructor() : ViewModel() {
+    private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList())
     val cartIems = _cartItems
 
     private val _subtotal = MutableStateFlow(0.0)

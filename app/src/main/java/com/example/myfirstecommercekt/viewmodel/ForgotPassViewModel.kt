@@ -1,17 +1,14 @@
 package com.example.myfirstecommercekt.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.myfirstecommercekt.utils.isValidEmail
-import com.example.myfirstecommercekt.utils.isValidPassword
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import androidx.lifecycle.*
+import com.example.myfirstecommercekt.utils.*
+import dagger.hilt.android.lifecycle.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import javax.inject.*
 
-@HiltViewModel()
-class RegisterViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class ForgotPassViewModel @Inject constructor() : ViewModel() {
     private val _email = MutableStateFlow<String>("")
     val email: MutableStateFlow<String> = _email
 
@@ -38,14 +35,13 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
             isValidEmail(email) && isValidPassword(password) && password == confirmPassword
     }
 
-    fun register(toHome: () -> Unit) {
+    fun updatePassword(toLogin: () -> Unit) {
         viewModelScope.launch {
             _isLoading.value = true
             delay(4000)
             _success.value = true
-            toHome()
+            toLogin()
 //            _isLoading.value = false
         }
     }
 }
-

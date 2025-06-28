@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.components
+package com.example.myfirstecommercekt.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

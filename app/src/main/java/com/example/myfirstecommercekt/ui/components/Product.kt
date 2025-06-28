@@ -1,17 +1,16 @@
-package com.example.myfirstecommercekt.components
+package com.example.myfirstecommercekt.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,16 +38,11 @@ fun Product() {
                 LoadImage(
                     url = "https://recetasdecocina.elmundo.es/wp-content/uploads/2024/04/noquis-con-tomate.jpg",
                     contentDescription = "Imagen",
-                    Modifier
-                        .width(100.dp)
-                        .height(100.dp)
+                    Modifier.fillMaxHeight()
                 )
-                IconButton(onClick = {}, modifier = Modifier.align(Alignment.TopEnd)) {
-                    Icon(imageVector = Icons.Filled.Favorite, contentDescription = "fav")
-                }
-                IconButton(onClick = {}, modifier = Modifier.align(Alignment.BottomEnd)) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "fav")
 
+                IconButton(onClick = {}, modifier = Modifier.align(Alignment.BottomEnd)) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "agregar")
                 }
             }
         }

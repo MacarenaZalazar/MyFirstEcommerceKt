@@ -10,3 +10,8 @@ fun isValidPassword(value: String): Boolean {
 
 fun isValidEmail(value: String) = Patterns.EMAIL_ADDRESS.matcher(value).matches()
 
+fun isValidCard(card: String){}
+
+fun detectCardType(card: String){
+
+}
