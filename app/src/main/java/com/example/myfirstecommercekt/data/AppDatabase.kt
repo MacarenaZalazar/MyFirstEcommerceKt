@@ -13,7 +13,6 @@ import com.example.myfirstecommercekt.data.local.entity.*
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun orderDao(): OrderDao
-    abstract fun orderItemDao(): OrderItemDao
-    abstract fun cartItemDao(): CartItemDao
+    abstract fun cartDao(): CartDao
 
 }

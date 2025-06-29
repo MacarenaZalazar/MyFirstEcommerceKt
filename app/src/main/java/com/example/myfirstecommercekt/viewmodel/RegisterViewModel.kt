@@ -1,17 +1,15 @@
 package com.example.myfirstecommercekt.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.myfirstecommercekt.utils.isValidEmail
-import com.example.myfirstecommercekt.utils.isValidPassword
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import androidx.lifecycle.*
+import com.example.myfirstecommercekt.data.repository.implementation.*
+import com.example.myfirstecommercekt.utils.helpers.*
+import dagger.hilt.android.lifecycle.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import javax.inject.*
 
 @HiltViewModel()
-class RegisterViewModel @Inject constructor() : ViewModel() {
+class RegisterViewModel @Inject constructor(private val repo: UserRepositoryImpl) : ViewModel() {
     private val _email = MutableStateFlow<String>("")
     val email: MutableStateFlow<String> = _email
 

@@ -1,7 +1,7 @@
 package com.example.myfirstecommercekt.viewmodel
 
 import androidx.lifecycle.*
-import com.example.myfirstecommercekt.utils.*
+import com.example.myfirstecommercekt.utils.helpers.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*

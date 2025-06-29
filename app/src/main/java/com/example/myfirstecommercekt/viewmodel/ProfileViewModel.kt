@@ -1,8 +1,10 @@
 package com.example.myfirstecommercekt.viewmodel
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.*
+import javax.inject.*
 
 @HiltViewModel()
-class ProfileViewModel @Inject constructor() : ViewModel(){}
+class ProfileViewModel @Inject constructor() : ViewModel() {
+
+}

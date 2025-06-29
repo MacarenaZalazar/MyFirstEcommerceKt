@@ -1,6 +1,6 @@
-package com.example.myfirstecommercekt.utils
+package com.example.myfirstecommercekt.utils.helpers
 
-import android.util.Patterns
+import android.util.*
 
 fun isValidPassword(value: String): Boolean {
     val regex =
@@ -10,8 +10,8 @@ fun isValidPassword(value: String): Boolean {
 
 fun isValidEmail(value: String) = Patterns.EMAIL_ADDRESS.matcher(value).matches()
 
-fun isValidCard(card: String){}
+fun isValidCard(card: String) {}
 
-fun detectCardType(card: String){
+fun detectCardType(card: String) {
 
 }

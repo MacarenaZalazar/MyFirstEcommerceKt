@@ -1,7 +1,10 @@
 package com.example.myfirstecommercekt.data.remote.api
 
+import com.example.myfirstecommercekt.data.remote.dto.*
+import retrofit2.*
+import retrofit2.http.*
+
 interface AuthApi {
-    suspend fun login()
-    suspend fun register()
-    suspend fun updateProfile()
+    suspend fun login(@Body request: AuthRequest): Response<User>
+
 }

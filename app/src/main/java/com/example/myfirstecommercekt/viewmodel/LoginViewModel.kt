@@ -1,17 +1,20 @@
 package com.example.myfirstecommercekt.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.myfirstecommercekt.utils.isValidEmail
-import com.example.myfirstecommercekt.utils.isValidPassword
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import androidx.lifecycle.*
+import com.example.myfirstecommercekt.data.*
+import com.example.myfirstecommercekt.data.remote.dto.*
+import com.example.myfirstecommercekt.data.repository.implementation.AuthRepositoryImpl
+import com.example.myfirstecommercekt.data.repository.interfaces.*
+import com.example.myfirstecommercekt.utils.helpers.*
+import dagger.hilt.android.lifecycle.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import javax.inject.*
 
 @HiltViewModel()
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val userDataStore: UserDataStore, private val repo: AuthRepositoryImpl
+) : ViewModel() {
 
     private val _email = MutableStateFlow<String>("")
     val email: MutableStateFlow<String> = _email
@@ -38,10 +41,22 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     fun logIn(toHome: () -> Unit) {
         viewModelScope.launch {
             _isLoading.value = true
-            delay(4000)
-            _success.value = true
-            toHome()
-//            _isLoading.value = false
+            val req = AuthRequest(_email.value, _password.value)
+
+            try {
+                val res = repo.login(req)
+                if (res.isSuccessful) {
+                    val user = res.body()!!
+                    delay(4000)
+                    userDataStore.saveUser(user.id.toString(), user.email, user.name)
+                    _success.value = true
+                    toHome()
+                }
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _isLoading.value = false
+
+            }
         }
     }
 

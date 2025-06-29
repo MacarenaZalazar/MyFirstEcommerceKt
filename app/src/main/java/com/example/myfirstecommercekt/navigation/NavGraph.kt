@@ -1,27 +1,12 @@
 package com.example.myfirstecommercekt.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.myfirstecommercekt.ui.screens.CheckoutScreen
-import com.example.myfirstecommercekt.ui.screens.ForgotPassScreen
-import com.example.myfirstecommercekt.ui.screens.LoginScreen
-import com.example.myfirstecommercekt.ui.screens.ProductScreen
-import com.example.myfirstecommercekt.ui.screens.ProfileScreen
-import com.example.myfirstecommercekt.ui.screens.RegisterScreen
-import com.example.myfirstecommercekt.ui.screens.ShoppingCartScreen
-import com.example.myfirstecommercekt.ui.screens.SplashScreen
-import com.example.myfirstecommercekt.viewmodel.CheckoutViewModel
-import com.example.myfirstecommercekt.viewmodel.ForgotPassViewModel
-import com.example.myfirstecommercekt.viewmodel.LoginViewModel
-import com.example.myfirstecommercekt.viewmodel.ProductsViewModel
-import com.example.myfirstecommercekt.viewmodel.ProfileViewModel
-import com.example.myfirstecommercekt.viewmodel.RegisterViewModel
-import com.example.myfirstecommercekt.viewmodel.ShoppingCartViewModel
-import com.example.myfirstecommercekt.viewmodel.SplashViewModel
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.hilt.navigation.compose.*
+import androidx.navigation.*
+import androidx.navigation.compose.*
+import com.example.myfirstecommercekt.ui.screens.*
+import com.example.myfirstecommercekt.viewmodel.*
 
 
 @Composable
@@ -33,7 +18,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         composable<SplashScreenRoute> {
             val viewModel = hiltViewModel<SplashViewModel>()
             SplashScreen(
-                viewModel = viewModel,
                 toLogin = { navController.navigate(LogInScreenRoute) },
                 toRegister = { navController.navigate(RegisterScreenRoute) })
 
@@ -89,7 +73,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<ForgotPassScreenRoute> {
             val viewModel = hiltViewModel<ForgotPassViewModel>()
-            ForgotPassScreen(viewModel) { navController.navigate(LogInScreenRoute) }
+            ForgotPassScreen() { navController.navigate(LogInScreenRoute) }
         }
     }
 }
