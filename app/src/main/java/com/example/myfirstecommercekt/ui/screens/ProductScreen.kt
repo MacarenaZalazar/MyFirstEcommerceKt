@@ -1,36 +1,52 @@
 package com.example.myfirstecommercekt.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.myfirstecommercekt.ui.components.Product
-import com.example.myfirstecommercekt.viewmodel.ProductsViewModel
-import com.example.myfirstecommercekt.viewmodel.ShoppingCartViewModel
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.unit.*
+import com.example.myfirstecommercekt.data.local.entity.*
+import com.example.myfirstecommercekt.ui.components.*
+import com.example.myfirstecommercekt.viewmodel.*
 
 @Composable
 fun ProductScreen(
-    productsViewModel: ProductsViewModel,
-    cartViewModel: ShoppingCartViewModel,
-    toCart: () -> Unit
+    productsViewModel: ProductsViewModel, cartViewModel: CartViewModel, toCart: () -> Unit
 ) {
-    val products = listOf<String>("bananas", "manzanas", "peras ")
+    val products by productsViewModel.filteredProducts.collectAsState()
+    val isLoading by productsViewModel.isLoading.collectAsState()
+    val filter by productsViewModel.filter.collectAsState()
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("Listado de productos")
-        ProductList(products)
+    Box(
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp), contentAlignment = Alignment.Center
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(
+                Modifier.align(Alignment.Center)
+            )
+        } else {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Listado de productos")
+                SimpleText(
+                    value = filter,
+                    onChange = { productsViewModel.filterProducts(it) },
+                    label = "Encontrá tu producto"
+
+                )
+                ProductList(products, cartViewModel)
+            }
+        }
     }
 }
 
 @Composable
-fun ProductList(products: List<String>) {
+fun ProductList(products: List<ProductEntity>, viewModel: CartViewModel) {
     LazyColumn() {
-        items(products) { product ->
-            Product()
+        items(products) { it ->
+            Product(item = it, addToCart = { viewModel.addToCart(it) })
         }
     }
 }

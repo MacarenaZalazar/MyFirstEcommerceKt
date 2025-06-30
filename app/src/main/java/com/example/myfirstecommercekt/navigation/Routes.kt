@@ -1,6 +1,6 @@
 package com.example.myfirstecommercekt.navigation
 
-import kotlinx.serialization.Serializable
+import kotlinx.serialization.*
 
 
 @Serializable
@@ -13,7 +13,7 @@ object LogInScreenRoute
 object RegisterScreenRoute
 
 @Serializable
-object ShoppingCartScreenRoute
+object CartScreenRoute
 
 @Serializable
 object ProductsScreenRoute

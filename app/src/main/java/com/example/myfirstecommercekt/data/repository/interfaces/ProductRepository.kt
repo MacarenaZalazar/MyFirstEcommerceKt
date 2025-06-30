@@ -1,9 +1,9 @@
 package com.example.myfirstecommercekt.data.repository.interfaces
 
-import com.example.myfirstecommercekt.utils.data.*
+import com.example.myfirstecommercekt.data.local.entity.*
 
 interface ProductRepository {
-    suspend fun getAll(): List<Product>
-    suspend fun fetchAndSaveRemoteProducts()
+    suspend fun getAll(): List<ProductEntity>
+    suspend fun fetchAndSaveRemoteProducts(): List<ProductEntity>
 
 }

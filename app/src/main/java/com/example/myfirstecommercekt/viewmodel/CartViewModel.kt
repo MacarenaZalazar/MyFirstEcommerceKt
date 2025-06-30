@@ -10,57 +10,57 @@ import kotlinx.coroutines.flow.*
 import javax.inject.*
 
 @HiltViewModel()
-class ShoppingCartViewModel @Inject constructor(
+class CartViewModel @Inject constructor(
     private val cartRepo: CartRepository
 
 ) : ViewModel() {
-    private val _cartItems = MutableStateFlow<List<CartItemEntity>>(emptyList())
+    private val _cartItems = MutableStateFlow<List<CartItemWithProduct>>(emptyList())
     val cartItems = _cartItems
 
     private val _subtotal = MutableStateFlow(0.0)
     val subtotal = _subtotal
 
+    private val _isLoading = MutableStateFlow<Boolean>(false)
+    val isLoading: MutableStateFlow<Boolean> = _isLoading
+
+    private val _success = MutableStateFlow<Boolean>(true)
+    val success: MutableStateFlow<Boolean> = _success
+
     init {
         loadCart()
     }
 
-
     fun loadCart() {
         viewModelScope.launch {
-            _cartItems.value = cartRepo.getCartItems()
+            _isLoading.value = true
+            try {
+                _cartItems.value = cartRepo.getCartItems()
+            } catch (e: Exception) {
+                println(e)
+                _success.value = false
+            }
+            _isLoading.value = false
         }
     }
 
-    fun addToCart(product: Product) {
+    fun addToCart(product: ProductEntity) {
         viewModelScope.launch {
             try {
-                val existing = _cartItems.value.firstOrNull { it.productId == product.id }
+                val existing = _cartItems.value.firstOrNull { it.cartItem.productId == product.id }
                 if (existing != null) {
-                    val updated = existing.copy(quantity = existing.quantity + 1)
+                    val updated = existing.cartItem.copy(quantity = existing.cartItem.quantity + 1)
                     cartRepo.updateCartItem(updated)
                 } else {
-
                     val newItem =
                         CartItemEntity(productId = product.id, quantity = 1, price = product.price)
                     cartRepo.insertCartItem(newItem)
                 }
 
+                _cartItems.value = cartRepo.getCartItems()
             } catch (e: Exception) {
+                println(e)
             }
 
-            _cartItems.update { currentList ->
-                val idx = currentList.indexOfFirst { it.productId == product.id }
-                if (idx >= 0) {
-                    currentList.map { item ->
-                        if (item.productId == product.id) item.copy(quantity = item.quantity + 1)
-                        else item
-                    }
-                } else {
-                    currentList + CartItemEntity(
-                        productId = product.id, quantity = 1, price = product.price
-                    )
-                }
-            }
             updateTotals()
         }
     }
@@ -69,8 +69,9 @@ class ShoppingCartViewModel @Inject constructor(
     fun deleteFromCart(product: Product) {
         viewModelScope.launch {
             try {
-
+                cartRepo.clearCart()
             } catch (e: Exception) {
+                println(e)
             }
             updateTotals()
         }
@@ -86,6 +87,6 @@ class ShoppingCartViewModel @Inject constructor(
     }
 
     fun updateTotals() {
-        _subtotal.value = _cartItems.value.sumOf { it.price * it.quantity }
+        _subtotal.value = _cartItems.value.sumOf { it.product.price * it.cartItem.quantity }
     }
 }

@@ -1,38 +1,29 @@
 package com.example.myfirstecommercekt.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.text.font.*
+import androidx.compose.ui.unit.*
+import com.example.myfirstecommercekt.data.local.entity.*
 
 @Composable
-fun Product() {
+fun Product(
+    modifier: Modifier = Modifier,
+    item: ProductEntity,
+    addToCart: (item: ProductEntity) -> Unit
+) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.Center) {
-                Text("Nombre Producto", fontWeight = FontWeight.Bold)
+                Text(item.name, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.padding(8.dp))
-                Text("Descripción del producto", fontSize = 8.sp)
+                Text(item.description, fontSize = 8.sp)
                 Spacer(modifier = Modifier.padding(16.dp))
-                Text("$10.000", fontWeight = FontWeight.Bold)
+                Text("$${item.price}", fontWeight = FontWeight.Bold)
             }
             Box(modifier = Modifier.height(100.dp)) {
                 LoadImage(
@@ -41,17 +32,13 @@ fun Product() {
                     Modifier.fillMaxHeight()
                 )
 
-                IconButton(onClick = {}, modifier = Modifier.align(Alignment.BottomEnd)) {
+                IconButton(
+                    onClick = { addToCart(item) },
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                ) {
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "agregar")
                 }
             }
         }
     }
 }
-
-@Preview
-@Composable
-fun ProductPreview() {
-    Product()
-}
-

@@ -33,31 +33,29 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<RegisterScreenRoute> {
             val viewModel = hiltViewModel<RegisterViewModel>()
-            RegisterScreen(viewModel = viewModel, goHome = {
+            RegisterScreen(viewModel = viewModel, toLogin = {
                 navController.navigate(
-                    ProductsScreenRoute
+                    LogInScreenRoute
                 )
             })
         }
 
         composable<ProductsScreenRoute> {
             val productsViewModel = hiltViewModel<ProductsViewModel>()
-            val cartViewModel = hiltViewModel<ShoppingCartViewModel>()
+            val cartViewModel = hiltViewModel<CartViewModel>()
 
             ProductScreen(
-                productsViewModel = productsViewModel,
-                cartViewModel = cartViewModel,
-                toCart = {
+                productsViewModel = productsViewModel, cartViewModel = cartViewModel, toCart = {
                     navController.navigate(
-                        ShoppingCartScreenRoute
+                        CartScreenRoute
                     )
                 })
 
         }
 
-        composable<ShoppingCartScreenRoute> {
-            val viewModel = hiltViewModel<ShoppingCartViewModel>()
-            ShoppingCartScreen(
+        composable<CartScreenRoute> {
+            val viewModel = hiltViewModel<CartViewModel>()
+            CartScreen(
                 viewModel = viewModel, toProducts = { navController.navigate(ProductsScreenRoute) })
         }
 

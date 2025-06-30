@@ -5,6 +5,7 @@ import retrofit2.*
 import retrofit2.http.*
 
 interface AuthApi {
-    suspend fun login(@Body request: AuthRequest): Response<User>
+    @POST("users/login")
+    suspend fun login(@Body request: AuthRequest): Response<UserDto>
 
 }

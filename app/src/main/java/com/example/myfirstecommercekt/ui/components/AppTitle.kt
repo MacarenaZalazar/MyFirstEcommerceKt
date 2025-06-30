@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.*
 @Composable
 fun AppTitle() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
         Text(
             "ComposeMarket", textAlign = TextAlign.Center, fontSize = 30.sp
         )

@@ -1,20 +1,13 @@
 package com.example.myfirstecommercekt.ui.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.myfirstecommercekt.navigation.ProductsScreenRoute
-import com.example.myfirstecommercekt.navigation.ProfileScreenRoute
-import com.example.myfirstecommercekt.navigation.ShoppingCartScreenRoute
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.vector.*
+import androidx.navigation.*
+import androidx.navigation.compose.*
+import com.example.myfirstecommercekt.navigation.*
 
 
 data class BottomNavItem(
@@ -33,7 +26,7 @@ fun BottomNavBar(controller: NavHostController) {
         ),
         BottomNavItem(
             label = "",
-            route = ShoppingCartScreenRoute::class.qualifiedName ?: "cart",
+            route = CartScreenRoute::class.qualifiedName ?: "cart",
             icon = Icons.Default.ShoppingCart
         ),
         BottomNavItem(

@@ -5,8 +5,15 @@ import com.example.myfirstecommercekt.data.local.entity.*
 
 @Dao
 interface OrderDao {
-    suspend fun getOrderByUser(id: Int): OrderEntity
-    suspend fun getAllOrdersByUser(id: Int): List<OrderEntity>
+    @Query("SELECT * FROM `order` order by id desc LIMIT 1 ")
+    suspend fun getOrderByUser(): OrderEntity
+
+    @Query("SELECT * FROM `order`")
+    suspend fun getAllOrders(): List<OrderEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createOrder(item: OrderEntity)
+
+    @Update
     suspend fun updateOrder(order: OrderEntity)
 }

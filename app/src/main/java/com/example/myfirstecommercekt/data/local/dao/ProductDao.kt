@@ -1,11 +1,16 @@
 package com.example.myfirstecommercekt.data.local.dao
 
 import androidx.room.*
-import com.example.myfirstecommercekt.utils.data.*
+import com.example.myfirstecommercekt.data.local.entity.*
 
 @Dao
 interface ProductDao {
-    suspend fun getAll(): List<Product>
-    suspend fun insert(product: Product)
-    suspend fun delete(product: Product)
+    @Query("SELECT * FROM products")
+    suspend fun getAll(): List<ProductEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(products: List<ProductEntity>)
+
+    @Query("DELETE FROM products")
+    suspend fun clearProducts()
 }

@@ -5,10 +5,11 @@ import com.example.myfirstecommercekt.data.local.dao.*
 import com.example.myfirstecommercekt.data.local.entity.*
 
 @Database(
-    entities = [ProductEntity::class,
+    entities = [
+        ProductEntity::class,
         CartItemEntity::class,
         OrderEntity::class,
-        OrderItemEntity::class], version = 1, exportSchema = false
+    ], version = 1, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao

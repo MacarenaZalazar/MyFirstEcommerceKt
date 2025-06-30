@@ -1,6 +1,7 @@
 package com.example.myfirstecommercekt.viewmodel
 
 import androidx.lifecycle.*
+import com.example.myfirstecommercekt.data.remote.dto.*
 import com.example.myfirstecommercekt.data.repository.implementation.*
 import com.example.myfirstecommercekt.utils.helpers.*
 import dagger.hilt.android.lifecycle.*
@@ -10,6 +11,10 @@ import javax.inject.*
 
 @HiltViewModel()
 class RegisterViewModel @Inject constructor(private val repo: UserRepositoryImpl) : ViewModel() {
+
+    private val _name = MutableStateFlow<String>("")
+    val name: MutableStateFlow<String> = _name
+
     private val _email = MutableStateFlow<String>("")
     val email: MutableStateFlow<String> = _email
 
@@ -28,7 +33,8 @@ class RegisterViewModel @Inject constructor(private val repo: UserRepositoryImpl
     private val _success = MutableStateFlow<Boolean>(true)
     val success: MutableStateFlow<Boolean> = _success
 
-    fun onRegisterChange(email: String, password: String, confirmPassword: String) {
+    fun onRegisterChange(name: String, email: String, password: String, confirmPassword: String) {
+        _name.value = name
         _email.value = email
         _password.value = password
         _confirmPassword.value = confirmPassword
@@ -39,10 +45,21 @@ class RegisterViewModel @Inject constructor(private val repo: UserRepositoryImpl
     fun register(toHome: () -> Unit) {
         viewModelScope.launch {
             _isLoading.value = true
-            delay(4000)
-            _success.value = true
-            toHome()
-//            _isLoading.value = false
+            try {
+                repo.register(
+                    UserRegisterDto(
+                        email = _email.value,
+                        fullName = _name.value,
+                        encryptedPassword = hashPasswordSHA256(_password.value)
+                    )
+                )
+                _success.value = true
+
+                toHome()
+            } catch (e: Exception) {
+                _success.value = false
+                _isLoading.value = false
+            }
         }
     }
 }
