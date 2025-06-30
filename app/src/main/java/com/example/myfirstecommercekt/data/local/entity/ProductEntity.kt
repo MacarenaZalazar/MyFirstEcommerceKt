@@ -9,5 +9,5 @@ data class ProductEntity(
     val description: String,
     val price: Double,
     val category: String,
-    val img: String
+    val imageUrl: String
 )

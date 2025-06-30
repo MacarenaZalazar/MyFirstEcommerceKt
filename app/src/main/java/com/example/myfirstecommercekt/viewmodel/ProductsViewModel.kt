@@ -1,5 +1,6 @@
 package com.example.myfirstecommercekt.viewmodel
 
+import android.util.*
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.data.local.entity.*
 import com.example.myfirstecommercekt.data.repository.implementation.*
@@ -33,21 +34,26 @@ class ProductsViewModel @Inject constructor(private val repo: ProductRepositoryI
         viewModelScope.launch {
             _isLoading.value = true
             try {
+                Log.d("PRODUCTOS", "INGRESANDO A LOADPRODUCTS")
                 val local = repo.getAll()
+                Log.d("PRODUCTOS", _products.value.toString())
                 if (local.isEmpty()) {
-                    val remote = repo.fetchAndSaveRemoteProducts()
+                    val remote = repo.getAllRemote()
                     if (remote.isEmpty()) _success.value = false
                     _products.value = remote
+                    _filteredProducts.value = remote
                 } else {
                     _products.value = local
+                    _filteredProducts.value = local
                 }
-                _isLoading.value = false
+                Log.d("PRODUCTOS", _products.value.toString())
+
 
             } catch (e: Exception) {
-                println(e)
+                Log.d("PRODUCTS", e.toString())
                 _success.value = false
-                _isLoading.value = false
             }
+            _isLoading.value = false
         }
     }
 

@@ -36,11 +36,22 @@ fun ForgotPass(viewModel: ForgotPassViewModel, login: () -> Unit) {
         Spacer(modifier = Modifier.padding(16.dp))
         Text("Actualizá tu contraseña:")
         Spacer(modifier = Modifier.padding(20.dp))
-        EmailField(email, { viewModel.onRegisterChange(it, password, confirmPassword) })
+        EmailField(
+            email,
+            { viewModel.onRegisterChange(it, password, confirmPassword) },
+            error = false)
         Spacer(modifier = Modifier.padding(16.dp))
-        PasswordField(password, { viewModel.onRegisterChange(email, it, confirmPassword) })
+        PasswordField(
+            password,
+            { viewModel.onRegisterChange(email, it, confirmPassword) },
+            error = false
+        )
         Spacer(modifier = Modifier.padding(16.dp))
-        PasswordField(confirmPassword, { viewModel.onRegisterChange(email, password, it) })
+        PasswordField(
+            confirmPassword,
+            { viewModel.onRegisterChange(email, password, it) },
+            error = false
+        )
         Spacer(modifier = Modifier.padding(16.dp))
         UpdatePassButton(enabled = enabled) { viewModel.updatePassword(login) }
     }

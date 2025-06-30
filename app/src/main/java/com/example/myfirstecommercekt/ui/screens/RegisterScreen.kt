@@ -48,15 +48,33 @@ fun Register(viewModel: RegisterViewModel, toLogin: () -> Unit) {
         SimpleText(
             value = name,
             onChange = { viewModel.onRegisterChange(it, email, password, confirmPassword) },
-            label = "Nombre completo"
+            label = "Nombre completo",
+            error = false
         )
         Spacer(modifier = Modifier.padding(16.dp))
-        EmailField(email, { viewModel.onRegisterChange(name, it, password, confirmPassword) })
+
+        EmailField(
+            email,
+            { viewModel.onRegisterChange(name, it, password, confirmPassword) },
+            error = false
+        )
         Spacer(modifier = Modifier.padding(16.dp))
-        PasswordField(password, { viewModel.onRegisterChange(name, email, it, confirmPassword) })
+        Text(
+            "La constraseña debe tener más de 8 caracteres, e incluir una mayúscula, un número y un símbolo.",
+            fontSize = 10.sp
+        )
+        PasswordField(
+            password,
+            { viewModel.onRegisterChange(name, email, it, confirmPassword) },
+            error = false
+        )
 
         Spacer(modifier = Modifier.padding(16.dp))
-        PasswordField(confirmPassword, { viewModel.onRegisterChange(name, email, password, it) })
+        PasswordField(
+            confirmPassword,
+            { viewModel.onRegisterChange(name, email, password, it) },
+            error = false
+        )
 
         Spacer(modifier = Modifier.padding(16.dp))
         SingUpButton(enabled = enabled) { viewModel.register(toLogin) }

@@ -36,8 +36,8 @@ fun ProductScreen(
                 SimpleText(
                     value = filter,
                     onChange = { productsViewModel.filterProducts(it) },
-                    label = "Encontrá tu producto"
-
+                    label = "Encontrá tu producto",
+                    error = false
                 )
                 ProductList(products, cartViewModel)
             }

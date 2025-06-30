@@ -62,11 +62,14 @@ fun Login(
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         EmailField(
             email = email,
-            onValueChange = { viewModel.onLoginChange(email = it, password = password) })
+            onValueChange = { viewModel.onLoginChange(email = it, password = password) },
+            error = false
+        )
         Spacer(modifier = Modifier.padding(16.dp))
         PasswordField(
             password = password,
-            onValueChange = { viewModel.onLoginChange(email = email, password = it) })
+            onValueChange = { viewModel.onLoginChange(email = email, password = it) }, error = false
+        )
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(modifier = Modifier.align(Alignment.End), forgotPass)
         Spacer(modifier = Modifier.padding(16.dp))

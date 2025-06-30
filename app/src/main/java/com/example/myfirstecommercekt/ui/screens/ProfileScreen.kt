@@ -72,24 +72,35 @@ fun Profile(viewModel: ProfileViewModel) {
             value = name,
             onChange = { viewModel.onRegisterChange(it, email, password, confirmPassword) },
             label = "Nombre completo",
-            enabled = edit
+            enabled = edit, error = false
 
         )
         Spacer(modifier = Modifier.padding(16.dp))
         EmailField(
             email,
-            enabled = edit,
-            onValueChange = { viewModel.onRegisterChange(name, it, password, confirmPassword) })
+            enabled = false,
+            onValueChange = { viewModel.onRegisterChange(name, it, password, confirmPassword) },
+            error = false
+        )
         Spacer(modifier = Modifier.padding(16.dp))
+        if (edit) Text(
+            "La constraseña debe tener más de 8 caracteres, e incluir una mayúscula, un número y un símbolo.",
+            fontSize = 10.sp
+        )
         PasswordField(
             password,
             enabled = edit,
-            onValueChange = { viewModel.onRegisterChange(name, email, it, confirmPassword) })
+            onValueChange = { viewModel.onRegisterChange(name, email, it, confirmPassword) },
+            label = "Nueva contraseña",
+            error = false
+        )
 
         Spacer(modifier = Modifier.padding(16.dp))
         if (edit) PasswordField(
             confirmPassword,
-            { viewModel.onRegisterChange(name, email, password, it) })
+            { viewModel.onRegisterChange(name, email, password, it) },
+            label = "Confirmar contraseña", error = false
+        )
 
         Spacer(modifier = Modifier.padding(16.dp))
         if (edit) {

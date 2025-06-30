@@ -8,19 +8,31 @@ import androidx.compose.ui.*
 import androidx.compose.ui.text.input.*
 
 @Composable
-fun SimpleText(value: String, onChange: (String) -> Unit, label: String, enabled: Boolean = true) {
+fun SimpleText(
+    value: String,
+    onChange: (String) -> Unit,
+    label: String,
+    enabled: Boolean = true,
+    error: Boolean
+) {
     OutlinedTextField(
         value = value,
         onValueChange = onChange,
         modifier = Modifier.fillMaxWidth(),
         label = { Text(label) },
         singleLine = true,
-        enabled = enabled
+        enabled = enabled,
+        isError = error
     )
 }
 
 @Composable
-fun EmailField(email: String, onValueChange: (String) -> Unit, enabled: Boolean = true) {
+fun EmailField(
+    email: String,
+    onValueChange: (String) -> Unit,
+    enabled: Boolean = true,
+    error: Boolean
+) {
     OutlinedTextField(
         value = email,
         onValueChange = onValueChange,
@@ -28,20 +40,27 @@ fun EmailField(email: String, onValueChange: (String) -> Unit, enabled: Boolean 
         label = { Text("Email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
-        enabled = enabled
+        enabled = enabled,
+        isError = error
     )
 }
 
 @Composable
-fun PasswordField(password: String, onValueChange: (String) -> Unit, enabled: Boolean = true) {
+fun PasswordField(
+    password: String,
+    onValueChange: (String) -> Unit,
+    enabled: Boolean = true,
+    label: String = "Contraseña", error: Boolean
+) {
     OutlinedTextField(
         value = password,
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
-        label = { Text("Password") },
+        label = { Text(label) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         visualTransformation = PasswordVisualTransformation(),
-        enabled = enabled
+        enabled = enabled,
+        isError = error
     )
 }

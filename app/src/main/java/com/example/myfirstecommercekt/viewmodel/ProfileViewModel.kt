@@ -54,6 +54,7 @@ class ProfileViewModel @Inject constructor(
     fun getUser() {
         viewModelScope.launch {
             try {
+                _isLoading.value = true
                 var loggedEmail: String = userData.userEmail.first() ?: ""
                 if (loggedEmail.isEmpty()) _success.value = false
                 else {
@@ -70,6 +71,7 @@ class ProfileViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.d("API_RESPONSE", e.message.toString())
             }
+            _isLoading.value = false
         }
     }
 
@@ -81,6 +83,8 @@ class ProfileViewModel @Inject constructor(
     fun updateProfile() {
         viewModelScope.launch {
             try {
+                _isLoading.value = true
+
                 var user = UserDto(
                     _email.value,
                     _name.value,
@@ -99,12 +103,13 @@ class ProfileViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.d("API_RESPONSE", e.message.toString())
             }
+            _isLoading.value = false
+
         }
     }
 
     fun onRegisterChange(name: String, email: String, password: String, confirmPassword: String) {
         _name.value = name
-        _email.value = email
         _password.value = password
         _confirmPassword.value = confirmPassword
         _isFormValid.value =
