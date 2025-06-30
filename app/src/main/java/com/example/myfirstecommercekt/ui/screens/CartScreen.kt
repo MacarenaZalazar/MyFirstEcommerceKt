@@ -7,6 +7,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.viewmodel.*
 
 @Composable
@@ -27,7 +28,7 @@ fun CartScreen(viewModel: CartViewModel, toProducts: () -> Unit) {
 }
 
 @Composable
-fun Cart(viewModel: CartViewModel, toProducts: () -> Unit) {
+fun Cart(viewModel: CartViewModel = hiltViewModel(), toProducts: () -> Unit) {
     val items by viewModel.cartItems.collectAsState()
     if (items.isEmpty()) {
         Column() {

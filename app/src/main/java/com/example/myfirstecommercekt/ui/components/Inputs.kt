@@ -8,30 +8,32 @@ import androidx.compose.ui.*
 import androidx.compose.ui.text.input.*
 
 @Composable
-fun SimpleText(value: String, onChange: (String) -> Unit, label: String) {
+fun SimpleText(value: String, onChange: (String) -> Unit, label: String, enabled: Boolean = true) {
     OutlinedTextField(
         value = value,
         onValueChange = onChange,
         modifier = Modifier.fillMaxWidth(),
         label = { Text(label) },
-        singleLine = true
+        singleLine = true,
+        enabled = enabled
     )
 }
 
 @Composable
-fun EmailField(email: String, onValueChange: (String) -> Unit) {
+fun EmailField(email: String, onValueChange: (String) -> Unit, enabled: Boolean = true) {
     OutlinedTextField(
         value = email,
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         label = { Text("Email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        singleLine = true
+        singleLine = true,
+        enabled = enabled
     )
 }
 
 @Composable
-fun PasswordField(password: String, onValueChange: (String) -> Unit) {
+fun PasswordField(password: String, onValueChange: (String) -> Unit, enabled: Boolean = true) {
     OutlinedTextField(
         value = password,
         onValueChange = onValueChange,
@@ -40,5 +42,6 @@ fun PasswordField(password: String, onValueChange: (String) -> Unit) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         visualTransformation = PasswordVisualTransformation(),
+        enabled = enabled
     )
 }

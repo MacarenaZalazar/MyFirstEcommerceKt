@@ -60,9 +60,13 @@ fun Login(
 
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        EmailField(email) { viewModel.onLoginChange(email = it, password = password) }
+        EmailField(
+            email = email,
+            onValueChange = { viewModel.onLoginChange(email = it, password = password) })
         Spacer(modifier = Modifier.padding(16.dp))
-        PasswordField(password) { viewModel.onLoginChange(email = email, password = it) }
+        PasswordField(
+            password = password,
+            onValueChange = { viewModel.onLoginChange(email = email, password = it) })
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(modifier = Modifier.align(Alignment.End), forgotPass)
         Spacer(modifier = Modifier.padding(16.dp))
@@ -83,7 +87,7 @@ fun ForgotPassword(modifier: Modifier, forgotPass: () -> Unit) {
 @Composable
 fun LoginButton(enabled: Boolean, logIn: () -> Unit) {
     Button(
-        onClick = { logIn() }, enabled = enabled
+        onClick = { logIn() }, enabled = enabled, modifier = Modifier.fillMaxWidth()
     ) {
         Text("Ingresar")
     }

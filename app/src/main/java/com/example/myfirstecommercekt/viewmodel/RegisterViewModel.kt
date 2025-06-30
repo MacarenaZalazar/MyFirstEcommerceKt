@@ -39,7 +39,7 @@ class RegisterViewModel @Inject constructor(private val repo: UserRepositoryImpl
         _password.value = password
         _confirmPassword.value = confirmPassword
         _isFormValid.value =
-            isValidEmail(email) && isValidPassword(password) && password == confirmPassword
+            name.isNotEmpty() && isValidEmail(email) && isValidPassword(password) && password == confirmPassword
     }
 
     fun register(toHome: () -> Unit) {

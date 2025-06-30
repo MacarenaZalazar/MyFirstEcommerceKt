@@ -4,5 +4,5 @@ import com.example.myfirstecommercekt.data.remote.dto.*
 import retrofit2.*
 
 interface AuthRepository {
-    suspend fun login(request: AuthRequest): Response<UserDto>
+    suspend fun login(request: AuthRequest): Response<LoginResponse>
 }

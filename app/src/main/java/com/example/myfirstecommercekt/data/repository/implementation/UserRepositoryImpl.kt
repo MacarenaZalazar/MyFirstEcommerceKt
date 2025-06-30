@@ -9,6 +9,9 @@ import javax.inject.*
 
 class UserRepositoryImpl @Inject constructor(private val api: UserApi) : UserRepository {
     override suspend fun register(request: UserRegisterDto): UserDto = api.register(request)
+    override suspend fun getUserByEmail(email: String): Response<UserDto> =
+        api.getUserByEmail(email)
+
     override suspend fun updateProfile(@Body request: UserDto): Response<UserDto> =
         api.updateProfile(email = request.email, request = request)
 }

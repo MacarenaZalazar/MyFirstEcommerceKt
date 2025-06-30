@@ -92,4 +92,5 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.logging.interceptor)
+    implementation(libs.cloudinary.android)
 }

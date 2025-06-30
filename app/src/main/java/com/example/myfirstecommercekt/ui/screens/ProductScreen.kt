@@ -6,13 +6,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
+import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.data.local.entity.*
 import com.example.myfirstecommercekt.ui.components.*
 import com.example.myfirstecommercekt.viewmodel.*
 
 @Composable
 fun ProductScreen(
-    productsViewModel: ProductsViewModel, cartViewModel: CartViewModel, toCart: () -> Unit
+    productsViewModel: ProductsViewModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel(),
+    toCart: () -> Unit
 ) {
     val products by productsViewModel.filteredProducts.collectAsState()
     val isLoading by productsViewModel.isLoading.collectAsState()

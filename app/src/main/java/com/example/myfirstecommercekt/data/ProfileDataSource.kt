@@ -1,6 +1,7 @@
 package com.example.myfirstecommercekt.data
 
 import android.content.*
+import android.util.*
 import androidx.datastore.preferences.core.*
 import com.example.myfirstecommercekt.*
 import dagger.hilt.android.qualifiers.*
@@ -22,6 +23,7 @@ class UserDataStore @Inject constructor(@ApplicationContext private val context:
     val userName: Flow<String?> = dataStore.data.map { it[UserData.USER_NAME] }
     val userEmail: Flow<String?> = dataStore.data.map { it[UserData.USER_EMAIL] }
     suspend fun saveUser(name: String, email: String) {
+        Log.d("USER_DATA", "saveUser() llamado con name=$name, email=$email")
         dataStore.edit {
             it[UserData.USER_NAME] = name
             it[UserData.USER_EMAIL] = email
@@ -30,10 +32,12 @@ class UserDataStore @Inject constructor(@ApplicationContext private val context:
 
     suspend fun getUser(): User? {
         val prefs: Preferences = context.dataStore.data.first()
+        Log.d("DEBUG_PREFS", "Prefs guardadas: $prefs")
         val name = prefs[UserData.USER_NAME]
         val email = prefs[UserData.USER_EMAIL]
 
 
+        Log.d("DEBUG_PREFS", "Recuperado: name=$name, email=$email")
 
         if (name.isNullOrBlank() || email.isNullOrBlank()) return null
 

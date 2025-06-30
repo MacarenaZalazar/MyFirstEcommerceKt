@@ -8,7 +8,10 @@ interface UserApi {
     @POST("users/register")
     suspend fun register(@Body request: UserRegisterDto): UserDto
 
-    @PUT("user/update/")
+    @GET("users/{email}")
+    suspend fun getUserByEmail(@Path("email") email: String): Response<UserDto>
+
+    @PUT("user/{email}")
     suspend fun updateProfile(
         @Path("email") email: String,
         @Body request: UserDto

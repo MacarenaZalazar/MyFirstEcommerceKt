@@ -1,6 +1,5 @@
 package com.example.myfirstecommercekt.viewmodel
 
-import android.util.*
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.data.*
 import com.example.myfirstecommercekt.data.remote.dto.*
@@ -43,19 +42,16 @@ class LoginViewModel @Inject constructor(
             _isLoading.value = true
             val req = AuthRequest(_email.value, hashPasswordSHA256(_password.value))
             try {
-                println("login!")
                 val res = repo.login(req)
-                Log.d("API_RESPONSE", "Respuesta del servidor: $res")
                 if (res.isSuccessful) {
-                    val user = res.body()!!
+                    val user = res.body()!!.user
                     delay(4000)
-                    userDataStore.saveUser(user.email, user.fullName)
+                    userDataStore.saveUser(name = user.fullName, email = user.email)
                     _success.value = true
                     toHome()
                 }
                 _isLoading.value = false
             } catch (e: Exception) {
-                Log.d("API_RESPONSE", { e.message }.toString())
                 _isLoading.value = false
 
             }
