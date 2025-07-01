@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.ui.screens
+package com.example.myfirstecommercekt.ui.screens.profile
 
 import android.net.*
 import androidx.activity.compose.*

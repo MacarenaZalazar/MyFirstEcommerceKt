@@ -1,13 +1,16 @@
-package com.example.myfirstecommercekt.viewmodel
+package com.example.myfirstecommercekt.ui.screens.register
 
-import androidx.lifecycle.*
-import com.example.myfirstecommercekt.data.remote.dto.*
-import com.example.myfirstecommercekt.data.repository.implementation.*
-import com.example.myfirstecommercekt.utils.helpers.*
-import dagger.hilt.android.lifecycle.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import javax.inject.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myfirstecommercekt.data.remote.dto.UserRegisterDto
+import com.example.myfirstecommercekt.data.repository.implementation.UserRepositoryImpl
+import com.example.myfirstecommercekt.utils.helpers.hashPasswordSHA256
+import com.example.myfirstecommercekt.utils.helpers.isValidEmail
+import com.example.myfirstecommercekt.utils.helpers.isValidPassword
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel()
 class RegisterViewModel @Inject constructor(private val repo: UserRepositoryImpl) : ViewModel() {
@@ -63,4 +66,3 @@ class RegisterViewModel @Inject constructor(private val repo: UserRepositoryImpl
         }
     }
 }
-

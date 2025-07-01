@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.ui.screens
+package com.example.myfirstecommercekt.ui.screens.splash
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

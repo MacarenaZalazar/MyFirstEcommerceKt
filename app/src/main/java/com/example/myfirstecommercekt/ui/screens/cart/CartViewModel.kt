@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.viewmodel
+package com.example.myfirstecommercekt.ui.screens.cart
 
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.data.local.entity.*

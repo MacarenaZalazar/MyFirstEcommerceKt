@@ -1,17 +1,22 @@
-package com.example.myfirstecommercekt.viewmodel
+package com.example.myfirstecommercekt.ui.screens.profile
 
-import android.content.*
-import android.net.*
-import android.util.*
-import androidx.lifecycle.*
-import com.example.myfirstecommercekt.data.*
-import com.example.myfirstecommercekt.data.remote.dto.*
-import com.example.myfirstecommercekt.data.repository.implementation.*
-import com.example.myfirstecommercekt.utils.helpers.*
-import dagger.hilt.android.lifecycle.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import javax.inject.*
+import android.content.Context
+import android.net.Uri
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myfirstecommercekt.data.UserDataStore
+import com.example.myfirstecommercekt.data.remote.dto.UserDto
+import com.example.myfirstecommercekt.data.repository.implementation.ImageUploadRepositoryImpl
+import com.example.myfirstecommercekt.data.repository.implementation.UserRepositoryImpl
+import com.example.myfirstecommercekt.utils.helpers.hashPasswordSHA256
+import com.example.myfirstecommercekt.utils.helpers.isValidEmail
+import com.example.myfirstecommercekt.utils.helpers.isValidPassword
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel()
 class ProfileViewModel @Inject constructor(

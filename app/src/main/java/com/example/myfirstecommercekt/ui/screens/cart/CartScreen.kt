@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.ui.screens
+package com.example.myfirstecommercekt.ui.screens.cart
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.ui.components.*
-import com.example.myfirstecommercekt.viewmodel.*
 
 @Composable
 fun CartScreen(viewModel: CartViewModel, toProducts: () -> Unit) {

@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.ui.screens
+package com.example.myfirstecommercekt.ui.screens.register
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -7,7 +7,6 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.ui.components.*
-import com.example.myfirstecommercekt.viewmodel.*
 
 @Composable
 fun RegisterScreen(viewModel: RegisterViewModel = hiltViewModel(), toLogin: () -> Unit) {

@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.ui.screens
+package com.example.myfirstecommercekt.ui.screens.forgotPass
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -39,7 +39,8 @@ fun ForgotPass(viewModel: ForgotPassViewModel, login: () -> Unit) {
         EmailField(
             email,
             { viewModel.onRegisterChange(it, password, confirmPassword) },
-            error = false)
+            error = false
+        )
         Spacer(modifier = Modifier.padding(16.dp))
         PasswordField(
             password,

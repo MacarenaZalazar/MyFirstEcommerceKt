@@ -5,14 +5,27 @@ import androidx.compose.ui.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
 import androidx.navigation.compose.*
-import com.example.myfirstecommercekt.ui.screens.*
+import com.example.myfirstecommercekt.ui.screens.cart.*
+import com.example.myfirstecommercekt.ui.screens.checkout.*
+import com.example.myfirstecommercekt.ui.screens.forgotPass.ForgotPassScreen
+import com.example.myfirstecommercekt.ui.screens.forgotPass.ForgotPassViewModel
+import com.example.myfirstecommercekt.ui.screens.login.LoginScreen
+import com.example.myfirstecommercekt.ui.screens.login.LoginViewModel
+import com.example.myfirstecommercekt.ui.screens.products.ProductScreen
+import com.example.myfirstecommercekt.ui.screens.products.ProductsViewModel
+import com.example.myfirstecommercekt.ui.screens.profile.ProfileScreen
+import com.example.myfirstecommercekt.ui.screens.profile.ProfileViewModel
+import com.example.myfirstecommercekt.ui.screens.register.RegisterScreen
+import com.example.myfirstecommercekt.ui.screens.register.RegisterViewModel
+import com.example.myfirstecommercekt.ui.screens.splash.SplashScreen
+import com.example.myfirstecommercekt.ui.screens.splash.SplashViewModel
 import com.example.myfirstecommercekt.viewmodel.*
 
 
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
     NavHost(
-        navController = navController, startDestination = CartScreenRoute, modifier = modifier
+        navController = navController, startDestination = SplashScreenRoute, modifier = modifier
     ) {
 
         composable<SplashScreenRoute> {
