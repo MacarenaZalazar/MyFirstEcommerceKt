@@ -12,7 +12,7 @@ import com.example.myfirstecommercekt.viewmodel.*
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
     NavHost(
-        navController = navController, startDestination = SplashScreenRoute, modifier = modifier
+        navController = navController, startDestination = CartScreenRoute, modifier = modifier
     ) {
 
         composable<SplashScreenRoute> {

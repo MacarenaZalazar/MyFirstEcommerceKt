@@ -2,9 +2,12 @@ package com.example.myfirstecommercekt.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.data.local.entity.*
@@ -24,7 +27,7 @@ fun ProductScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .padding(16.dp), contentAlignment = Alignment.Center
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp), contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(
@@ -32,13 +35,24 @@ fun ProductScreen(
             )
         } else {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text("Listado de productos")
-                SimpleText(
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth(),
                     value = filter,
-                    onChange = { productsViewModel.filterProducts(it) },
-                    label = "Encontrá tu producto",
-                    error = false
+                    onValueChange = { productsViewModel.filterProducts(it) },
+                    label = { Text("Encontrá tu producto") },
+                    singleLine = true,
+                    trailingIcon =
+                        {
+                            Icon(
+                                contentDescription = "buscar",
+                                imageVector = Icons.Outlined.Search, tint = Color.LightGray
+                            )
+                        }
                 )
+
+
                 ProductList(products, cartViewModel)
             }
         }
@@ -47,7 +61,11 @@ fun ProductScreen(
 
 @Composable
 fun ProductList(products: List<ProductEntity>, viewModel: CartViewModel) {
-    LazyColumn() {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         items(products) { it ->
             Product(item = it, addToCart = { viewModel.addToCart(it) })
         }

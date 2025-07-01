@@ -5,9 +5,11 @@ import com.example.myfirstecommercekt.data.local.entity.*
 
 @Dao
 interface CartDao {
+    @Transaction
     @Query("SELECT * FROM cartItem")
     suspend fun getCartItems(): List<CartItemWithProduct>
 
+    @Transaction
     @Query("SELECT * FROM cartItem WHERE id = :id LIMIT 1")
     suspend fun getCartItemById(id: Int): CartItemWithProduct
 

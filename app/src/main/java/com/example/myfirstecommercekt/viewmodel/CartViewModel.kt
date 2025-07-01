@@ -3,7 +3,6 @@ package com.example.myfirstecommercekt.viewmodel
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.data.local.entity.*
 import com.example.myfirstecommercekt.data.repository.interfaces.*
-import com.example.myfirstecommercekt.utils.data.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -26,6 +25,10 @@ class CartViewModel @Inject constructor(
     private val _success = MutableStateFlow<Boolean>(true)
     val success: MutableStateFlow<Boolean> = _success
 
+    private val _count = MutableStateFlow<Int>(0)
+    val count = _count
+
+
     init {
         loadCart()
     }
@@ -34,12 +37,15 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                _cartItems.value = cartRepo.getCartItems()
+                val items = cartRepo.getCartItems()
+                if (items.isNotEmpty()) _cartItems.value = items
             } catch (e: Exception) {
                 println(e)
                 _success.value = false
+            } finally {
+                updateTotals()
+                _isLoading.value = false
             }
-            _isLoading.value = false
         }
     }
 
@@ -55,25 +61,39 @@ class CartViewModel @Inject constructor(
                         CartItemEntity(productId = product.id, quantity = 1, price = product.price)
                     cartRepo.insertCartItem(newItem)
                 }
-
                 _cartItems.value = cartRepo.getCartItems()
             } catch (e: Exception) {
                 println(e)
+            } finally {
+                updateTotals()
+
             }
 
-            updateTotals()
         }
     }
 
 
-    fun deleteFromCart(product: Product) {
+    fun removeFromCart(product: ProductEntity) {
         viewModelScope.launch {
             try {
-                cartRepo.clearCart()
+                val existing = _cartItems.value.firstOrNull { it.cartItem.productId == product.id }
+                existing?.let {
+                    if (it.cartItem.quantity > 1) {
+                        val updated =
+                            existing.cartItem.copy(quantity = existing.cartItem.quantity - 1)
+                        cartRepo.updateCartItem(updated)
+                    } else {
+                        cartRepo.deleteCartItem(existing.cartItem)
+                    }
+                    _cartItems.value = cartRepo.getCartItems()
+                }
+
             } catch (e: Exception) {
                 println(e)
+            } finally {
+
+                updateTotals()
             }
-            updateTotals()
         }
 
     }
@@ -88,5 +108,6 @@ class CartViewModel @Inject constructor(
 
     fun updateTotals() {
         _subtotal.value = _cartItems.value.sumOf { it.product.price * it.cartItem.quantity }
+        _count.value = _cartItems.value.sumOf { it.cartItem.quantity }
     }
 }

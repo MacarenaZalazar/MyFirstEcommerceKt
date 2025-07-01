@@ -32,6 +32,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
         buildConfigField("String", "BASE_URL", "\"${apiBaseUrl}\"")
     }
 
@@ -93,4 +94,5 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.logging.interceptor)
     implementation(libs.cloudinary.android)
+    implementation(libs.androidx.material.icons.extended)
 }

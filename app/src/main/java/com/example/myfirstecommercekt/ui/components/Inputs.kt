@@ -11,9 +11,11 @@ import androidx.compose.ui.text.input.*
 fun SimpleText(
     value: String,
     onChange: (String) -> Unit,
-    label: String,
+    label: String = "",
     enabled: Boolean = true,
-    error: Boolean
+    error: Boolean = false,
+    placeholder: String = "",
+    trailingIcon: () -> Unit = {}
 ) {
     OutlinedTextField(
         value = value,
@@ -22,7 +24,10 @@ fun SimpleText(
         label = { Text(label) },
         singleLine = true,
         enabled = enabled,
-        isError = error
+        isError = error,
+        placeholder = { Text(placeholder) },
+        trailingIcon = trailingIcon
+
     )
 }
 
