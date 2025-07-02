@@ -27,5 +27,9 @@ abstract class RepositoryModule {
     abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
 
     @Binds
+    @Singleton
+    abstract fun bindOrderRepository(impl: OrderRepositoryImpl): OrderRepository
+
+    @Binds
     abstract fun binImageUploadRepository(impl: ImageUploadRepositoryImpl): ImageUploadRepository
 }

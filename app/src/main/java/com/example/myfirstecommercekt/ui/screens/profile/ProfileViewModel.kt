@@ -1,5 +1,6 @@
 package com.example.myfirstecommercekt.ui.screens.profile
 
+import android.app.*
 import android.content.*
 import android.net.*
 import android.util.*
@@ -15,6 +16,7 @@ import javax.inject.*
 
 @HiltViewModel()
 class ProfileViewModel @Inject constructor(
+    val myApplication: Application,
     private val userRepo: UserRepository,
     private val userData: UserDataStore,
     private val imageRepo: ImageUploadRepository
@@ -64,7 +66,7 @@ class ProfileViewModel @Inject constructor(
                         _image.value = profile.userImageUrl ?: ""
                         _name.value = profile.fullName
                         _email.value = profile.email
-                        _password.value = "12345678"
+                        _password.value = "********"
                     }
                 }
             } catch (e: Exception) {
@@ -96,7 +98,8 @@ class ProfileViewModel @Inject constructor(
                     _image.value = data.userImageUrl ?: ""
                     _name.value = data.fullName
                     _email.value = data.email
-                    _password.value = data.encryptedPassword
+                    _password.value = "********"
+                    _confirmPassword.value = ""
                     _edit.value = false
                 }
             } catch (e: Exception) {
@@ -112,7 +115,7 @@ class ProfileViewModel @Inject constructor(
         _password.value = password
         _confirmPassword.value = confirmPassword
         _isFormValid.value =
-            name.isNotEmpty() && isValidEmail(email) && isValidPassword(password) && password == confirmPassword
+            isValidName(name) && isValidEmail(email) && isValidPassword(password) && password == confirmPassword
     }
 
     fun uploadImage(uri: Uri, context: Context) {

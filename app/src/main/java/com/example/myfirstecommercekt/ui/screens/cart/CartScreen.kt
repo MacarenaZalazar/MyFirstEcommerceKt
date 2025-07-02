@@ -31,11 +31,9 @@ fun CartScreen(
         AlertPopup(
             title = dialogMessage,
             onDismiss = {
-                cartViewModel.loadCart()
                 checkoutVieModel.closeDialog()
             },
             onConfirm = {
-                cartViewModel.loadCart()
                 checkoutVieModel.closeDialog()
             },
         )

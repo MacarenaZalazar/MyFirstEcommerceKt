@@ -13,7 +13,11 @@ class CartViewModel @Inject constructor(
     private val cartRepo: CartRepository
 
 ) : ViewModel() {
-    private val _cartItems = MutableStateFlow<List<CartItemWithProduct>>(emptyList())
+    private val _cartItems = cartRepo.getCartItems().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
     val cartItems = _cartItems
 
     private val _subtotal = MutableStateFlow(0.0)
@@ -28,27 +32,6 @@ class CartViewModel @Inject constructor(
     private val _count = MutableStateFlow<Int>(0)
     val count = _count
 
-
-    init {
-        loadCart()
-    }
-
-    fun loadCart() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            try {
-                val items = cartRepo.getCartItems()
-                _cartItems.value = items
-            } catch (e: Exception) {
-                println(e)
-                _success.value = false
-            } finally {
-                updateTotals()
-                _isLoading.value = false
-            }
-        }
-    }
-
     fun addToCart(product: ProductEntity) {
         viewModelScope.launch {
             try {
@@ -61,7 +44,6 @@ class CartViewModel @Inject constructor(
                         CartItemEntity(productId = product.id, quantity = 1, price = product.price)
                     cartRepo.insertCartItem(newItem)
                 }
-                _cartItems.value = cartRepo.getCartItems()
             } catch (e: Exception) {
                 println(e)
             } finally {
@@ -84,10 +66,9 @@ class CartViewModel @Inject constructor(
                         cartRepo.updateCartItem(updated)
                     } else {
                         cartRepo.deleteCartItem(existing.cartItem)
-                    }
-                    _cartItems.value = cartRepo.getCartItems()
-                }
 
+                    }
+                }
             } catch (e: Exception) {
                 println(e)
             } finally {
@@ -101,7 +82,6 @@ class CartViewModel @Inject constructor(
     fun clearCart() {
         viewModelScope.launch {
             cartRepo.clearCart()
-            _cartItems.value = emptyList()
         }
 
     }

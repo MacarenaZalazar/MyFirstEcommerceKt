@@ -2,12 +2,13 @@ package com.example.myfirstecommercekt.data.local.dao
 
 import androidx.room.*
 import com.example.myfirstecommercekt.data.local.entity.*
+import kotlinx.coroutines.flow.*
 
 @Dao
 interface CartDao {
     @Transaction
     @Query("SELECT * FROM cartItem")
-    suspend fun getCartItems(): List<CartItemWithProduct>
+    fun getCartItems(): Flow<List<CartItemWithProduct>>
 
     @Transaction
     @Query("SELECT * FROM cartItem WHERE id = :id LIMIT 1")

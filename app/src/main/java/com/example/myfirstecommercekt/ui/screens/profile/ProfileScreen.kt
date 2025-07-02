@@ -1,12 +1,15 @@
 package com.example.myfirstecommercekt.ui.screens.profile
 
+import android.graphics.*
 import android.net.*
 import androidx.activity.compose.*
 import androidx.activity.result.contract.*
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
@@ -59,15 +62,29 @@ fun Profile(viewModel: ProfileViewModel) {
     Column(
         modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
         //AppTitle()
         Spacer(modifier = Modifier.padding(16.dp))
-        Text("Tu perfil")
+        Text("Mi perfil")
+        if (imageUri.value != null) {
+            val bitmap = remember(imageUri) {
+                val source = ImageDecoder.createSource(context.contentResolver, imageUri.value!!)
+                ImageDecoder.decodeBitmap(source).asImageBitmap()
+            }
+            Image(
+                bitmap = bitmap,
+                contentDescription = "Imagen seleccionada",
+                modifier = Modifier.size(100.dp)
+            )
+        } else {
+            UpdateImage(onClick = { launcher.launch("image/*") })
+
+        }
         Spacer(modifier = Modifier.padding(20.dp))
         //LoadImage(url = image, contentDescription = "Profile photo")
         // Spacer(modifier = Modifier.padding(8.dp))
-        // UpdateImage(onClick = { launcher.launch("image/*") })
+        Spacer(modifier = Modifier.padding(16.dp))
+
         SimpleText(
             value = name,
             onChange = { viewModel.onRegisterChange(it, email, password, confirmPassword) },
@@ -83,10 +100,6 @@ fun Profile(viewModel: ProfileViewModel) {
             onValueChange = { viewModel.onRegisterChange(name, it, password, confirmPassword) },
             error = { emailError(it) })
         Spacer(modifier = Modifier.padding(16.dp))
-        if (edit) Text(
-            "La constraseña debe tener más de 8 caracteres, e incluir una mayúscula, un número y un símbolo.",
-            fontSize = 10.sp
-        )
         PasswordField(
             password,
             enabled = edit,
@@ -120,7 +133,7 @@ fun EditButton(onClick: () -> Unit) {
 
 @Composable
 fun UpdateButton(enabled: Boolean, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
+    Button(onClick = onClick, modifier = Modifier.fillMaxWidth(), enabled = enabled) {
         Text("Actualizar")
     }
 }

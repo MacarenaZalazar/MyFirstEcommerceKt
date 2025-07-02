@@ -11,7 +11,7 @@ interface UserApi {
     @GET("users/{email}")
     suspend fun getUserByEmail(@Path("email") email: String): Response<UserDto>
 
-    @PUT("user/{email}")
+    @PUT("users/{email}")
     suspend fun updateProfile(
         @Path("email") email: String,
         @Body request: UserDto

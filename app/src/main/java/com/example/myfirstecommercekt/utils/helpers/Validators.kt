@@ -12,7 +12,8 @@ fun isValidEmail(value: String) = Patterns.EMAIL_ADDRESS.matcher(value).matches(
 
 fun isValidName(value: String): Boolean {
     val repeatedCharsRegex = Regex("(.)\\1{2,}")
-    return value.isNotBlank() && !repeatedCharsRegex.containsMatchIn(value)
+    val words = value.trim().split("\\s+".toRegex())
+    return value.isNotBlank() && !repeatedCharsRegex.containsMatchIn(value) && (words.size > 1)
 }
 
 fun passwordError(value: String): String? {
