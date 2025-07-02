@@ -6,7 +6,7 @@ import android.util.*
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.data.*
 import com.example.myfirstecommercekt.data.remote.dto.*
-import com.example.myfirstecommercekt.data.repository.implementation.*
+import com.example.myfirstecommercekt.data.repository.interfaces.*
 import com.example.myfirstecommercekt.utils.helpers.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
@@ -15,9 +15,9 @@ import javax.inject.*
 
 @HiltViewModel()
 class ProfileViewModel @Inject constructor(
-    private val userRepo: UserRepositoryImpl,
+    private val userRepo: UserRepository,
     private val userData: UserDataStore,
-    private val imageRepo: ImageUploadRepositoryImpl
+    private val imageRepo: ImageUploadRepository
 ) : ViewModel() {
 
     private val _name = MutableStateFlow<String>("")

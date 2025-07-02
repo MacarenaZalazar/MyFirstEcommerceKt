@@ -1,17 +1,16 @@
 package com.example.myfirstecommercekt.ui.screens.products
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.myfirstecommercekt.data.local.entity.ProductEntity
-import com.example.myfirstecommercekt.data.repository.implementation.ProductRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import android.util.*
+import androidx.lifecycle.*
+import com.example.myfirstecommercekt.data.local.entity.*
+import com.example.myfirstecommercekt.data.repository.interfaces.ProductRepository
+import dagger.hilt.android.lifecycle.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import javax.inject.*
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(private val repo: ProductRepositoryImpl) : ViewModel() {
+class ProductsViewModel @Inject constructor(private val repo: ProductRepository) : ViewModel() {
     private val _products = MutableStateFlow<List<ProductEntity>>(emptyList())
     val products = _products
 

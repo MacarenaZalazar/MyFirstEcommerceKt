@@ -3,7 +3,7 @@ package com.example.myfirstecommercekt.ui.screens.login
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.data.*
 import com.example.myfirstecommercekt.data.remote.dto.*
-import com.example.myfirstecommercekt.data.repository.implementation.*
+import com.example.myfirstecommercekt.data.repository.interfaces.*
 import com.example.myfirstecommercekt.utils.helpers.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
@@ -12,7 +12,7 @@ import javax.inject.*
 
 @HiltViewModel()
 class LoginViewModel @Inject constructor(
-    private val userDataStore: UserDataStore, private val repo: AuthRepositoryImpl
+    private val userDataStore: UserDataStore, private val repo: AuthRepository
 ) : ViewModel() {
 
     private val _email = MutableStateFlow<String>("")

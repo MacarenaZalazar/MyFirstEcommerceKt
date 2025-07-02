@@ -2,7 +2,6 @@ package com.example.myfirstecommercekt.ui.screens.checkout
 
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.data.*
-import com.example.myfirstecommercekt.data.repository.implementation.*
 import com.example.myfirstecommercekt.data.repository.interfaces.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
@@ -12,7 +11,7 @@ import javax.inject.*
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(
     private val cartRepo: CartRepository,
-    private val orderRepo: OrderRepositoryImpl,
+    private val orderRepo: OrderRepository,
     private val userData: UserDataStore
 ) : ViewModel() {
 
