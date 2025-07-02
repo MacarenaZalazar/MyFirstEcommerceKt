@@ -7,6 +7,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.ui.components.*
+import com.example.myfirstecommercekt.utils.helpers.*
 
 @Composable
 fun RegisterScreen(viewModel: RegisterViewModel = hiltViewModel(), toLogin: () -> Unit) {
@@ -48,15 +49,13 @@ fun Register(viewModel: RegisterViewModel, toLogin: () -> Unit) {
             value = name,
             onChange = { viewModel.onRegisterChange(it, email, password, confirmPassword) },
             label = "Nombre completo",
-            error = false
-        )
+            error = { validateName(it) })
         Spacer(modifier = Modifier.padding(16.dp))
 
         EmailField(
             email,
             { viewModel.onRegisterChange(name, it, password, confirmPassword) },
-            error = false
-        )
+            error = { emailError(it) })
         Spacer(modifier = Modifier.padding(16.dp))
         Text(
             "La constraseña debe tener más de 8 caracteres, e incluir una mayúscula, un número y un símbolo.",
@@ -65,15 +64,13 @@ fun Register(viewModel: RegisterViewModel, toLogin: () -> Unit) {
         PasswordField(
             password,
             { viewModel.onRegisterChange(name, email, it, confirmPassword) },
-            error = false
-        )
+            error = { passwordError(it) })
 
         Spacer(modifier = Modifier.padding(16.dp))
         PasswordField(
             confirmPassword,
             { viewModel.onRegisterChange(name, email, password, it) },
-            error = false
-        )
+            error = { confirmPasswordError(password, it) })
 
         Spacer(modifier = Modifier.padding(16.dp))
         SingUpButton(enabled = enabled) { viewModel.register(toLogin) }

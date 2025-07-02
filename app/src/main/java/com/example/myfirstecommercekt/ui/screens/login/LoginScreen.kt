@@ -8,14 +8,12 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.ui.components.*
-import com.example.myfirstecommercekt.viewmodel.*
+import com.example.myfirstecommercekt.utils.helpers.*
 
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel(),
-    toHome: () -> Unit,
-    forgotPass: () -> Unit
+    viewModel: LoginViewModel = hiltViewModel(), toHome: () -> Unit, forgotPass: () -> Unit
 ) {
 
     val isLoading by viewModel.isLoading.collectAsState()
@@ -47,10 +45,7 @@ fun LoginScreen(
 
 @Composable
 fun Login(
-    modifier: Modifier,
-    viewModel: LoginViewModel,
-    toHome: () -> Unit,
-    forgotPass: () -> Unit
+    modifier: Modifier, viewModel: LoginViewModel, toHome: () -> Unit, forgotPass: () -> Unit
 ) {
 
     val email by viewModel.email.collectAsState()
@@ -63,12 +58,12 @@ fun Login(
         EmailField(
             email = email,
             onValueChange = { viewModel.onLoginChange(email = it, password = password) },
-            error = false
-        )
+            error = { emailError(it) })
         Spacer(modifier = Modifier.padding(16.dp))
         PasswordField(
             password = password,
-            onValueChange = { viewModel.onLoginChange(email = email, password = it) }, error = false
+            onValueChange = { viewModel.onLoginChange(email = email, password = it) },
+            error = { passwordError(it) }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(modifier = Modifier.align(Alignment.End), forgotPass)

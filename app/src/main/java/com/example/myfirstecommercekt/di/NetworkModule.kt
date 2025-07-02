@@ -21,34 +21,32 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
+        Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient).build()
 
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
-        return OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
+        return OkHttpClient.Builder().addInterceptor(logging).build()
     }
 
     @Provides
     @Singleton
-    fun provideAuthApi(retrofit: Retrofit): AuthApi =
-        retrofit.create(AuthApi::class.java)
+    fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
 
     @Provides
     @Singleton
-    fun provideUserApi(retrofit: Retrofit): UserApi =
-        retrofit.create(UserApi::class.java)
+    fun provideUserApi(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
 
     @Provides
     @Singleton
     fun provideProductsApi(retrofit: Retrofit): ProductsApi =
         retrofit.create(ProductsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideOrderService(retrofit: Retrofit): OrderService =
+        retrofit.create(OrderService::class.java)
 }

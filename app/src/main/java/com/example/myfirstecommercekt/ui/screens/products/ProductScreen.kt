@@ -13,7 +13,6 @@ import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.data.local.entity.*
 import com.example.myfirstecommercekt.ui.components.*
 import com.example.myfirstecommercekt.ui.screens.cart.*
-import com.example.myfirstecommercekt.viewmodel.*
 
 @Composable
 fun ProductScreen(

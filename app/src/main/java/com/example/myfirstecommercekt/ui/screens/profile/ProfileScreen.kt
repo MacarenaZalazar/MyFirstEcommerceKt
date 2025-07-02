@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.ui.components.*
-import com.example.myfirstecommercekt.viewmodel.*
+import com.example.myfirstecommercekt.utils.helpers.*
 
 
 @Composable
@@ -72,7 +72,8 @@ fun Profile(viewModel: ProfileViewModel) {
             value = name,
             onChange = { viewModel.onRegisterChange(it, email, password, confirmPassword) },
             label = "Nombre completo",
-            enabled = edit, error = false
+            enabled = edit,
+            error = { validateName(it) }
 
         )
         Spacer(modifier = Modifier.padding(16.dp))
@@ -80,8 +81,7 @@ fun Profile(viewModel: ProfileViewModel) {
             email,
             enabled = false,
             onValueChange = { viewModel.onRegisterChange(name, it, password, confirmPassword) },
-            error = false
-        )
+            error = { emailError(it) })
         Spacer(modifier = Modifier.padding(16.dp))
         if (edit) Text(
             "La constraseña debe tener más de 8 caracteres, e incluir una mayúscula, un número y un símbolo.",
@@ -92,15 +92,14 @@ fun Profile(viewModel: ProfileViewModel) {
             enabled = edit,
             onValueChange = { viewModel.onRegisterChange(name, email, it, confirmPassword) },
             label = "Nueva contraseña",
-            error = false
-        )
+            error = { passwordError(it) })
 
         Spacer(modifier = Modifier.padding(16.dp))
         if (edit) PasswordField(
             confirmPassword,
             { viewModel.onRegisterChange(name, email, password, it) },
-            label = "Confirmar contraseña", error = false
-        )
+            label = "Confirmar contraseña",
+            error = { confirmPasswordError(password, it) })
 
         Spacer(modifier = Modifier.padding(16.dp))
         if (edit) {

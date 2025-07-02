@@ -14,28 +14,52 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.ui.components.*
+import com.example.myfirstecommercekt.ui.screens.checkout.*
 
 @Composable
-fun CartScreen(viewModel: CartViewModel, toProducts: () -> Unit) {
+fun CartScreen(
+    cartViewModel: CartViewModel, checkoutVieModel: CheckoutViewModel, toProducts: () -> Unit
+) {
 
-    val isLoading by viewModel.isLoading.collectAsState()
+    val isLoading by cartViewModel.isLoading.collectAsState()
+    val loadingPay by checkoutVieModel.isLoading.collectAsState()
+    val showDialog by checkoutVieModel.showDialog.collectAsState()
+    val dialogMessage by checkoutVieModel.dialogMessage.collectAsState()
 
+
+    if (showDialog) {
+        AlertPopup(
+            title = dialogMessage,
+            onDismiss = {
+                cartViewModel.loadCart()
+                checkoutVieModel.closeDialog()
+            },
+            onConfirm = {
+                cartViewModel.loadCart()
+                checkoutVieModel.closeDialog()
+            },
+        )
+    }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        if (isLoading) {
+        if (isLoading || loadingPay) {
             CircularProgressIndicator(
                 Modifier.align(Alignment.Center)
             )
         } else {
-            Cart(viewModel, toProducts)
+            Cart(cartViewModel, checkoutVieModel, toProducts)
         }
     }
 }
 
 @Composable
-fun Cart(viewModel: CartViewModel = hiltViewModel(), toProducts: () -> Unit) {
+fun Cart(
+    viewModel: CartViewModel = hiltViewModel(),
+    checkout: CheckoutViewModel = hiltViewModel(),
+    toProducts: () -> Unit
+) {
     val cartItems by viewModel.cartItems.collectAsState()
     val subtotal by viewModel.subtotal.collectAsState()
     val count by viewModel.count.collectAsState()
@@ -131,7 +155,7 @@ fun Cart(viewModel: CartViewModel = hiltViewModel(), toProducts: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        Color.White
+                        MaterialTheme.colorScheme.background
                     )
                     .align(Alignment.BottomCenter)
             ) {
@@ -157,7 +181,7 @@ fun Cart(viewModel: CartViewModel = hiltViewModel(), toProducts: () -> Unit) {
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = {}, modifier = Modifier
+                        onClick = { checkout.pay() }, modifier = Modifier
                             .padding(horizontal = 10.dp)
                             .fillMaxWidth()
                     ) {

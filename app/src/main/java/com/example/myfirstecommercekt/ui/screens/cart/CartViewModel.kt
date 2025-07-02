@@ -110,4 +110,18 @@ class CartViewModel @Inject constructor(
         _subtotal.value = _cartItems.value.sumOf { it.product.price * it.cartItem.quantity }
         _count.value = _cartItems.value.sumOf { it.cartItem.quantity }
     }
+
+    fun buy() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+
+
+            } catch (e: Exception) {
+
+            } finally {
+
+            }
+        }
+    }
 }

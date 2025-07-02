@@ -1,18 +1,14 @@
 package com.example.myfirstecommercekt.ui.screens.login
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.myfirstecommercekt.data.UserDataStore
-import com.example.myfirstecommercekt.data.remote.dto.AuthRequest
-import com.example.myfirstecommercekt.data.repository.implementation.AuthRepositoryImpl
-import com.example.myfirstecommercekt.utils.helpers.hashPasswordSHA256
-import com.example.myfirstecommercekt.utils.helpers.isValidEmail
-import com.example.myfirstecommercekt.utils.helpers.isValidPassword
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import androidx.lifecycle.*
+import com.example.myfirstecommercekt.data.*
+import com.example.myfirstecommercekt.data.remote.dto.*
+import com.example.myfirstecommercekt.data.repository.implementation.*
+import com.example.myfirstecommercekt.utils.helpers.*
+import dagger.hilt.android.lifecycle.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import javax.inject.*
 
 @HiltViewModel()
 class LoginViewModel @Inject constructor(
@@ -44,13 +40,13 @@ class LoginViewModel @Inject constructor(
     fun logIn(toHome: () -> Unit) {
         viewModelScope.launch {
             _isLoading.value = true
-            val req = AuthRequest(_email.value, hashPasswordSHA256(_password.value))
+            val req = AuthRequest(_email.value.lowercase(), hashPasswordSHA256(_password.value))
             try {
                 val res = repo.login(req)
                 if (res.isSuccessful) {
                     val user = res.body()!!.user
                     delay(4000)
-                    userDataStore.saveUser(name = user.fullName, email = user.email)
+                    userDataStore.saveUser(id = user.id, name = user.fullName, email = user.email)
                     _success.value = true
                     toHome()
                 }

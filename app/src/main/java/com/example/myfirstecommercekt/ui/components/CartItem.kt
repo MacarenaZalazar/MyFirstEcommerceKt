@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import com.example.myfirstecommercekt.data.local.entity.*
@@ -41,7 +40,7 @@ fun CartItem(
             ) {
                 Row(
                     modifier = Modifier.background(
-                        Color.White
+                        MaterialTheme.colorScheme.background
                     ), verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(

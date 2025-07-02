@@ -29,11 +29,6 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideOrderDao(database: AppDatabase): OrderDao {
-        return database.orderDao()
-    }
-
-    @Provides
     fun provideCartItemDao(database: AppDatabase): CartDao {
         return database.cartDao()
     }

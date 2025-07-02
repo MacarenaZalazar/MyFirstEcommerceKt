@@ -8,12 +8,10 @@ import com.example.myfirstecommercekt.data.local.entity.*
     entities = [
         ProductEntity::class,
         CartItemEntity::class,
-        OrderEntity::class,
     ], version = 1, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
-    abstract fun orderDao(): OrderDao
     abstract fun cartDao(): CartDao
 
 }
