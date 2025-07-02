@@ -38,7 +38,7 @@ class CartViewModel @Inject constructor(
             _isLoading.value = true
             try {
                 val items = cartRepo.getCartItems()
-                if (items.isNotEmpty()) _cartItems.value = items
+                _cartItems.value = items
             } catch (e: Exception) {
                 println(e)
                 _success.value = false
