@@ -1,24 +1,17 @@
 package com.example.myfirstecommercekt
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.myfirstecommercekt.ui.components.BottomNavBar
-import com.example.myfirstecommercekt.navigation.LogInScreenRoute
-import com.example.myfirstecommercekt.navigation.NavGraph
-import com.example.myfirstecommercekt.navigation.RegisterScreenRoute
-import com.example.myfirstecommercekt.navigation.SplashScreenRoute
-import com.example.myfirstecommercekt.ui.theme.MyFirstEcommerceKtTheme
-import dagger.hilt.android.AndroidEntryPoint
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import com.example.myfirstecommercekt.navigation.CheckoutScreenRoute
-import com.example.myfirstecommercekt.navigation.ForgotPassScreenRoute
+import android.os.*
+import androidx.activity.*
+import androidx.activity.compose.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.navigation.compose.*
+import com.example.myfirstecommercekt.ui.components.*
+import com.example.myfirstecommercekt.ui.navigation.*
+import com.example.myfirstecommercekt.ui.theme.*
+import dagger.hilt.android.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

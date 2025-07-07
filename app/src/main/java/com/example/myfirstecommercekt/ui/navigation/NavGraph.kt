@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.navigation
+package com.example.myfirstecommercekt.ui.navigation
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.*

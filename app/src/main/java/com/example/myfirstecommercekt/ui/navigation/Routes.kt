@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.navigation
+package com.example.myfirstecommercekt.ui.navigation
 
 import kotlinx.serialization.*
 

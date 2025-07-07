@@ -7,7 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.*
 import androidx.navigation.*
 import androidx.navigation.compose.*
-import com.example.myfirstecommercekt.navigation.*
+import com.example.myfirstecommercekt.ui.navigation.*
 
 
 data class BottomNavItem(
