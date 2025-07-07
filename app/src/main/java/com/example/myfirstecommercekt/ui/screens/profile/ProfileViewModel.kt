@@ -5,7 +5,7 @@ import android.content.*
 import android.net.*
 import android.util.*
 import androidx.lifecycle.*
-import com.example.myfirstecommercekt.data.*
+import com.example.myfirstecommercekt.data.local.*
 import com.example.myfirstecommercekt.data.remote.dto.*
 import com.example.myfirstecommercekt.data.repository.interfaces.*
 import com.example.myfirstecommercekt.utils.helpers.*

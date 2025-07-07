@@ -95,4 +95,11 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.cloudinary.android)
     implementation(libs.androidx.material.icons.extended)
+
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test.v173)
+
 }

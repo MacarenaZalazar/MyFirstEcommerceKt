@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.data
+package com.example.myfirstecommercekt.data.local
 
 import androidx.room.*
 import com.example.myfirstecommercekt.data.local.dao.*

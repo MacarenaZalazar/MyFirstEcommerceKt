@@ -2,7 +2,7 @@ package com.example.myfirstecommercekt.di
 
 import android.content.*
 import androidx.room.*
-import com.example.myfirstecommercekt.data.*
+import com.example.myfirstecommercekt.data.local.*
 import com.example.myfirstecommercekt.data.local.dao.*
 import dagger.*
 import dagger.hilt.*

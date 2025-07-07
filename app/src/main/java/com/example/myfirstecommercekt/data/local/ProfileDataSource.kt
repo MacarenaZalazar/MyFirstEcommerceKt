@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.data
+package com.example.myfirstecommercekt.data.local
 
 import android.content.*
 import androidx.datastore.preferences.core.*

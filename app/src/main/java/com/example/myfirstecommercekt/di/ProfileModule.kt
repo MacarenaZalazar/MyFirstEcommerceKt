@@ -1,7 +1,7 @@
 package com.example.myfirstecommercekt.di
 
 import android.content.*
-import com.example.myfirstecommercekt.data.*
+import com.example.myfirstecommercekt.data.local.*
 import dagger.*
 import dagger.hilt.*
 import dagger.hilt.android.qualifiers.*

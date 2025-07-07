@@ -1,7 +1,7 @@
 package com.example.myfirstecommercekt.ui.screens.checkout
 
 import androidx.lifecycle.*
-import com.example.myfirstecommercekt.data.*
+import com.example.myfirstecommercekt.data.local.*
 import com.example.myfirstecommercekt.data.repository.interfaces.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
