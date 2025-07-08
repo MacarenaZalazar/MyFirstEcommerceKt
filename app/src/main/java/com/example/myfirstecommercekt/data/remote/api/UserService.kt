@@ -4,7 +4,7 @@ import com.example.myfirstecommercekt.data.remote.dto.*
 import retrofit2.*
 import retrofit2.http.*
 
-interface UserApi {
+interface UserService {
     @POST("users/register")
     suspend fun register(@Body request: UserRegisterDto): UserDto
 
