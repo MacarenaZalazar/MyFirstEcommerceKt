@@ -102,4 +102,7 @@ dependencies {
     testImplementation(libs.coroutines.test)
     testImplementation(libs.kotlinx.coroutines.test.v173)
 
+    implementation(libs.androidx.work.runtime.ktx)
+    
+
 }
