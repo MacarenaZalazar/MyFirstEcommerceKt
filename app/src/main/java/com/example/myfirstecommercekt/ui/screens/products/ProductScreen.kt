@@ -10,64 +10,75 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
-import com.example.myfirstecommercekt.data.local.entity.*
+import com.example.myfirstecommercekt.ui.*
 import com.example.myfirstecommercekt.ui.components.*
 import com.example.myfirstecommercekt.ui.screens.cart.*
+import com.example.myfirstecommercekt.utils.data.*
 
 @Composable
 fun ProductScreen(
     productsViewModel: ProductsViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
-    toCart: () -> Unit
 ) {
-    val products by productsViewModel.filteredProducts.collectAsState()
-    val isLoading by productsViewModel.isLoading.collectAsState()
-    val filter by productsViewModel.filter.collectAsState()
+    val state = productsViewModel.uiState
+
+    LaunchedEffect(Unit) {
+        productsViewModel.loadProducts(refresh = true)
+    }
 
     Box(
         Modifier
             .fillMaxSize()
             .padding(top = 16.dp, start = 16.dp, end = 16.dp), contentAlignment = Alignment.Center
     ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                Modifier.align(Alignment.Center)
-            )
-        } else {
-            Column(modifier = Modifier.padding(16.dp)) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth(),
-                    value = filter,
-                    onValueChange = { productsViewModel.filterProducts(it) },
-                    label = { Text("Encontrá tu producto") },
-                    singleLine = true,
-                    trailingIcon =
-                        {
-                            Icon(
-                                contentDescription = "buscar",
-                                imageVector = Icons.Outlined.Search, tint = Color.LightGray
-                            )
-                        }
+        when (state) {
+            is UIState.Loading -> {
+
+                CircularProgressIndicator(
+                    Modifier.align(Alignment.Center)
                 )
-
-
-                ProductList(products, cartViewModel)
             }
+
+            is UIState.Success -> {
+                val products = state.data
+                val filter by remember { mutableStateOf("") }
+                Column(modifier = Modifier.padding(16.dp)) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .fillMaxWidth(),
+                        value = filter,
+                        onValueChange = {},
+                        label = { Text("Encontrá tu producto") },
+                        singleLine = true,
+                        trailingIcon =
+                            {
+                                Icon(
+                                    contentDescription = "buscar",
+                                    imageVector = Icons.Outlined.Search, tint = Color.LightGray
+                                )
+                            }
+                    )
+
+
+                    ProductList(products, cartViewModel)
+                }
+            }
+
+            is UIState.Error -> TODO()
         }
     }
 }
 
 @Composable
-fun ProductList(products: List<ProductEntity>, viewModel: CartViewModel) {
+fun ProductList(products: List<Product>, viewModel: CartViewModel) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(products) { it ->
-            Product(item = it, addToCart = { viewModel.addToCart(it) })
+            Product(item = it, addToCart = { viewModel.addToCart(it.id) })
         }
     }
 }

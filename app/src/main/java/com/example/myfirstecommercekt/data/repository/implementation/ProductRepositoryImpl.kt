@@ -1,32 +1,30 @@
 package com.example.myfirstecommercekt.data.repository.implementation
 
 import com.example.myfirstecommercekt.data.local.dao.*
-import com.example.myfirstecommercekt.data.local.entity.*
 import com.example.myfirstecommercekt.data.remote.api.*
 import com.example.myfirstecommercekt.data.repository.interfaces.*
+import com.example.myfirstecommercekt.utils.data.*
 import javax.inject.*
 
 class ProductRepositoryImpl @Inject constructor(
-    private val dao: ProductDao,
-    private val api: ProductsApi
+    private val local: ProductDao,
+    private val remote: ProductsService
 ) : ProductRepository {
-    override suspend fun getAll(): List<ProductEntity> = dao.getAll()
-    override suspend fun getAllRemote(): List<ProductEntity> {
-        val res = api.getProducts()
-        if (res.body() != null && res.body()!!.isNotEmpty()) {
-            val products = res.body()!!
-            val entities = products.map { it ->
-                ProductEntity(
-                    name = it.name,
-                    description = it.description,
-                    price = it.price,
-                    category = it.category,
-                    imageUrl = it.imageUrl
-                )
+    override suspend fun getAll(refresh: Boolean): List<Product> {
+        return if (refresh) {
+            val res = remote.getProducts()
+            local.clearProducts()
+            local.insertAll(res.map { it.toEntity() })
+            res.map { it.toDomain() }
+        } else {
+            val localProducts = local.getAll()
+            if (localProducts.isNotEmpty()) {
+                localProducts.map { it.toDomain() }
+            } else {
+                val remote = remote.getProducts()
+                local.insertAll(remote.map { it.toEntity() })
+                remote.map { it.toDomain() }
             }
-            dao.insertAll(entities)
         }
-        return dao.getAll()
     }
-
 }

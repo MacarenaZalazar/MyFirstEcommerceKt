@@ -1,68 +1,35 @@
 package com.example.myfirstecommercekt.ui.screens.products
 
-import android.util.*
+import androidx.compose.runtime.*
 import androidx.lifecycle.*
-import com.example.myfirstecommercekt.data.local.entity.*
-import com.example.myfirstecommercekt.data.repository.interfaces.ProductRepository
+import coil.network.*
+import com.example.myfirstecommercekt.domain.products.*
+import com.example.myfirstecommercekt.ui.*
+import com.example.myfirstecommercekt.utils.data.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import okio.*
 import javax.inject.*
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(private val repo: ProductRepository) : ViewModel() {
-    private val _products = MutableStateFlow<List<ProductEntity>>(emptyList())
-    val products = _products
+class ProductsViewModel @Inject constructor(private val getProductsUseCase: GetProductsUseCase) :
+    ViewModel() {
 
-    private val _filteredProducts = MutableStateFlow<List<ProductEntity>>(emptyList())
-    val filteredProducts = _filteredProducts
+    var uiState by mutableStateOf<UIState<List<Product>>>(UIState.Loading)
 
-    private val _isLoading = MutableStateFlow<Boolean>(false)
-    val isLoading: MutableStateFlow<Boolean> = _isLoading
-
-    private val _success = MutableStateFlow<Boolean>(true)
-    val success: MutableStateFlow<Boolean> = _success
-
-    private val _filter = MutableStateFlow<String>("")
-    val filter = _filter
-
-    init {
-        loadProducts()
-    }
-
-    fun loadProducts() {
+    fun loadProducts(refresh: Boolean = false) {
         viewModelScope.launch {
-            _isLoading.value = true
+            uiState = UIState.Loading
             try {
-                Log.d("PRODUCTOS", "INGRESANDO A LOADPRODUCTS")
-                val local = repo.getAll()
-                Log.d("PRODUCTOS", _products.value.toString())
-                if (local.isEmpty()) {
-                    val remote = repo.getAllRemote()
-                    if (remote.isEmpty()) _success.value = false
-                    _products.value = remote
-                    _filteredProducts.value = remote
-                } else {
-                    _products.value = local
-                    _filteredProducts.value = local
-                }
-                Log.d("PRODUCTOS", _products.value.toString())
-
-
+                val products = getProductsUseCase(refresh)
+                uiState = UIState.Success(products)
+            } catch (e: IOException) {
+                uiState = UIState.Error("Sin conexión a internet")
+            } catch (e: HttpException) {
+                uiState = UIState.Error("Error del servidor: ${e.message}")
             } catch (e: Exception) {
-                Log.d("PRODUCTS", e.toString())
-                _success.value = false
+                uiState = UIState.Error("Ocurrió un error inesperado")
             }
-            _isLoading.value = false
-        }
-    }
-
-    fun filterProducts(value: String) {
-        _filter.value = value
-        if (value.isBlank()) _filteredProducts.value = _products.value;
-        else {
-            _filteredProducts.value =
-                _products.value.filter { it -> it.name.contains(value.trim(), ignoreCase = true) }
         }
 
     }
