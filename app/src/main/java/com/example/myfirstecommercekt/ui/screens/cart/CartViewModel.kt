@@ -1,8 +1,8 @@
 package com.example.myfirstecommercekt.ui.screens.cart
 
 import androidx.lifecycle.*
-import com.example.myfirstecommercekt.data.local.entity.*
-import com.example.myfirstecommercekt.data.repository.interfaces.*
+import com.example.myfirstecommercekt.domain.cart.*
+import com.example.myfirstecommercekt.utils.data.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -10,10 +10,12 @@ import javax.inject.*
 
 @HiltViewModel()
 class CartViewModel @Inject constructor(
-    private val cartRepo: CartRepository
-
+    getCartUseCase: GetCartUseCase,
+    private val addToCartUseCase: AddToCartUseCase,
+    private val removeFromCartUseCase: RemoveFromCartUseCase,
+    private val clearCartUseCase: ClearCartUseCase
 ) : ViewModel() {
-    private val _cartItems = cartRepo.getCartItems().stateIn(
+    private val _cartItems = getCartUseCase.invoke().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
@@ -32,47 +34,27 @@ class CartViewModel @Inject constructor(
     private val _count = MutableStateFlow<Int>(0)
     val count = _count
 
-    fun addToCart(product: ProductEntity) {
+    fun addToCart(product: Product) {
         viewModelScope.launch {
             try {
-                val existing = _cartItems.value.firstOrNull { it.cartItem.productId == product.id }
-                if (existing != null) {
-                    val updated = existing.cartItem.copy(quantity = existing.cartItem.quantity + 1)
-                    cartRepo.updateCartItem(updated)
-                } else {
-                    val newItem =
-                        CartItemEntity(productId = product.id, quantity = 1, price = product.price)
-                    cartRepo.insertCartItem(newItem)
-                }
+                addToCartUseCase.invoke(product.id)
             } catch (e: Exception) {
-                println(e)
+                TODO()
             } finally {
                 updateTotals()
-
             }
 
         }
     }
 
 
-    fun removeFromCart(product: ProductEntity) {
+    fun removeFromCart(product: Product) {
         viewModelScope.launch {
             try {
-                val existing = _cartItems.value.firstOrNull { it.cartItem.productId == product.id }
-                existing?.let {
-                    if (it.cartItem.quantity > 1) {
-                        val updated =
-                            existing.cartItem.copy(quantity = existing.cartItem.quantity - 1)
-                        cartRepo.updateCartItem(updated)
-                    } else {
-                        cartRepo.deleteCartItem(existing.cartItem)
-
-                    }
-                }
+                removeFromCartUseCase.invoke(product.id)
             } catch (e: Exception) {
-                println(e)
+                TODO()
             } finally {
-
                 updateTotals()
             }
         }
@@ -81,7 +63,7 @@ class CartViewModel @Inject constructor(
 
     fun clearCart() {
         viewModelScope.launch {
-            cartRepo.clearCart()
+            clearCartUseCase.invoke()
         }
 
     }
@@ -95,12 +77,11 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-
-
+                TODO()
             } catch (e: Exception) {
-
+                TODO()
             } finally {
-
+                TODO()
             }
         }
     }
