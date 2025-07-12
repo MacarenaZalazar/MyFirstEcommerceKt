@@ -11,11 +11,11 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
-import com.example.myfirstecommercekt.data.local.entity.*
+import com.example.myfirstecommercekt.utils.data.*
 
 @Composable
 fun Product(
-    modifier: Modifier = Modifier, item: ProductEntity, addToCart: (item: ProductEntity) -> Unit
+    modifier: Modifier = Modifier, item: Product, addToCart: (item: Product) -> Unit
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -41,7 +41,7 @@ fun Product(
                     .padding(8.dp), contentAlignment = Alignment.Center
             ) {
                 LoadImage(
-                    url = item.imageUrl,
+                    url = item.image,
                     contentDescription = "Imagen",
                     modifier = Modifier
                         .fillMaxSize()

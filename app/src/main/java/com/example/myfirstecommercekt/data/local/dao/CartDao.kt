@@ -12,7 +12,7 @@ interface CartDao {
 
     @Transaction
     @Query("SELECT * FROM cartItem WHERE id = :id LIMIT 1")
-    suspend fun getCartItemById(id: Int): CartItemWithProduct
+    suspend fun getCartItemById(id: String): CartItemWithProduct
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCartItem(item: CartItemEntity)

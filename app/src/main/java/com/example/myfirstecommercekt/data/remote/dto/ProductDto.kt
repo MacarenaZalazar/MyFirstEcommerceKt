@@ -15,6 +15,7 @@ data class ProductDto(
 ) {
     fun toDomain() = Product(id, name, description, price, category, imageUrl)
     fun toEntity() = ProductEntity(
+        id = id,
         name = name,
         description = description,
         price = price,
