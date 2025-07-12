@@ -7,7 +7,7 @@ import retrofit2.*
 import retrofit2.http.*
 import javax.inject.*
 
-class UserRepositoryImpl @Inject constructor(private val api: UserApi) : UserRepository {
+class UserRepositoryImpl @Inject constructor(private val api: UserService) : UserRepository {
     override suspend fun register(request: UserRegisterDto): UserDto = api.register(request)
     override suspend fun getUserByEmail(email: String): Response<UserDto> =
         api.getUserByEmail(email)

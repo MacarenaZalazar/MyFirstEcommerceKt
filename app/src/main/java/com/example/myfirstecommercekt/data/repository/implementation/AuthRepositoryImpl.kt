@@ -6,6 +6,6 @@ import com.example.myfirstecommercekt.data.repository.interfaces.*
 import retrofit2.*
 import javax.inject.*
 
-class AuthRepositoryImpl @Inject constructor(private val api: AuthApi) : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(private val api: AuthService) : AuthRepository {
     override suspend fun login(request: AuthRequest): Response<LoginResponse> = api.login(request)
 }
