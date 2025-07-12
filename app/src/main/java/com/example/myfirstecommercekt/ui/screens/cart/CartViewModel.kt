@@ -2,7 +2,6 @@ package com.example.myfirstecommercekt.ui.screens.cart
 
 import androidx.lifecycle.*
 import com.example.myfirstecommercekt.domain.cart.*
-import com.example.myfirstecommercekt.utils.data.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -34,10 +33,10 @@ class CartViewModel @Inject constructor(
     private val _count = MutableStateFlow<Int>(0)
     val count = _count
 
-    fun addToCart(product: Product) {
+    fun addToCart(id: String) {
         viewModelScope.launch {
             try {
-                addToCartUseCase.invoke(product.id)
+                addToCartUseCase.invoke(id)
             } catch (e: Exception) {
                 TODO()
             } finally {
@@ -48,10 +47,10 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun removeFromCart(product: Product) {
+    fun removeFromCart(id: String) {
         viewModelScope.launch {
             try {
-                removeFromCartUseCase.invoke(product.id)
+                removeFromCartUseCase.invoke(id)
             } catch (e: Exception) {
                 TODO()
             } finally {

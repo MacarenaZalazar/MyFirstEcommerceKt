@@ -121,8 +121,8 @@ fun Cart(
                 items(cartItems) { it ->
                     CartItem(
                         item = it,
-                        addToCart = { viewModel.addToCart(it) },
-                        removeFromCart = { viewModel.removeFromCart(it) })
+                        addToCart = { viewModel.addToCart(it.id) },
+                        removeFromCart = { viewModel.removeFromCart(it.id) })
                 }
             }
             Box(
