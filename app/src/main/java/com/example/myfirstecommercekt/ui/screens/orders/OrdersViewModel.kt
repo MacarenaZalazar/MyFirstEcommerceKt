@@ -19,7 +19,7 @@ class OrdersViewModel @Inject constructor(
 
     var uiState by mutableStateOf<UIState<List<Order>>>(UIState.Loading)
 
-    fun loadProducts(refresh: Boolean = false) {
+    fun loadOrders(refresh: Boolean = false) {
         viewModelScope.launch {
             uiState = UIState.Loading
             try {
