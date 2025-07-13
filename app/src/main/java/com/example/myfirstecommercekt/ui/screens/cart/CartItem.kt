@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.ui.components
+package com.example.myfirstecommercekt.ui.screens.cart
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*

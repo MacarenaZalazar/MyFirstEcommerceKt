@@ -1,4 +1,4 @@
-package com.example.myfirstecommercekt.ui.components
+package com.example.myfirstecommercekt.ui.screens.products
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -11,6 +11,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
+import com.example.myfirstecommercekt.ui.components.*
 import com.example.myfirstecommercekt.utils.data.*
 
 @Composable

@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.myfirstecommercekt.ui.*
-import com.example.myfirstecommercekt.ui.components.*
 import com.example.myfirstecommercekt.ui.screens.cart.*
 import com.example.myfirstecommercekt.utils.data.*
 
