@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MyFirstEcommerceKt"
+rootProject.name = "ToraMarket"
 include(":app")
  

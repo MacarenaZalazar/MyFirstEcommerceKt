@@ -22,11 +22,11 @@ if (localPropertiesFile.exists()) {
 val apiBaseUrl = localProperties.getProperty("API_BASE_URL") ?: ""
 
 android {
-    namespace = "com.example.myfirstecommercekt"
+    namespace = "com.example.toramarket"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.myfirstecommercekt"
+        applicationId = "com.example.toramarket"
         minSdk = 28
         targetSdk = 35
         versionCode = 1
@@ -103,6 +103,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test.v173)
 
     implementation(libs.androidx.work.runtime.ktx)
-    
+
 
 }
