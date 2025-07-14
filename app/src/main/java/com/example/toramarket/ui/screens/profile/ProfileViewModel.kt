@@ -5,9 +5,8 @@ import android.content.*
 import android.net.*
 import android.util.*
 import androidx.lifecycle.*
-import com.example.toramarket.data.local.*
-import com.example.toramarket.data.remote.dto.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.image.*
+import com.example.toramarket.domain.user.*
 import com.example.toramarket.utils.helpers.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
@@ -17,9 +16,10 @@ import javax.inject.*
 @HiltViewModel()
 class ProfileViewModel @Inject constructor(
     val myApplication: Application,
-    private val userRepo: UserRepository,
-    private val userData: UserDataStore,
-    private val imageRepo: ImageUploadRepository
+    private val getUserByEmailUseCase: GetUserByEmailUseCase,
+    private val updateUserUseCase: UpdateUserUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
+    private val getUserEmailUseCase: GetUserEmailUseCase
 ) : ViewModel() {
 
     private val _name = MutableStateFlow<String>("")
@@ -57,10 +57,10 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                var loggedEmail: String = userData.userEmail.first() ?: ""
+                var loggedEmail: String = getUserEmailUseCase.invoke() ?: ""
                 if (loggedEmail.isEmpty()) _success.value = false
                 else {
-                    val response = userRepo.getUserByEmail(email = loggedEmail)
+                    val response = getUserByEmailUseCase(email = loggedEmail)
                     val profile = response.body()
                     if (profile != null) {
                         _image.value = profile.userImageUrl ?: ""
@@ -85,14 +85,9 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-
-                var user = UserDto(
-                    _email.value,
-                    _name.value,
-                    hashPasswordSHA256(_password.value),
-                    _image.value
+                val updated = updateUserUseCase.invoke(
+                    _email.value, _name.value, hashPasswordSHA256(_password.value), _image.value
                 )
-                val updated = userRepo.updateProfile(user)
                 val data = updated.body()
                 if (data != null) {
                     _image.value = data.userImageUrl ?: ""
@@ -120,7 +115,7 @@ class ProfileViewModel @Inject constructor(
 
     fun uploadImage(uri: Uri, context: Context) {
         viewModelScope.launch {
-            val result = imageRepo.uploadImage(uri, context)
+            val result = uploadImageUseCase.invoke(uri, context)
             if (result?.isNotEmpty() == true) _image.value = result
         }
     }

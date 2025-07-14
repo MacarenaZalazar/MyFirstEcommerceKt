@@ -26,7 +26,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             val viewModel = hiltViewModel<SplashViewModel>()
             SplashScreen(
                 toLogin = { navController.navigate(LogInScreenRoute) },
-                toRegister = { navController.navigate(RegisterScreenRoute) })
+                toRegister = { navController.navigate(RegisterScreenRoute) },
+                toProducts = { navController.navigate(ProductsScreenRoute) })
 
         }
 

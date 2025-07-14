@@ -6,7 +6,9 @@ import retrofit2.*
 
 interface UserRepository {
 
+    suspend fun isUserLoggedIn(): Boolean
     suspend fun register(request: UserRegisterDto): UserDto
+    suspend fun getUserEmail(): String
     suspend fun getUserByEmail(email: String): Response<UserDto>
     suspend fun updateProfile(request: UserDto): Response<UserDto>
 }

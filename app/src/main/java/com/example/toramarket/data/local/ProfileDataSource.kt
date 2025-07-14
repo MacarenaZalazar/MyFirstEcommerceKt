@@ -30,6 +30,11 @@ class UserDataStore @Inject constructor(@ApplicationContext private val context:
         }
     }
 
+    suspend fun isUserLoggedIn(): Boolean {
+        val mail = userEmail.first()
+        return mail.isNullOrBlank()
+    }
+
     suspend fun clearUser() {
         dataStore.edit { it.clear() }
     }
