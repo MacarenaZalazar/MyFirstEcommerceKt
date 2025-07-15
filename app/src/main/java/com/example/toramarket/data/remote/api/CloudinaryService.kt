@@ -1,48 +1,25 @@
 package com.example.toramarket.data.remote.api
 
-import android.content.*
+import android.app.*
 import android.net.*
-import android.util.*
-import kotlinx.coroutines.*
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.cloudinary.json.*
-import javax.inject.*
+import com.cloudinary.*
 
-class CloudinaryService @Inject constructor() {
-    private val cloudName = "dc34in6bn"
-    private val uploadPreset = "unsigned_android"
-    private val uploadUrl = "https://api.cloudinary.com/v1_1/$cloudName/image/upload"
-    private val client = OkHttpClient()
+private const val SECURE_URL_KEY = "secure_url"
+private const val UPLOAD_PRESET_KEY = "upload_preset"
+private const val UPLOAD_PRESET_VALUE = "ProfileImage"
 
-    suspend fun uploadImageToCloudinary(context: Context, uri: Uri): String? {
-        val inputStream = context.contentResolver.openInputStream(uri)
-        val bytes = inputStream?.readBytes() ?: return null
+//    private val cloudName = "dc34in6bn"
+//    private val uploadPreset = "unsigned_android"
+//    private val uploadUrl = "https://api.cloudinary.com/v1_1/$cloudName/image/upload"
+//    private val client = OkHttpClient()
+class CloudinaryService(private val cloudinary: Cloudinary, private val application: Application) {
 
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart(
-                "file", "image.jpg",
-                bytes.toRequestBody("image/*".toMediaTypeOrNull())
-            )
-            .addFormDataPart("upload_preset", uploadPreset)
-            .build()
+    suspend fun uploadImage(uri: Uri): String {
+        val inputStream = application.contentResolver.openInputStream(uri)
+            ?: throw IllegalArgumentException("Error al cargar la imagen $uri")
 
-        val request = Request.Builder()
-            .url(uploadUrl)
-            .post(requestBody)
-            .build()
-
-        return withContext(Dispatchers.IO) {
-            val response = client.newCall(request).execute()
-            if (response.isSuccessful) {
-                val json = JSONObject(response.body?.string() ?: "")
-                json.getString("secure_url")
-            } else {
-                Log.e("CloudinaryService", "Error al subir: ${response.code}")
-                null
-            }
-        }
+        val options = mapOf(UPLOAD_PRESET_KEY to UPLOAD_PRESET_VALUE)
+        val result = cloudinary.uploader().upload(inputStream, options)
+        return result[SECURE_URL_KEY] as String
     }
 }
