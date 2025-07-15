@@ -1,8 +1,7 @@
 package com.example.toramarket.ui.screens.checkout
 
 import androidx.lifecycle.*
-import com.example.toramarket.data.local.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.cart.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -10,9 +9,7 @@ import javax.inject.*
 
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(
-    private val cartRepo: CartRepository,
-    private val orderRepo: OrderRepository,
-    private val userData: UserDataStore
+    private val clearCartUseCase: ClearCartUseCase,
 ) : ViewModel() {
 
     private val _number = MutableStateFlow<String>("")
@@ -68,7 +65,7 @@ class CheckoutViewModel @Inject constructor(
 //                    val res = orderRepo.createOrder(order)
 //                    if (!res.isSuccessful) _success.value = false
 //                    else {
-                cartRepo.clearCart()
+                clearCartUseCase.invoke()
                 _dialogMessage.value = "Tu compra ha sido realizada con éxito"
                 _showDialog.value = true
 //                    }
