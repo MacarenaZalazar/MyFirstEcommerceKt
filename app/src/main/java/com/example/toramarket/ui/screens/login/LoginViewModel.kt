@@ -2,8 +2,7 @@ package com.example.toramarket.ui.screens.login
 
 import androidx.lifecycle.*
 import com.example.toramarket.data.local.*
-import com.example.toramarket.data.remote.dto.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.auth.*
 import com.example.toramarket.utils.helpers.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
@@ -12,7 +11,8 @@ import javax.inject.*
 
 @HiltViewModel()
 class LoginViewModel @Inject constructor(
-    private val userDataStore: UserDataStore, private val repo: AuthRepository
+    private val userDataStore: UserDataStore,
+    private val authenticateUserUseCase: AuthenticateUserUseCase
 ) : ViewModel() {
 
     private val _email = MutableStateFlow<String>("")
@@ -40,9 +40,11 @@ class LoginViewModel @Inject constructor(
     fun logIn(toHome: () -> Unit) {
         viewModelScope.launch {
             _isLoading.value = true
-            val req = AuthRequest(_email.value.lowercase(), hashPasswordSHA256(_password.value))
             try {
-                val res = repo.login(req)
+                val res = authenticateUserUseCase.invoke(
+                    _email.value.lowercase(),
+                    hashPasswordSHA256(_password.value)
+                )
                 if (res.isSuccessful) {
                     val user = res.body()!!.user
                     delay(4000)

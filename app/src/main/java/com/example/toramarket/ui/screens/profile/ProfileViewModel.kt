@@ -115,7 +115,7 @@ class ProfileViewModel @Inject constructor(
 
     fun uploadImage(uri: Uri, context: Context) {
         viewModelScope.launch {
-            val result = uploadImageUseCase.invoke(uri, context)
+            val result = uploadImageUseCase.invoke(uri)
             if (result?.isNotEmpty() == true) _image.value = result
         }
     }
