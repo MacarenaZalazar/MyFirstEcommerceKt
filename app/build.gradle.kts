@@ -20,6 +20,9 @@ if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 val apiBaseUrl = localProperties.getProperty("API_BASE_URL") ?: ""
+val cloudinaryApiKey = localProperties.getProperty("CLOUDINARY_API_KEY") ?: ""
+val cloudinaryApiSecret = localProperties.getProperty("CLOUDINARY_API_SECRET") ?: ""
+val cloudinaryCloudName = localProperties.getProperty("CLOUDINARY_CLOUD_NAME") ?: ""
 
 android {
     namespace = "com.example.toramarket"
@@ -34,6 +37,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BASE_URL", "\"${apiBaseUrl}\"")
+        buildConfigField("String", "CLOUDINARY_API_KEY", "\"${cloudinaryApiKey}\"")
+        buildConfigField("String", "CLOUDINARY_API_SECRET", "\"${cloudinaryApiSecret}\"")
+        buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"${cloudinaryCloudName}\"")
     }
 
     buildTypes {
