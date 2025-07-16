@@ -21,8 +21,6 @@ fun CartScreen(
     cartViewModel: CartViewModel, checkoutVieModel: CheckoutViewModel, toProducts: () -> Unit
 ) {
 
-    val isLoading by cartViewModel.isLoading.collectAsState()
-    val loadingPay by checkoutVieModel.isLoading.collectAsState()
     val showDialog by checkoutVieModel.showDialog.collectAsState()
     val dialogMessage by checkoutVieModel.dialogMessage.collectAsState()
 
@@ -42,14 +40,14 @@ fun CartScreen(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        if (isLoading || loadingPay) {
-            CircularProgressIndicator(
-                Modifier.align(Alignment.Center)
-            )
-        } else {
-            Cart(cartViewModel, checkoutVieModel, toProducts)
-        }
+//
+//            CircularProgressIndicator(
+//                Modifier.align(Alignment.Center)
+//            )
+
+        Cart(cartViewModel, checkoutVieModel, toProducts)
     }
+
 }
 
 @Composable

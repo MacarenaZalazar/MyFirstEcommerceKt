@@ -1,7 +1,9 @@
 package com.example.toramarket.ui.screens.cart
 
+import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import com.example.toramarket.domain.cart.*
+import com.example.toramarket.ui.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -14,6 +16,9 @@ class CartViewModel @Inject constructor(
     private val removeFromCartUseCase: RemoveFromCartUseCase,
     private val clearCartUseCase: ClearCartUseCase
 ) : ViewModel() {
+
+    var uiState by mutableStateOf<UIState<Boolean>>(UIState.Success(true))
+
     private val _cartItems = getCartUseCase.invoke().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -23,13 +28,7 @@ class CartViewModel @Inject constructor(
 
     private val _subtotal = MutableStateFlow(0.0)
     val subtotal = _subtotal
-
-    private val _isLoading = MutableStateFlow<Boolean>(false)
-    val isLoading: MutableStateFlow<Boolean> = _isLoading
-
-    private val _success = MutableStateFlow<Boolean>(true)
-    val success: MutableStateFlow<Boolean> = _success
-
+    
     private val _count = MutableStateFlow<Int>(0)
     val count = _count
 
@@ -74,7 +73,7 @@ class CartViewModel @Inject constructor(
 
     fun buy() {
         viewModelScope.launch {
-            _isLoading.value = true
+            uiState = UIState.Loading
             try {
                 TODO()
             } catch (e: Exception) {
