@@ -19,6 +19,10 @@ fun SplashScreen(
 ) {
     val state = viewModel.uiState
 
+    LaunchedEffect(Unit) {
+        viewModel.getLoggedUser()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -32,7 +36,12 @@ fun SplashScreen(
                 )
             }
 
-            is UIState.Error -> Text("Ocurrió un error al cargar la aplicación")
+            is UIState.Error -> Text(
+                "Ocurrió un error al cargar la aplicación", modifier = Modifier.align(
+                    Alignment.Center
+                )
+            )
+
             is UIState.Success -> {
                 val logged = state.data
                 if (logged) toProducts()
