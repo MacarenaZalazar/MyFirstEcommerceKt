@@ -1,6 +1,5 @@
 package com.example.toramarket.ui.screens.profile
 
-import android.app.*
 import android.net.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
@@ -17,7 +16,6 @@ import javax.inject.*
 
 @HiltViewModel()
 class ProfileViewModel @Inject constructor(
-    val myApplication: Application,
     private val getUserByEmailUseCase: GetUserByEmailUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
     private val uploadImageUseCase: UploadImageUseCase,

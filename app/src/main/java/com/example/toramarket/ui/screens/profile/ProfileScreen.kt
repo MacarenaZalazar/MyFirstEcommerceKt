@@ -7,7 +7,7 @@ import androidx.activity.result.contract.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.*
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.automirrored.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -77,12 +77,7 @@ fun Profile(viewModel: ProfileViewModel, toSplash: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         //AppTitle()
-        IconButton(
-            onClick = { viewModel.logOut(toSplash) },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Icon(imageVector = Icons.Outlined.PowerSettingsNew, contentDescription = "LogOut")
-        }
+
         Spacer(modifier = Modifier.padding(16.dp))
         Text("Mi perfil")
         if (imageUri.value != null) {
@@ -139,6 +134,9 @@ fun Profile(viewModel: ProfileViewModel, toSplash: () -> Unit) {
         } else {
             EditButton() { viewModel.editProfile() }
         }
+        Spacer(modifier = Modifier.padding(16.dp))
+        LogoutButton { viewModel.logOut(toSplash) }
+
     }
 }
 
@@ -160,6 +158,22 @@ fun UpdateButton(enabled: Boolean, onClick: () -> Unit) {
 fun UpdateImage(onClick: () -> Unit) {
     Button(onClick = onClick) {
         Text("Seleccionar imagen")
+    }
+}
+
+@Composable
+fun LogoutButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text("Cerrar sesión")
+        Icon(
+            imageVector = Icons.AutoMirrored.Rounded.Logout,
+            contentDescription = "LogOut",
+            modifier = Modifier.padding(start = 8.dp)
+        )
     }
 }
 
