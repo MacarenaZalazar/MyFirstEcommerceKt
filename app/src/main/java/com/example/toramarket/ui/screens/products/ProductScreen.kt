@@ -64,7 +64,7 @@ fun ProductScreen(
                 }
             }
 
-            is UIState.Error -> TODO()
+            is UIState.Error -> Text(state.message)
         }
     }
 }

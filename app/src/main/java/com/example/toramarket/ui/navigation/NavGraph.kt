@@ -69,7 +69,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<ProfileScreenRoute> {
             val viewModel = hiltViewModel<ProfileViewModel>()
-            ProfileScreen(viewModel)
+            ProfileScreen(viewModel) { navController.navigate(SplashScreenRoute) }
         }
 
         composable<OrdersScreenRoute> {
