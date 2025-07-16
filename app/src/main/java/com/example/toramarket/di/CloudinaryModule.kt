@@ -1,8 +1,12 @@
 package com.example.toramarket.di
 
+import android.app.*
+import android.content.*
 import com.cloudinary.*
+import com.example.toramarket.data.remote.api.*
 import dagger.*
 import dagger.hilt.*
+import dagger.hilt.android.qualifiers.*
 import dagger.hilt.components.*
 import javax.inject.*
 
@@ -25,5 +29,13 @@ class CloudinaryModule {
     @Singleton
     fun provideCloudinary(): Cloudinary {
         return cloudinary
+    }
+
+    @Provides
+    fun provideCloudinaryService(
+        cloudinary: Cloudinary,
+        @ApplicationContext context: Context
+    ): CloudinaryService {
+        return CloudinaryService(cloudinary, context.applicationContext as Application)
     }
 }
