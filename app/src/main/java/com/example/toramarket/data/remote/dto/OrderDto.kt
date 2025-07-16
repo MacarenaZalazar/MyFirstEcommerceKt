@@ -7,12 +7,14 @@ data class OrderDto(
     val id: String,
     val userId: String,
     val created: Date,
-    val items: List<OrderItemDto>
+    val items: List<OrderItemDto>,
+    val total: Double
 ) {
     fun toDomain() = Order(
         id = id,
         items = items.map { it.toDomain() },
-        created = created
+        created = created,
+        total = total
     )
 }
 
@@ -32,5 +34,3 @@ data class OrderItemDto(
 
 data class NewOrderItemDto(val productName: String, val quantity: Int, val price: Double)
 data class NewOrderDto(val userId: String, val items: List<NewOrderItemDto>)
-
-data class OrderResponseDto(val message: String)

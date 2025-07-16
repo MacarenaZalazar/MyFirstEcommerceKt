@@ -8,5 +8,5 @@ interface OrderService {
     suspend fun getOrdersByUser(@Path("id") id: String): List<OrderDto>
 
     @POST("order")
-    suspend fun createOrder(@Body request: NewOrderDto): OrderResponseDto
+    suspend fun createOrder(@Body request: NewOrderDto): OrderDto
 }

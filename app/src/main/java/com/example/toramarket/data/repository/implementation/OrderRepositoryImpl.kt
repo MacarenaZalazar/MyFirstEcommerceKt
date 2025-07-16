@@ -9,6 +9,6 @@ class OrderRepositoryImpl @Inject constructor(private val service: OrderService)
     override suspend fun getOrdersByUser(id: String): List<OrderDto> =
         service.getOrdersByUser(id)
 
-    override suspend fun createOrder(request: NewOrderDto): OrderResponseDto =
+    override suspend fun createOrder(request: NewOrderDto): OrderDto =
         service.createOrder(request)
 }

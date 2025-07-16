@@ -4,6 +4,6 @@ import com.example.toramarket.data.remote.dto.*
 
 interface OrderRepository {
     suspend fun getOrdersByUser(id: String): List<OrderDto>
-    suspend fun createOrder(request: NewOrderDto): OrderResponseDto
+    suspend fun createOrder(request: NewOrderDto): OrderDto
 
 }
