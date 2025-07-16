@@ -11,4 +11,5 @@ interface UserRepository {
     suspend fun getUserEmail(): String
     suspend fun getUserByEmail(email: String): Response<UserDto>
     suspend fun updateProfile(request: UserDto): Response<UserDto>
+    suspend fun logOut()
 }

@@ -6,6 +6,8 @@ import androidx.activity.compose.*
 import androidx.activity.result.contract.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -13,33 +15,44 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
+import com.example.toramarket.ui.*
 import com.example.toramarket.ui.components.*
 import com.example.toramarket.utils.helpers.*
 
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
-    val isLoading by viewModel.isLoading.collectAsState()
+fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), toSplash: () -> Unit) {
+    val state = viewModel.uiState
+
+    LaunchedEffect(Unit) { viewModel.getUser() }
 
     Box(
         Modifier
             .fillMaxSize()
-            .padding(16.dp), contentAlignment = Alignment.Center
+            .padding(16.dp)
     ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                Modifier.align(Alignment.Center)
-            )
-        } else {
-            Profile(viewModel)
-        }
 
+        when (state) {
+            is UIState.Loading -> {
+                CircularProgressIndicator(
+                    Modifier.align(Alignment.Center)
+                )
+            }
+
+            is UIState.Error -> Text(state.message)
+
+            is UIState.Success -> {
+                Profile(viewModel, toSplash)
+            }
+        }
     }
 }
 
 @Composable
-fun Profile(viewModel: ProfileViewModel) {
+fun Profile(viewModel: ProfileViewModel, toSplash: () -> Unit) {
     val context = LocalContext.current
+
+
     val image by viewModel.image.collectAsState()
     val name by viewModel.name.collectAsState()
     val email by viewModel.email.collectAsState()
@@ -55,7 +68,7 @@ fun Profile(viewModel: ProfileViewModel) {
     ) { uri ->
         imageUri.value = uri
         uri?.let {
-            viewModel.uploadImage(it, context)
+            viewModel.uploadImage(it)
         }
     }
 
@@ -64,6 +77,12 @@ fun Profile(viewModel: ProfileViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         //AppTitle()
+        IconButton(
+            onClick = { viewModel.logOut(toSplash) },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Icon(imageVector = Icons.Outlined.PowerSettingsNew, contentDescription = "LogOut")
+        }
         Spacer(modifier = Modifier.padding(16.dp))
         Text("Mi perfil")
         if (imageUri.value != null) {
@@ -78,7 +97,6 @@ fun Profile(viewModel: ProfileViewModel) {
             )
         } else {
             UpdateImage(onClick = { launcher.launch("image/*") })
-
         }
         Spacer(modifier = Modifier.padding(20.dp))
         //LoadImage(url = image, contentDescription = "Profile photo")
