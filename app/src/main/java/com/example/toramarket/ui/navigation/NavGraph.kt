@@ -27,7 +27,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             SplashScreen(
                 toLogin = { navController.navigate(LogInScreenRoute) },
                 toRegister = { navController.navigate(RegisterScreenRoute) },
-                toProducts = { navController.navigate(ProductsScreenRoute) })
+                toProducts = { navController.navigate(ProductsScreenRoute) { popUpTo(0) } })
 
         }
 
@@ -35,7 +35,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             val viewModel = hiltViewModel<LoginViewModel>()
             LoginScreen(
                 viewModel = viewModel,
-                toHome = { navController.navigate(ProductsScreenRoute) },
+                toHome = { navController.navigate(ProductsScreenRoute) { popUpTo(0) } },
                 forgotPass = { navController.navigate(ForgotPassScreenRoute) })
         }
 
@@ -44,16 +44,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             RegisterScreen(viewModel = viewModel, toLogin = {
                 navController.navigate(
                     LogInScreenRoute
-                )
+                ) { popUpTo(0) }
             })
         }
 
         composable<ProductsScreenRoute> {
             val productsViewModel = hiltViewModel<ProductsViewModel>()
-            val cartViewModel = hiltViewModel<CartViewModel>()
-
             ProductScreen(
-                productsViewModel = productsViewModel, cartViewModel = cartViewModel
+                viewModel = productsViewModel
             )
 
         }
@@ -63,8 +61,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             val checkoutVieModel = hiltViewModel<CheckoutViewModel>()
             CartScreen(
                 cartViewModel = cartViewModel,
-                checkoutVieModel = checkoutVieModel,
-                toProducts = { navController.navigate(ProductsScreenRoute) })
+                toProducts = { navController.navigate(ProductsScreenRoute) },
+                toCheckout = { navController.navigate(CheckoutScreenRoute) }
+            )
         }
 
         composable<ProfileScreenRoute> {
@@ -80,7 +79,15 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<CheckoutScreenRoute> {
             val viewModel = hiltViewModel<CheckoutViewModel>()
-            CheckoutScreen(viewModel)
+            CheckoutScreen(
+                viewModel,
+                goHome = {
+                    navController.navigate(ProductsScreenRoute) {
+                        popUpTo(ProductsScreenRoute) { inclusive = true }
+                    }
+                },
+                goBack = { navController.popBackStack() }
+            )
         }
 
         composable<ForgotPassScreenRoute> {
