@@ -6,8 +6,8 @@ import com.example.toramarket.utils.data.*
 import javax.inject.*
 
 class CreateOrderUseCase @Inject constructor(private val repository: OrderRepository) {
-    suspend operator fun invoke(userId: String, items: List<OrderItem>): OrderDto {
-        val order = NewOrderDto(userId = userId, items = items.map { it.toDto() })
-        return repository.createOrder(order)
+    suspend operator fun invoke(order: Order): OrderDto {
+        val new = order.toDto()
+        return repository.createOrder(new)
     }
 }

@@ -7,6 +7,6 @@ interface OrderService {
     @GET("orders/{id}")
     suspend fun getOrdersByUser(@Path("id") id: String): List<OrderDto>
 
-    @POST("order")
+    @POST("orders")
     suspend fun createOrder(@Body request: NewOrderDto): OrderDto
 }

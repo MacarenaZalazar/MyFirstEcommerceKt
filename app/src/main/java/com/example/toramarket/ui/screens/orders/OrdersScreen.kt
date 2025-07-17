@@ -1,5 +1,6 @@
 package com.example.toramarket.ui.screens.orders
 
+import android.util.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.*
@@ -21,7 +22,7 @@ fun OrdersScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp), contentAlignment = Alignment.Center
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
 
         when (state) {
@@ -34,14 +35,33 @@ fun OrdersScreen(
 
             is UIState.Success -> {
                 val orders = state.data
-                LazyColumn {
-                    items(orders) { it ->
-                        Order(it)
+                Log.d("OrdersScreen", "Orders: $orders")
+                if (orders.isEmpty()) {
+                    Column(Modifier.align(Alignment.Center)) {
+
+                        Text("No se encontraron pedidos.")
+                    }
+                } else {
+                    Column {
+
+                        Text(
+                            "Pedidos",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                        LazyColumn(
+                            contentPadding = PaddingValues(vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(orders) { it ->
+                                Order(it)
+                            }
+                        }
                     }
                 }
             }
 
-            is UIState.Error -> Text("No se encontraron pedidos")
+            is UIState.Error -> Text(state.message)
         }
     }
 }
