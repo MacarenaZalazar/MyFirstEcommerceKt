@@ -14,7 +14,7 @@ class CartViewModel @Inject constructor(
     getCartUseCase: GetCartUseCase,
     private val addToCartUseCase: AddToCartUseCase,
     private val removeFromCartUseCase: RemoveFromCartUseCase,
-    private val clearCartUseCase: ClearCartUseCase
+    private val clearCartUseCase: ClearCartUseCase,
 ) : ViewModel() {
 
     var uiState by mutableStateOf<UIState<Boolean>>(UIState.Success(true))
@@ -28,20 +28,30 @@ class CartViewModel @Inject constructor(
 
     private val _subtotal = MutableStateFlow(0.0)
     val subtotal = _subtotal
-    
+
     private val _count = MutableStateFlow<Int>(0)
     val count = _count
+
+    init {
+        // Actualiza inmediatamente si ya hay ítems
+        updateTotals()
+
+        // Observa cambios posteriores
+        viewModelScope.launch {
+            _cartItems.collect { cart ->
+                updateTotals()
+            }
+        }
+    }
 
     fun addToCart(id: String) {
         viewModelScope.launch {
             try {
                 addToCartUseCase.invoke(id)
+                updateTotals()
             } catch (e: Exception) {
                 TODO()
-            } finally {
-                updateTotals()
             }
-
         }
     }
 
@@ -50,10 +60,9 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 removeFromCartUseCase.invoke(id)
+                updateTotals()
             } catch (e: Exception) {
                 TODO()
-            } finally {
-                updateTotals()
             }
         }
 
@@ -71,16 +80,4 @@ class CartViewModel @Inject constructor(
         _count.value = _cartItems.value.sumOf { it.cartItem.quantity }
     }
 
-    fun buy() {
-        viewModelScope.launch {
-            uiState = UIState.Loading
-            try {
-                TODO()
-            } catch (e: Exception) {
-                TODO()
-            } finally {
-                TODO()
-            }
-        }
-    }
 }

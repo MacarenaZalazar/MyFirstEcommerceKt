@@ -13,39 +13,20 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
-import com.example.toramarket.ui.components.*
-import com.example.toramarket.ui.screens.checkout.*
 
 @Composable
 fun CartScreen(
-    cartViewModel: CartViewModel, checkoutVieModel: CheckoutViewModel, toProducts: () -> Unit
+    cartViewModel: CartViewModel,
+    toProducts: () -> Unit,
+    toCheckout: () -> Unit
 ) {
 
-    val showDialog by checkoutVieModel.showDialog.collectAsState()
-    val dialogMessage by checkoutVieModel.dialogMessage.collectAsState()
 
-
-    if (showDialog) {
-        AlertPopup(
-            title = dialogMessage,
-            onDismiss = {
-                checkoutVieModel.closeDialog()
-            },
-            onConfirm = {
-                checkoutVieModel.closeDialog()
-            },
-        )
-    }
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
 
-//
-//            CircularProgressIndicator(
-//                Modifier.align(Alignment.Center)
-//            )
-
-        Cart(cartViewModel, checkoutVieModel, toProducts)
+        Cart(cartViewModel, toProducts, toCheckout)
     }
 
 }
@@ -53,8 +34,7 @@ fun CartScreen(
 @Composable
 fun Cart(
     viewModel: CartViewModel = hiltViewModel(),
-    checkout: CheckoutViewModel = hiltViewModel(),
-    toProducts: () -> Unit
+    toProducts: () -> Unit, toCheckout: () -> Unit
 ) {
     val cartItems by viewModel.cartItems.collectAsState()
     val subtotal by viewModel.subtotal.collectAsState()
@@ -107,13 +87,39 @@ fun Cart(
 
     } else {
         Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Tus productos", style = MaterialTheme.typography.headlineLarge)
+                Button(
+                    onClick = { viewModel.clearCart() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = Color.White
+                    ),
+                ) {
+                    Text("Vaciar carrito")
+                }
+            }
+        }
+        Spacer(Modifier.padding(8.dp))
+        Box(
             modifier = Modifier.fillMaxSize()
         ) {
+
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 60.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(cartItems) { it ->
@@ -121,30 +127,6 @@ fun Cart(
                         item = it,
                         addToCart = { viewModel.addToCart(it.id) },
                         removeFromCart = { viewModel.removeFromCart(it.id) })
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Tus productos")
-                    Button(
-                        onClick = { viewModel.clearCart() },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error,
-                            contentColor = Color.White
-                        ),
-                    ) {
-                        Text("Vaciar carrito")
-                    }
                 }
             }
             Box(
@@ -177,7 +159,7 @@ fun Cart(
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = { checkout.pay() }, modifier = Modifier
+                        onClick = { toCheckout() }, modifier = Modifier
                             .padding(horizontal = 10.dp)
                             .fillMaxWidth()
                     ) {

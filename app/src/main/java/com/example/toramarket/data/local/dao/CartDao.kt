@@ -11,8 +11,8 @@ interface CartDao {
     fun getCartItems(): Flow<List<CartItemWithProduct>>
 
     @Transaction
-    @Query("SELECT * FROM cartItem WHERE id = :id LIMIT 1")
-    suspend fun getCartItemById(id: String): CartItemWithProduct
+    @Query("SELECT * FROM cartItem WHERE productId = :id LIMIT 1")
+    suspend fun getCartItemById(id: String): CartItemWithProduct?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCartItem(item: CartItemEntity)
