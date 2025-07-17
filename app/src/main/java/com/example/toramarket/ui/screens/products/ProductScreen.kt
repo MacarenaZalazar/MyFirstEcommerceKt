@@ -11,18 +11,18 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.toramarket.ui.*
-import com.example.toramarket.ui.screens.cart.*
 import com.example.toramarket.utils.data.*
 
 @Composable
 fun ProductScreen(
-    productsViewModel: ProductsViewModel = hiltViewModel(),
-    cartViewModel: CartViewModel = hiltViewModel(),
+    viewModel: ProductsViewModel = hiltViewModel(),
 ) {
-    val state = productsViewModel.uiState
+    val state = viewModel.uiState
+    val filter = viewModel.filter
+    val selectedCategory = viewModel.selectedCategory
 
     LaunchedEffect(Unit) {
-        productsViewModel.loadProducts(refresh = true)
+        viewModel.loadProducts(refresh = true)
     }
 
     Box(
@@ -39,8 +39,10 @@ fun ProductScreen(
             }
 
             is UIState.Success -> {
-                val products = state.data
+                val products = viewModel.filteredProducts
                 val filter by remember { mutableStateOf("") }
+                val categories = products.map { it.category }.distinct()
+
                 Column(modifier = Modifier.padding(16.dp)) {
                     OutlinedTextField(
                         modifier = Modifier
@@ -58,9 +60,12 @@ fun ProductScreen(
                                 )
                             }
                     )
+                    CategoriesSelector(
+                        categories = categories,
+                        selectedCategory = selectedCategory,
+                        onCategorySelected = { viewModel.selectedCategory = it })
 
-
-                    ProductList(products, cartViewModel)
+                    ProductList(products, viewModel)
                 }
             }
 
@@ -70,7 +75,7 @@ fun ProductScreen(
 }
 
 @Composable
-fun ProductList(products: List<Product>, viewModel: CartViewModel) {
+fun ProductList(products: List<Product>, viewModel: ProductsViewModel) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 8.dp),

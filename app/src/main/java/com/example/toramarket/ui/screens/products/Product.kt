@@ -29,15 +29,14 @@ fun Product(
                     .weight(0.5f)
                     .padding(16.dp), verticalArrangement = Arrangement.Center
             ) {
-                Text(item.name, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.padding(8.dp))
-                Text(item.description, fontSize = 8.sp)
-                Spacer(modifier = Modifier.padding(16.dp))
+                Text(item.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(item.description)
+                Spacer(modifier = Modifier.padding(4.dp))
                 Text("$${item.price}", fontWeight = FontWeight.Bold)
             }
             Box(
                 modifier = Modifier
-                    .weight(0.5f)
                     .size(150.dp)
                     .padding(8.dp), contentAlignment = Alignment.Center
             ) {

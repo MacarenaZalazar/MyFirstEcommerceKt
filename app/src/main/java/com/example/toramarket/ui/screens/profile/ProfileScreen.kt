@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.toramarket.ui.*
@@ -39,7 +40,16 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), toSplash: () ->
                 )
             }
 
-            is UIState.Error -> Text(state.message)
+            is UIState.Error -> {
+                Column(
+                    Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(state.message, textAlign = TextAlign.Center)
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    LogoutButton { viewModel.logOut(toSplash) }
+                }
+            }
 
             is UIState.Success -> {
                 Profile(viewModel, toSplash)
