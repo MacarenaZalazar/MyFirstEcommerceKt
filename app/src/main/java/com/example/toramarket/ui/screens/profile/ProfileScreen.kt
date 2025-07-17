@@ -1,48 +1,46 @@
 package com.example.toramarket.ui.screens.profile
 
-import android.graphics.*
+import android.*
 import android.net.*
+import android.os.*
 import androidx.activity.compose.*
 import androidx.activity.result.contract.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.*
-import androidx.compose.material.icons.automirrored.rounded.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.draw.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
+import androidx.core.content.*
 import androidx.hilt.navigation.compose.*
+import coil.compose.*
 import com.example.toramarket.ui.*
-import com.example.toramarket.ui.components.*
-import com.example.toramarket.utils.helpers.*
+import java.io.*
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), toSplash: () -> Unit) {
     val state = viewModel.uiState
 
     LaunchedEffect(Unit) { viewModel.getUser() }
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    Scaffold(topBar = { CenterAlignedTopAppBar({ Text("Mi Perfil") }) }) { it ->
         when (state) {
             is UIState.Loading -> {
-                CircularProgressIndicator(
-                    Modifier.align(Alignment.Center)
-                )
+                CircularProgressIndicator()
             }
 
             is UIState.Error -> {
                 Column(
-                    Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(state.message, textAlign = TextAlign.Center)
@@ -52,139 +50,148 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), toSplash: () ->
             }
 
             is UIState.Success -> {
-                Profile(viewModel, toSplash)
+                Column(
+                    Modifier
+                        .padding(it)
+                        .padding(16.dp)
+                ) {
+//                    ProfileImage(viewModel, snackbarHostState)
+                    ProfileForm(viewModel) { toSplash }
+                }
             }
         }
     }
+
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Profile(viewModel: ProfileViewModel, toSplash: () -> Unit) {
+fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostState) {
     val context = LocalContext.current
-
+    var showSheet by remember { mutableStateOf(false) }
+    var permissionsGranted by remember { mutableStateOf(false) }
+    var photoUri by remember { mutableStateOf<Uri?>(null) }
 
     val image by viewModel.image.collectAsState()
-    val name by viewModel.name.collectAsState()
-    val email by viewModel.email.collectAsState()
-    val password by viewModel.password.collectAsState()
-    val confirmPassword by viewModel.confirmPassword.collectAsState()
-    val edit by viewModel.edit.collectAsState()
-    val isFormValid by viewModel.isFormValid.collectAsState()
 
-    val imageUri = remember { mutableStateOf<Uri?>(null) }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri ->
-        imageUri.value = uri
-        uri?.let {
-            viewModel.uploadImage(it)
+    // Launchers
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            uri?.let { viewModel.uploadImage(it) }
         }
-    }
+    )
 
-    Column(
-        modifier = Modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        //AppTitle()
-
-        Spacer(modifier = Modifier.padding(16.dp))
-        Text("Mi perfil")
-        if (imageUri.value != null) {
-            val bitmap = remember(imageUri) {
-                val source = ImageDecoder.createSource(context.contentResolver, imageUri.value!!)
-                ImageDecoder.decodeBitmap(source).asImageBitmap()
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            if (success && photoUri != null) {
+                viewModel.uploadImage(photoUri!!)
             }
-            Image(
-                bitmap = bitmap,
-                contentDescription = "Imagen seleccionada",
-                modifier = Modifier.size(100.dp)
+        }
+    )
+
+    // Permission launcher
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = { result ->
+            permissionsGranted = result.all { it.value }
+            if (permissionsGranted) {
+                showSheet = true
+            }
+        }
+    )
+
+    // Solicitar permisos al inicio o bajo demanda
+    fun requestPermissions() {
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_MEDIA_IMAGES
             )
         } else {
-            UpdateImage(onClick = { launcher.launch("image/*") })
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
         }
-        Spacer(modifier = Modifier.padding(20.dp))
-        //LoadImage(url = image, contentDescription = "Profile photo")
-        // Spacer(modifier = Modifier.padding(8.dp))
-        Spacer(modifier = Modifier.padding(16.dp))
+        permissionLauncher.launch(permissions)
+    }
 
-        SimpleText(
-            value = name,
-            onChange = { viewModel.onRegisterChange(it, email, password, confirmPassword) },
-            label = "Nombre completo",
-            enabled = edit,
-            error = { validateName(it) }
-
+    // Crear archivo temporal para la cámara
+    fun createImageFile(): Uri {
+        val file = File.createTempFile("temp_image", ".jpg", context.cacheDir)
+        return FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            file
         )
-        Spacer(modifier = Modifier.padding(16.dp))
-        EmailField(
-            email,
-            enabled = false,
-            onValueChange = { viewModel.onRegisterChange(name, it, password, confirmPassword) },
-            error = { emailError(it) })
-        Spacer(modifier = Modifier.padding(16.dp))
-        PasswordField(
-            password,
-            enabled = edit,
-            onValueChange = { viewModel.onRegisterChange(name, email, it, confirmPassword) },
-            label = "Nueva contraseña",
-            error = { passwordError(it) })
-
-        Spacer(modifier = Modifier.padding(16.dp))
-        if (edit) PasswordField(
-            confirmPassword,
-            { viewModel.onRegisterChange(name, email, password, it) },
-            label = "Confirmar contraseña",
-            error = { confirmPasswordError(password, it) })
-
-        Spacer(modifier = Modifier.padding(16.dp))
-        if (edit) {
-            UpdateButton(isFormValid) { viewModel.updateProfile() }
-
-        } else {
-            EditButton() { viewModel.editProfile() }
-        }
-        Spacer(modifier = Modifier.padding(16.dp))
-        LogoutButton { viewModel.logOut(toSplash) }
-
     }
-}
 
-@Composable
-fun EditButton(onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
-        Text("Editar")
-    }
-}
-
-@Composable
-fun UpdateButton(enabled: Boolean, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.fillMaxWidth(), enabled = enabled) {
-        Text("Actualizar")
-    }
-}
-
-@Composable
-fun UpdateImage(onClick: () -> Unit) {
-    Button(onClick = onClick) {
-        Text("Seleccionar imagen")
-    }
-}
-
-@Composable
-fun LogoutButton(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
+    // UI
+    Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .padding(16.dp)
     ) {
-        Text("Cerrar sesión")
-        Icon(
-            imageVector = Icons.AutoMirrored.Rounded.Logout,
-            contentDescription = "LogOut",
-            modifier = Modifier.padding(start = 8.dp)
-        )
+        if (image.isNotEmpty()) {
+            AsyncImage(
+                model = image,
+                contentDescription = "Imagen subida",
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(12.dp))
+            )
+        }
+
+
+        Button(onClick = { requestPermissions() }) {
+            Text("Subir imagen")
+        }
+
+
+    }
+
+    if (showSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Seleccionar origen", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            showSheet = false
+                            galleryLauncher.launch("image/*")
+                        }) {
+                    Icon(imageVector = Icons.Outlined.Photo, contentDescription = "Galería")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Elegir desde galería")
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            showSheet = false
+                            val uri = createImageFile()
+                            photoUri = uri
+                            cameraLauncher.launch(uri)
+                        }) {
+                    Icon(imageVector = Icons.Outlined.CameraAlt, contentDescription = "Tomar foto")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Tomar una foto")
+                }
+            }
+        }
     }
 }
+
+
 
 
