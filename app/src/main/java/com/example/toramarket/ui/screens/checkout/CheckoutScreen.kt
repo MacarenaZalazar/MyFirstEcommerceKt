@@ -1,163 +1,121 @@
 package com.example.toramarket.ui.screens.checkout
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.automirrored.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
+import androidx.navigation.*
 import com.example.toramarket.ui.*
+import com.example.toramarket.ui.navigation.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckoutScreen(
     viewModel: CheckoutViewModel = hiltViewModel(),
-    goHome: () -> Unit,
-    goBack: () -> Unit
+    navController: NavController
 ) {
 
     val state = viewModel.uiState
+    var paymentMethod by rememberSaveable { mutableStateOf("cash") }
+    val isValid by viewModel.isValid.collectAsState()
+
+    val showDialog by viewModel.showDialog.collectAsState()
+    val dialogMessage by viewModel.dialogMessage.collectAsState()
+
+    val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
         viewModel.getOrder()
     }
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-    ) {
-        when (state) {
-            is UIState.Loading -> {
-                CircularProgressIndicator(
-                    Modifier.align(Alignment.Center)
-                )
-            }
-
-            is UIState.Success -> {
-                Column {
-
-                    Resume(state.data, goBack)
-                    CheckoutForm(viewModel) { }
-                }
-
-            }
-
-            is UIState.Error -> {
-                // Show error message
-            }
-        }
-
-    }
-}
-
-@Composable
-fun CheckoutForm(
-    viewModel: CheckoutViewModel = hiltViewModel(),
-    goHome: () -> Unit,
-) {
-    val showDialog by viewModel.showDialog.collectAsState()
-    val dialogMessage by viewModel.dialogMessage.collectAsState()
-
-    val name by viewModel.name.collectAsState()
-    val number by viewModel.number.collectAsState()
-    val expiration by viewModel.expiration.collectAsState()
-    val ccv by viewModel.ccv.collectAsState()
-    val isValid by viewModel.isValid.collectAsState()
-
 
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.closeDialog() },
-            title = { Text("Payment Status") },
             text = { Text(dialogMessage) },
             confirmButton = {
                 Button(onClick = {
                     viewModel.closeDialog()
-                    goHome()
+                    navController.navigate(ProductsScreenRoute) {
+                        popUpTo(ProductsScreenRoute) { inclusive = true }
+                    }
                 }) {
                     Text("OK")
                 }
             }
         )
     }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Text("Checkout", style = MaterialTheme.typography.headlineLarge)
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = number,
-            onValueChange = {
-                viewModel.onChange(
-                    it,
-                    name,
-                    expiration,
-                    ccv
+    when (state) {
+        is UIState.Loading -> {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+            ) {
+                CircularProgressIndicator(
+                    Modifier.align(Alignment.Center)
                 )
-            },
-            label = { Text("Card Number") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = name,
-            onValueChange = {
-                viewModel.onChange(
-                    number,
-                    it,
-                    expiration,
-                    ccv
-                )
-            },
-            label = { Text("Card Name") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = expiration,
-            onValueChange = {
-                viewModel.onChange(
-                    number,
-                    name,
-                    it,
-                    ccv
-                )
-            },
-            label = { Text("Expiration Date") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = ccv,
-            onValueChange = {
-                viewModel.onChange(
-                    number,
-                    name,
-                    expiration,
-                    it
-                )
-            },
-            label = { Text("CCV") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { viewModel.pay() },
-            enabled = isValid,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Pagar")
+            }
         }
+
+        is UIState.Success -> {
+            Scaffold(topBar = {
+                CenterAlignedTopAppBar(
+                   
+                    modifier = Modifier.shadow(4.dp),
+                    title = { Text("Confirmá tu pedido") },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                                contentDescription = "Localized description"
+                            )
+                        }
+                    })
+            }, bottomBar = {
+                BottomAppBar(tonalElevation = 4.dp) {
+                    Button(
+                        onClick = { viewModel.pay() },
+                        enabled = isValid,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                    ) {
+                        Text("Pedir ahora")
+                    }
+                }
+            }) { it ->
+
+                Column(
+                    Modifier
+                        .padding(it)
+                        .padding(20.dp)
+                        .verticalScroll(scrollState)
+                ) {
+                    Resume(state.data)
+                    PaymentMethodSelector(paymentMethod) { paymentMethod = it }
+                    if (paymentMethod == "card") CheckoutCardForm(viewModel)
+
+
+                }
+            }
+
+
+        }
+
+        is UIState.Error -> {
+            // Show error message
+        }
+
     }
+
 }
+
+
