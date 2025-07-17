@@ -15,7 +15,7 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
     override suspend fun register(request: UserRegisterDto): UserDto = api.register(request)
     override suspend fun getUserEmail(): String = local.userEmail.first().toString()
-
+    override suspend fun getUserId(): String? = local.userId.first()
     override suspend fun getUserByEmail(email: String): Response<UserDto> =
         api.getUserByEmail(email)
 

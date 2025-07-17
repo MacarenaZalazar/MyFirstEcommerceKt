@@ -46,7 +46,10 @@ fun validateName(value: String): String? {
     return null
 }
 
-fun isValidCard(card: String) {}
+fun isValidCard(card: String): Boolean {
+    val regex = Regex("^\\d{4} \\d{4} \\d{4} \\d{4}\$")
+    return regex.matches(card)
+}
 
 fun detectCardType(card: String) {
 
