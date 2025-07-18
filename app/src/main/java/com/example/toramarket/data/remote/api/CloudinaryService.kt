@@ -3,6 +3,7 @@ package com.example.toramarket.data.remote.api
 import android.app.*
 import android.net.*
 import com.cloudinary.*
+import kotlinx.coroutines.*
 import javax.inject.*
 
 private const val SECURE_URL_KEY = "secure_url"
@@ -14,12 +15,12 @@ class CloudinaryService @Inject constructor(
     private val application: Application
 ) {
 
-    suspend fun uploadImage(uri: Uri): String {
+    suspend fun uploadImage(uri: Uri): String = withContext(Dispatchers.IO) {
         val inputStream = application.contentResolver.openInputStream(uri)
             ?: throw IllegalArgumentException("Error al cargar la imagen $uri")
 
         val options = mapOf(UPLOAD_PRESET_KEY to UPLOAD_PRESET_VALUE)
         val result = cloudinary.uploader().upload(inputStream, options)
-        return result[SECURE_URL_KEY] as String
+        return@withContext result[SECURE_URL_KEY] as String
     }
 }
