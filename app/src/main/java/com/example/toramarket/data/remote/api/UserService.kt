@@ -16,4 +16,10 @@ interface UserService {
         @Path("email") email: String,
         @Body request: UserDto
     ): Response<UserDto>
+
+    @PUT("users/{email}/image")
+    suspend fun updateProfileImg(
+        @Path("email") email: String,
+        @Body request: UserImgDto
+    ): Response<UserDto>
 }

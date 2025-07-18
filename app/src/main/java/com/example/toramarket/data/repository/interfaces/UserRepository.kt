@@ -12,5 +12,7 @@ interface UserRepository {
     suspend fun getUserId(): String?
     suspend fun getUserByEmail(email: String): Response<UserDto>
     suspend fun updateProfile(request: UserDto): Response<UserDto>
+    suspend fun updateProfileImg(email: String, request: UserImgDto): Response<UserDto>
     suspend fun logOut()
+
 }

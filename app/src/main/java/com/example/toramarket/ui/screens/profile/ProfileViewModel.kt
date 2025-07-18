@@ -1,6 +1,7 @@
 package com.example.toramarket.ui.screens.profile
 
 import android.net.*
+import android.util.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import coil.network.*
@@ -18,6 +19,7 @@ import javax.inject.*
 class ProfileViewModel @Inject constructor(
     private val getUserByEmailUseCase: GetUserByEmailUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
+    private val updateUserImgUseCase: UpdateUserImgUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
     private val getUserEmailUseCase: GetUserEmailUseCase,
     private val logOutUseCase: LogOutUseCase
@@ -89,12 +91,11 @@ class ProfileViewModel @Inject constructor(
             try {
                 uiState = UIState.Loading
                 val updated = updateUserUseCase.invoke(
-                    _email.value, _name.value, hashPasswordSHA256(_password.value), _image.value
+                    _email.value, _name.value, hashPasswordSHA256(_password.value), null
                 )
                 val data = updated.body()
                 if (data != null) {
                     uiState = UIState.Success(true)
-                    _image.value = data.userImageUrl ?: ""
                     _name.value = data.fullName
                     _email.value = data.email
                     _password.value = "********"
@@ -125,14 +126,21 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 uiState = UIState.Loading
+                Log.d("ProfileViewModel", "Uploading image: $uri")
                 val result = uploadImageUseCase.invoke(uri)
-                if (result?.isNotEmpty() == true) _image.value = result
+                if (result?.isNotEmpty() == true) {
+                    updateUserImgUseCase.invoke(
+                        _email.value, result
+                    )
+                    _image.value = result
+                }
                 uiState = UIState.Success(true)
             } catch (e: IOException) {
                 uiState = UIState.Error("Sin conexión a internet")
             } catch (e: HttpException) {
                 uiState = UIState.Error("Error del servidor: ${e.message}")
             } catch (e: Exception) {
+                Log.e("ProfileViewModel", "Error subiendo imagen: ${e.message}", e)
                 uiState = UIState.Error("Ocurrió un error inesperado")
             }
         }

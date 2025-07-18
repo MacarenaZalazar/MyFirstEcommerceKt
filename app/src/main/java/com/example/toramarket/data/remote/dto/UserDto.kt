@@ -10,6 +10,11 @@ data class UserDto(
     val userImageUrl: String?
 )
 
+data class UserImgDto(
+    val userImageUrl: String
+)
+
+
 data class LoginResponse(
     val message: String,
     val user: LoggerUserDto

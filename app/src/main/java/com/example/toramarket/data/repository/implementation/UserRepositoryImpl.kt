@@ -22,6 +22,9 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateProfile(@Body request: UserDto): Response<UserDto> =
         api.updateProfile(email = request.email, request = request)
 
+    override suspend fun updateProfileImg(email: String, request: UserImgDto): Response<UserDto> =
+        api.updateProfileImg(email, request)
+
     override suspend fun logOut() = local.clearUser()
 
     override suspend fun isUserLoggedIn(): Boolean = local.isUserLoggedIn()

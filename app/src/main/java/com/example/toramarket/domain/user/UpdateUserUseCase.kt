@@ -11,7 +11,7 @@ class UpdateUserUseCase @Inject constructor(private val repository: UserReposito
         email: String,
         name: String,
         password: String,
-        image: String
+        image: String?
     ): Response<UserDto> {
         var user = UserDto(
             email,
