@@ -15,17 +15,6 @@ fun CategoriesSelector(
     onCategorySelected: (String?) -> Unit
 ) {
     LazyRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        items(categories) { category ->
-            Button(
-                onClick = { onCategorySelected(category) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (category == selectedCategory) Color.Gray else Color.LightGray
-                )
-            ) {
-
-                Text(category)
-            }
-        }
         item {
             Button(
                 onClick = { onCategorySelected(null) },
@@ -37,5 +26,17 @@ fun CategoriesSelector(
                 Text(text)
             }
         }
+        items(categories) { category ->
+            Button(
+                onClick = { onCategorySelected(category) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (category == selectedCategory) Color.Gray else Color.LightGray
+                )
+            ) {
+
+                Text(category)
+            }
+        }
+
     }
 }

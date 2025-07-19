@@ -40,7 +40,6 @@ fun ProductScreen(
 
             is UIState.Success -> {
                 val products = viewModel.filteredProducts
-                val filter by remember { mutableStateOf("") }
                 val categories = products.map { it.category }.distinct()
 
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -49,7 +48,7 @@ fun ProductScreen(
                             .padding(vertical = 8.dp)
                             .fillMaxWidth(),
                         value = filter,
-                        onValueChange = {},
+                        onValueChange = { viewModel.onFilterChange(it) },
                         label = { Text("Encontrá tu producto") },
                         singleLine = true,
                         trailingIcon =

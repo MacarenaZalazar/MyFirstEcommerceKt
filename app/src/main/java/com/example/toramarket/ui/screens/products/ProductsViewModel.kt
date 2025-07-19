@@ -23,6 +23,10 @@ class ProductsViewModel @Inject constructor(
     var filter by mutableStateOf("")
     var selectedCategory by mutableStateOf<String?>(null)
 
+    fun onFilterChange(newFilter: String) {
+        filter = newFilter
+    }
+
     val filteredProducts: List<Product>
         get() = (uiState as? UIState.Success<List<Product>>)?.data
             ?.filter { product ->
