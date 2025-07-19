@@ -1,7 +1,7 @@
 package com.example.toramarket.ui.components
 
 import androidx.compose.material.icons.*
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.*
@@ -20,24 +20,24 @@ data class BottomNavItem(
 fun BottomNavBar(controller: NavHostController) {
     val items = listOf(
         BottomNavItem(
-            label = "",
+            label = "Inicio",
             route = ProductsScreenRoute::class.qualifiedName ?: "products",
-            icon = Icons.Outlined.Home
+            icon = Icons.Rounded.Home
         ),
         BottomNavItem(
-            label = "",
+            label = "Carrito",
             route = CartScreenRoute::class.qualifiedName ?: "cart",
-            icon = Icons.Outlined.ShoppingCart
+            icon = Icons.Rounded.ShoppingCart
         ),
         BottomNavItem(
-            label = "",
+            label = "Pedidos",
             route = OrdersScreenRoute::class.qualifiedName ?: "orders",
-            icon = Icons.Outlined.Receipt
+            icon = Icons.Rounded.Receipt
         ),
         BottomNavItem(
-            label = "",
+            label = "Perfil",
             route = ProfileScreenRoute::class.qualifiedName ?: "profile",
-            icon = Icons.Outlined.AccountCircle
+            icon = Icons.Rounded.AccountCircle
         )
     )
 

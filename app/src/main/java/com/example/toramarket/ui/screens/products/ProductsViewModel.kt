@@ -9,6 +9,7 @@ import com.example.toramarket.ui.*
 import com.example.toramarket.utils.data.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import okio.*
 import javax.inject.*
 
@@ -22,6 +23,13 @@ class ProductsViewModel @Inject constructor(
     var uiState by mutableStateOf<UIState<List<Product>>>(UIState.Loading)
     var filter by mutableStateOf("")
     var selectedCategory by mutableStateOf<String?>(null)
+
+    private val _loadingPerItem = mutableStateMapOf<String, Boolean>()
+    val loadingPerItem: Map<String, Boolean> = _loadingPerItem
+    fun isItemLoading(productId: String) = _loadingPerItem[productId] == true
+
+    private val _snackbarMessage = MutableSharedFlow<String>()
+    val snackbarMessage = _snackbarMessage
 
     fun onFilterChange(newFilter: String) {
         filter = newFilter
@@ -52,13 +60,18 @@ class ProductsViewModel @Inject constructor(
     }
 
     fun addToCart(productId: String) {
+        if (_loadingPerItem[productId] == true) return
+        _loadingPerItem[productId] = true
         viewModelScope.launch {
             try {
                 addToCartUseCase.invoke(productId)
+                _snackbarMessage.emit("Producto agregado al carrito")
             } catch (e: Exception) {
-                // Handle any errors that might occur during the add to cart operation
-                uiState = UIState.Error("Error al agregar al carrito: ${e.message}")
+                _snackbarMessage.emit("Error al agregar al carrito: ${e.message ?: "desconocido"}")
+            } finally {
+                _loadingPerItem[productId] = false
             }
+
         }
     }
 }

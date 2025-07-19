@@ -22,8 +22,14 @@ fun ProductScreen(
     val filter = viewModel.filter
     val selectedCategory = viewModel.selectedCategory
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     LaunchedEffect(Unit) {
         viewModel.loadProducts(refresh = true)
+        viewModel.snackbarMessage.collect { msg ->
+            snackbarHostState.showSnackbar(msg)
+        }
     }
 
     when (state) {
@@ -43,6 +49,7 @@ fun ProductScreen(
             val products = viewModel.filteredProducts
             val categories = products.map { it.category }.distinct().sorted()
             Scaffold(
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                 topBar = {
                     CenterAlignedTopAppBar(
                         title = { Text("Productos") },
@@ -86,7 +93,7 @@ fun ProductScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(products) { it ->
-                            ProductItem(item = it, addToCart = { viewModel.addToCart(it.id) })
+                            ProductItem(item = it, viewModel = viewModel)
                         }
                     }
                 }

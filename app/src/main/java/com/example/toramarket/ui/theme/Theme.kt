@@ -7,68 +7,55 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 
-//private val DarkColorScheme = darkColorScheme(
-//    primary = Purple80,
-//    secondary = PurpleGrey80,
-//    tertiary = Pink80
-//)
-//
-//private val LightColorScheme = lightColorScheme(
-//    primary = Purple40,
-//    secondary = PurpleGrey40,
-//    tertiary = Pink40
-//
-//    /* Other default colors to override
-//    background = Color(0xFFFFFBFE),
-//    surface = Color(0xFFFFFBFE),
-//    onPrimary = Color.White,
-//    onSecondary = Color.White,
-//    onTertiary = Color.White,
-//    onBackground = Color(0xFF1C1B1F),
-//    onSurface = Color(0xFF1C1B1F),
-//    */
-//)
-private val White = Color(0xFFFFFFFF)
-private val DarkGray = Color(0xFF1C1B1F)
-private val SurfaceDark = Color(0xFF2A2930)
-private val OnDark = Color(0xFFA5F8D3)
-private val OnLight = Color(0xFF3C3A45)
+// Tema claro
+private val LightPrimary = Color(0xFF8762C5)
+private val LightPrimaryVariant = Color(0xFF5E429A)
+private val LightSecondary = Color(0xFFB596DF)
+private val LightBackground = Color.White
+private val LightSurface = Color(0xFFF9F2FE)
+private val LightOnPrimary = Color.White
+private val LightOnSecondary = Color.Black
+private val LightOnBackground = Color.Black
+private val LightOnSurface = Color.Black
 
-private val Mauveine = Color(0xFF802392)
-private val Purpureus = Color(0xFF995FA3)
-private val CoolGray = Color(0xFF9A98B5)
-private val Aquamarine = Color(0xFFA5F8D3)
+// Tema oscuro
+private val DarkPrimary = Color(0xFF8861C5)
+private val DarkPrimaryVariant = Color(0xFF513A7F)
+private val DarkSecondary = Color(0xFF9F7DD1)
+private val DarkBackground = Color(0xFF281C4B)
+private val DarkSurface = Color(0xFF6C4BA9)
+private val DarkOnPrimary = Color.Black
+private val DarkOnSecondary = Color.Black
+private val DarkOnBackground = Color.White
+private val DarkOnSurface = Color.White
 
 private val LightColorScheme = lightColorScheme(
-    primary = Mauveine,
-    onPrimary = White,
-    secondary = Purpureus,
-    onSecondary = White,
-    background = White,
-    onBackground = Mauveine,
-    surface = White,
-    onSurface = OnLight,
-    error = Color(0xFFD32F2F),
-    onError = White,
+    primary = LightPrimary,
+    onPrimary = LightOnPrimary,
+    primaryContainer = LightPrimaryVariant,
+    secondary = LightSecondary,
+    onSecondary = LightOnSecondary,
+    background = LightBackground,
+    onBackground = LightOnBackground,
+    surface = LightSurface,
+    onSurface = LightOnSurface,
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Mauveine,
-    onPrimary = CoolGray,
-    secondary = Purpureus,
-    onSecondary = White,
-    background = DarkGray,
-    onBackground = Aquamarine,
-    surface = SurfaceDark,
-    onSurface = OnDark,
-    error = Color(0xFFEF9A9A),
-    onError = DarkGray,
+    primary = DarkPrimary,
+    onPrimary = DarkOnPrimary,
+    primaryContainer = DarkPrimaryVariant,
+    secondary = DarkSecondary,
+    onSecondary = DarkOnSecondary,
+    background = DarkBackground,
+    onBackground = DarkOnBackground,
+    surface = DarkSurface,
+    onSurface = DarkOnSurface,
 )
 
 @Composable
 fun ToraMarketTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {

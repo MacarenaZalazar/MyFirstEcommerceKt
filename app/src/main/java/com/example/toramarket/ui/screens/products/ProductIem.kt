@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
@@ -20,8 +21,10 @@ import com.example.toramarket.utils.data.*
 
 @Composable
 fun ProductItem(
-    modifier: Modifier = Modifier, item: Product, addToCart: (item: Product) -> Unit
+    modifier: Modifier = Modifier, item: Product, viewModel: ProductsViewModel
 ) {
+    val isLoading = viewModel.isItemLoading(item.id)
+
     Card(modifier = modifier.fillMaxWidth()) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -63,16 +66,35 @@ fun ProductItem(
                     )
                 }
 
-                IconButton(
-                    onClick = { addToCart(item) },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(50))
-                        .align(Alignment.BottomEnd)
-                        .background(MaterialTheme.colorScheme.background)
-                ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "agregar")
-                }
+                AddToCartButton(
+                    isLoading,
+                    modifier.align(Alignment.BottomEnd)
+                ) { viewModel.addToCart(item.id) }
+
             }
+        }
+    }
+}
+
+@Composable
+fun AddToCartButton(
+    isLoading: Boolean, modifier: Modifier, onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .size(40.dp)
+            .shadow(4.dp, CircleShape)
+            .background(Color.White, CircleShape)
+            .clickable(enabled = !isLoading, onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(18.dp),
+                strokeWidth = 2.dp
+            )
+        } else {
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "agregar")
         }
     }
 }
