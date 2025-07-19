@@ -68,7 +68,7 @@ fun CheckoutScreen(
         is UIState.Success -> {
             Scaffold(topBar = {
                 CenterAlignedTopAppBar(
-                   
+
                     modifier = Modifier.shadow(4.dp),
                     title = { Text("Confirmá tu pedido") },
                     navigationIcon = {
@@ -99,7 +99,7 @@ fun CheckoutScreen(
                         .padding(20.dp)
                         .verticalScroll(scrollState)
                 ) {
-                    Resume(state.data)
+                    CheckoutResume(state.data)
                     PaymentMethodSelector(paymentMethod) { paymentMethod = it }
                     if (paymentMethod == "card") CheckoutCardForm(viewModel)
 

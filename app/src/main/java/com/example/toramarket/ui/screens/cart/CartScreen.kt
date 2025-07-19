@@ -5,8 +5,6 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.navigation.*
 
@@ -27,15 +25,10 @@ fun CartScreen(
             modifier = Modifier
                 .fillMaxWidth(), topBar = {
                 CenterAlignedTopAppBar(
-                    modifier = Modifier.shadow(4.dp),
-                    title = { Text("Tus productos") },
+                    title = { Text("Mi carrito") },
                     actions = {
                         Button(
                             onClick = { viewModel.clearCart() },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.error,
-                                contentColor = Color.White
-                            ),
                         ) {
                             Text("Vaciar")
                         }

@@ -17,3 +17,7 @@ fun formatDate(date: Date): String {
         ) else it.toString()
     }
 }
+
+fun totalPrice(total: Double): Double {
+    return total + 50 + 100
+}

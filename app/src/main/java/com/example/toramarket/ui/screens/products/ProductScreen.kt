@@ -3,6 +3,7 @@ package com.example.toramarket.ui.screens.products
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,8 +12,8 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import com.example.toramarket.ui.*
-import com.example.toramarket.utils.data.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScreen(
     viewModel: ProductsViewModel = hiltViewModel(),
@@ -25,24 +26,39 @@ fun ProductScreen(
         viewModel.loadProducts(refresh = true)
     }
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp), contentAlignment = Alignment.Center
-    ) {
-        when (state) {
-            is UIState.Loading -> {
-
+    when (state) {
+        is UIState.Loading -> {
+            Box(
+                Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator(
                     Modifier.align(Alignment.Center)
                 )
             }
+        }
 
-            is UIState.Success -> {
-                val products = viewModel.filteredProducts
-                val categories = products.map { it.category }.distinct()
-
-                Column(modifier = Modifier.padding(16.dp)) {
+        is UIState.Success -> {
+            val products = viewModel.filteredProducts
+            val categories = products.map { it.category }.distinct().sorted()
+            Scaffold(
+                topBar = {
+                    CenterAlignedTopAppBar(
+                        title = { Text("Productos") },
+                        actions = {
+                            IconButton(onClick = { viewModel.loadProducts(true) }) {
+                                Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                            }
+                        }
+                    )
+                }
+            ) { it ->
+                Column(
+                    modifier = Modifier
+                        .padding(it)
+                        .padding(horizontal = 16.dp)
+                ) {
                     OutlinedTextField(
                         modifier = Modifier
                             .padding(vertical = 8.dp)
@@ -64,24 +80,42 @@ fun ProductScreen(
                         selectedCategory = selectedCategory,
                         onCategorySelected = { viewModel.selectedCategory = it })
 
-                    ProductList(products, viewModel)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(products) { it ->
+                            ProductItem(item = it, addToCart = { viewModel.addToCart(it.id) })
+                        }
+                    }
                 }
             }
 
-            is UIState.Error -> Text(state.message)
         }
-    }
-}
 
-@Composable
-fun ProductList(products: List<Product>, viewModel: ProductsViewModel) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(products) { it ->
-            Product(item = it, addToCart = { viewModel.addToCart(it.id) })
-        }
+        is UIState.Error ->
+            Scaffold(
+                topBar = {
+                    CenterAlignedTopAppBar(
+                        title = { Text("Productos") },
+                        actions = {
+                            IconButton(onClick = { viewModel.loadProducts(true) }) {
+                                Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                            }
+                        }
+                    )
+                }
+            ) { it ->
+                Box(
+                    Modifier
+                        .padding(it)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(state.message)
+                }
+            }
     }
+
 }

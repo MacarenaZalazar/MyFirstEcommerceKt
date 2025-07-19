@@ -43,9 +43,6 @@ class CheckoutViewModel @Inject constructor(
     private val _isValid = MutableStateFlow<Boolean>(true)
     val isValid: MutableStateFlow<Boolean> = _isValid
 
-    private val _isLoading = MutableStateFlow<Boolean>(false)
-    val isLoading: MutableStateFlow<Boolean> = _isLoading
-
     private val _success = MutableStateFlow<Boolean>(true)
     val success: MutableStateFlow<Boolean> = _success
 
