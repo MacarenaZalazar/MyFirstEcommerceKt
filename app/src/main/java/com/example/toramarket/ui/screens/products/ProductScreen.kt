@@ -23,7 +23,6 @@ fun ProductScreen(
     val selectedCategory = viewModel.selectedCategory
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.loadProducts(refresh = true)

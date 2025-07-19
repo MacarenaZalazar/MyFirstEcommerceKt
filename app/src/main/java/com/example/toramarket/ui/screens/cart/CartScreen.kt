@@ -20,7 +20,6 @@ fun CartScreen(
 
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.snackbarMessage.collect { msg ->
