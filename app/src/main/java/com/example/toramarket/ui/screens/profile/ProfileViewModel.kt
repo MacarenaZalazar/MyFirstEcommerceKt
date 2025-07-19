@@ -47,8 +47,8 @@ class ProfileViewModel @Inject constructor(
     private val _isFormValid = MutableStateFlow<Boolean>(false)
     val isFormValid: MutableStateFlow<Boolean> = _isFormValid
 
-    private val _success = MutableStateFlow<Boolean>(true)
-    val success: MutableStateFlow<Boolean> = _success
+    private val _snackMessage = MutableStateFlow<String?>(null)
+    val snackMessage: MutableStateFlow<String?> = _snackMessage
     fun getUser() {
         viewModelScope.launch {
             try {
@@ -81,9 +81,9 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun editProfile() {
-        _password.value = ""
-        _edit.value = true
+    fun toggleEditProfile() {
+        _edit.value = !_edit.value
+        _password.value = if (_edit.value) "" else "********"
     }
 
     fun updateProfile() {
@@ -103,12 +103,15 @@ class ProfileViewModel @Inject constructor(
                     _confirmPassword.value = ""
                     _edit.value = false
                 }
+                _snackMessage.value = "Perfil actualizado correctamente"
             } catch (e: IOException) {
-                uiState = UIState.Error("Sin conexión a internet")
+                _snackMessage.value = "Sin conexión a internet"
             } catch (e: HttpException) {
-                uiState = UIState.Error("Error del servidor: ${e.message}")
+                _snackMessage.value = "Error del servidor: ${e.message}"
             } catch (e: Exception) {
-                uiState = UIState.Error("Ocurrió un error inesperado")
+                _snackMessage.value = "Ocurrió un error inesperado"
+            } finally {
+                uiState = UIState.Success(true)
             }
 
         }
@@ -134,14 +137,14 @@ class ProfileViewModel @Inject constructor(
                     )
                     _image.value = result
                 }
-                uiState = UIState.Success(true)
             } catch (e: IOException) {
-                uiState = UIState.Error("Sin conexión a internet")
+                _snackMessage.value = "Sin conexión a internet"
             } catch (e: HttpException) {
-                uiState = UIState.Error("Error del servidor: ${e.message}")
+                _snackMessage.value = "Error del servidor: ${e.message}"
             } catch (e: Exception) {
-                Log.e("ProfileViewModel", "Error subiendo imagen: ${e.message}", e)
-                uiState = UIState.Error("Ocurrió un error inesperado")
+                _snackMessage.value = "Ocurrió un error inesperado"
+            } finally {
+                uiState = UIState.Success(true)
             }
         }
     }

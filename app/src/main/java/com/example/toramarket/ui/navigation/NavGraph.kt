@@ -44,7 +44,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             RegisterScreen(viewModel = viewModel, toLogin = {
                 navController.navigate(
                     LogInScreenRoute
-                ) { popUpTo(0) }
+                ) { launchSingleTop = true }
             })
         }
 
@@ -58,11 +58,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<CartScreenRoute> {
             val cartViewModel = hiltViewModel<CartViewModel>()
-            val checkoutVieModel = hiltViewModel<CheckoutViewModel>()
             CartScreen(
-                cartViewModel = cartViewModel,
-                toProducts = { navController.navigate(ProductsScreenRoute) },
-                toCheckout = { navController.navigate(CheckoutScreenRoute) }
+                viewModel = cartViewModel,
+                navController = navController
             )
         }
 
@@ -81,12 +79,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             val viewModel = hiltViewModel<CheckoutViewModel>()
             CheckoutScreen(
                 viewModel,
-                goHome = {
-                    navController.navigate(ProductsScreenRoute) {
-                        popUpTo(ProductsScreenRoute) { inclusive = true }
-                    }
-                },
-                goBack = { navController.popBackStack() }
+                navController
             )
         }
 

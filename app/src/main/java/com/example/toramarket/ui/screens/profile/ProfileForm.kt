@@ -47,21 +47,26 @@ fun ProfileForm(viewModel: ProfileViewModel, toSplash: () -> Unit) {
         label = "Confirmar contraseña",
         error = { confirmPasswordError(password, it) })
 
-    Spacer(modifier = Modifier.padding(16.dp))
+    Spacer(modifier = Modifier.padding(8.dp))
     if (edit) {
         UpdateButton(isFormValid) { viewModel.updateProfile() }
+        Spacer(modifier = Modifier.padding(8.dp))
 
-    } else {
-        EditButton() { viewModel.editProfile() }
     }
-    Spacer(modifier = Modifier.padding(16.dp))
-    LogoutButton { viewModel.logOut(toSplash) }
+
+    EditButton(edit, viewModel)
+
+    if (!edit) {
+        Spacer(modifier = Modifier.padding(8.dp))
+        LogoutButton { viewModel.logOut(toSplash) }
+    }
 }
 
 @Composable
-fun EditButton(onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
-        Text("Editar")
+fun EditButton(edit: Boolean, viewModel: ProfileViewModel) {
+    val text = if (edit) "Cancelar" else "Editar"
+    Button(onClick = { viewModel.toggleEditProfile() }, modifier = Modifier.fillMaxWidth()) {
+        Text(text)
     }
 }
 
@@ -69,13 +74,6 @@ fun EditButton(onClick: () -> Unit) {
 fun UpdateButton(enabled: Boolean, onClick: () -> Unit) {
     Button(onClick = onClick, modifier = Modifier.fillMaxWidth(), enabled = enabled) {
         Text("Actualizar")
-    }
-}
-
-@Composable
-fun UpdateImage(onClick: () -> Unit) {
-    Button(onClick = onClick) {
-        Text("Seleccionar imagen")
     }
 }
 

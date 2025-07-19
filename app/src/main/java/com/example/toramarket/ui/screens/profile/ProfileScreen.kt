@@ -19,29 +19,39 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), toSplash: () ->
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(topBar = { CenterAlignedTopAppBar({ Text("Mi Perfil") }) }) { it ->
-        when (state) {
-            is UIState.Loading -> {
+    when (state) {
+        is UIState.Loading -> {
+            Box(
+                Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+
                 CircularProgressIndicator()
             }
+        }
 
-            is UIState.Error -> {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(state.message, textAlign = TextAlign.Center)
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    LogoutButton { viewModel.logOut(toSplash) }
-                }
+        is UIState.Error -> {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(state.message, textAlign = TextAlign.Center)
+                Spacer(modifier = Modifier.padding(16.dp))
+                LogoutButton { viewModel.logOut(toSplash) }
             }
+        }
 
-            is UIState.Success -> {
+        is UIState.Success -> {
+            Scaffold(
+                topBar = { CenterAlignedTopAppBar({ Text("Mi Perfil") }) },
+                snackbarHost = { SnackbarHost(snackbarHostState) }) { it ->
                 Column(
                     Modifier
                         .padding(it)
                         .padding(16.dp)
                 ) {
                     ProfileImage(viewModel, snackbarHostState)
+                    Spacer(Modifier.padding(8.dp))
                     ProfileForm(viewModel) { toSplash }
                 }
             }

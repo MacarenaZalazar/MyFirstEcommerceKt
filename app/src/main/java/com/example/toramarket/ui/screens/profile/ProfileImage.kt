@@ -1,9 +1,11 @@
 package com.example.toramarket.ui.screens.profile
 
 import android.*
+import android.content.*
 import android.content.pm.*
 import android.net.*
 import android.os.*
+import android.util.*
 import androidx.activity.compose.*
 import androidx.activity.result.contract.*
 import androidx.compose.foundation.*
@@ -16,9 +18,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import coil.compose.*
+import com.example.toramarket.utils.helpers.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,36 +31,60 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
     val context = LocalContext.current
     var showSheet by remember { mutableStateOf(false) }
     var permissionsGranted by remember { mutableStateOf(false) }
-    var photoUri by remember { mutableStateOf<Uri?>(null) }
+    val photoUri = remember { mutableStateOf<Uri?>(null) }
+    val snackMessage by viewModel.snackMessage.collectAsState()
+
+    val edit by viewModel.edit.collectAsState()
 
     val image by viewModel.image.collectAsState()
+
+    val scope = rememberCoroutineScope()
 
     val requestPermissionsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         permissionsGranted = permissions.values.all { it }
-        if (!permissionsGranted) {
-//            snackbarHostState.showSnackbar("Permisos necesarios denegados")
+    }
+
+
+    fun requestCameraPermission(
+        context: Context,
+        onGranted: () -> Unit,
+        launcher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    ) {
+        val permissions = mutableListOf(Manifest.permission.CAMERA)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+
+        val allGranted = permissions.all {
+            context.checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED
+        }
+
+        if (allGranted) {
+            onGranted()
+        } else {
+            launcher.launch(permissions.toTypedArray())
         }
     }
 
-    // Check and request permissions
-    LaunchedEffect(Unit) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionsGranted =
-                context.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+
+    fun requestGalleryPermission(
+        context: Context,
+        onGranted: () -> Unit,
+        launcher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>
+    ) {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
         } else {
-            permissionsGranted =
-                context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            Manifest.permission.READ_EXTERNAL_STORAGE
         }
 
-        if (!permissionsGranted) {
-            val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-            } else {
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-            requestPermissionsLauncher.launch(permissions)
+        if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            onGranted()
+        } else {
+            launcher.launch(arrayOf(permission))
         }
     }
 
@@ -68,21 +96,24 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
             viewModel.uploadImage(it)
         }
     }
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            photoUri.value?.let { uri ->
+                Log.d("PHOTO_URI", "Launching camera with URI: ${photoUri.value}")
+                viewModel.uploadImage(uri)
 
-    // UI
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        if (image.isNotEmpty()) {
-            AsyncImage(
-                model = image,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape),
-                contentDescription = "Imagen subida",
-            )
-        } else {
+            }
+        }
+    }
+
+    if (!edit) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
             Box(
                 modifier = Modifier
                     .size(100.dp)
@@ -90,18 +121,25 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
                     .background(MaterialTheme.colorScheme.primaryContainer)
                     .align(Alignment.CenterHorizontally)
                     .clickable(onClick = { showSheet = true }),
-
                 contentAlignment = Alignment.Center
             ) {
+                if (image.isNotEmpty()) {
+                    AsyncImage(
+                        model = image,
+                        modifier = Modifier
+                            .size(100.dp),
+                        contentDescription = "Imagen subida", contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Image(
+                        imageVector = Icons.Filled.CameraAlt,
+                        contentDescription = "Imagen subida",
+                        colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
+                        modifier = Modifier
+                            .size(60.dp)
 
-                Image(
-                    imageVector = Icons.Filled.CameraAlt,
-                    contentDescription = "Imagen subida",
-                    colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
-                    modifier = Modifier
-                        .size(60.dp)
-
-                )
+                    )
+                }
             }
         }
     }
@@ -119,8 +157,10 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
                     Modifier
                         .fillMaxWidth()
                         .clickable {
-                            showSheet = false
-                            galleryLauncher.launch("image/*")
+                            requestGalleryPermission(context, {
+                                showSheet = false
+                                galleryLauncher.launch("image/*")
+                            }, requestPermissionsLauncher)
                         }) {
                     Icon(imageVector = Icons.Outlined.Photo, contentDescription = "Galería")
                     Spacer(modifier = Modifier.width(8.dp))
@@ -129,19 +169,26 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-//                Row(
-//                    Modifier
-//                        .fillMaxWidth()
-//                        .clickable {
-//                            showSheet = false
-//                            val uri = createImageFile()
-//                            photoUri = uri
-//                            cameraLauncher.launch(uri)
-//                        }) {
-//                    Icon(imageVector = Icons.Outlined.CameraAlt, contentDescription = "Tomar foto")
-//                    Spacer(modifier = Modifier.width(8.dp))
-//                    Text("Tomar una foto")
-//                }
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            showSheet = false
+                            val uri = createImageFile(context)
+                            photoUri.value = uri
+                            requestCameraPermission(
+                                context = context,
+                                onGranted = {
+                                    photoUri.value?.let { cameraLauncher.launch(it) }
+                                },
+                                launcher = requestPermissionsLauncher,
+                            )
+
+                        }) {
+                    Icon(imageVector = Icons.Outlined.CameraAlt, contentDescription = "Tomar foto")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Tomar una foto")
+                }
             }
         }
     }
