@@ -33,10 +33,8 @@ class CartViewModel @Inject constructor(
     val count = _count
 
     init {
-        // Actualiza inmediatamente si ya hay ítems
         updateTotals()
 
-        // Observa cambios posteriores
         viewModelScope.launch {
             _cartItems.collect { cart ->
                 updateTotals()

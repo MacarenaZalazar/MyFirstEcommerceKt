@@ -1,53 +1,49 @@
 package com.example.toramarket.ui.screens.cart
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
+import androidx.navigation.*
+import com.example.toramarket.ui.navigation.*
 
 @Composable
-fun CartSummaryCard(modifier: Modifier) {
-    Card(
-        modifier = modifier
+fun CartSummary(count: Int, subtotal: Double, navController: NavController) {
+    Column(
+        Modifier
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth()
-            .padding(16.dp), elevation = CardDefaults.cardElevation(8.dp),
-        shape = RoundedCornerShape(16.dp)
+            .padding(20.dp)
+
+
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
 
-                Text("Cantidad de items")
-                Text("4")
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            Text("Cantidad de items")
+            Text(count.toString())
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
 
-                Text("Subtotal")
-                Text("$10.000")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {}, modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxWidth()
-            ) {
-                Text("Comprar")
-            }
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Subtotal")
+            Text("$${subtotal}")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { navController.navigate(CheckoutScreenRoute) },
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .fillMaxWidth()
+        ) {
+            Text("Ir a pagar")
         }
     }
-}
-
-@Preview
-@Composable
-fun CartPreview() {
-    CartSummaryCard(Modifier)
 }

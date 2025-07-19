@@ -9,8 +9,6 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import androidx.navigation.*
-import com.example.toramarket.data.local.entity.*
-import com.example.toramarket.ui.navigation.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,106 +41,31 @@ fun CartScreen(
                         }
                     }
                 )
-            }, bottomBar = {
-                BottomAppBar(tonalElevation = 4.dp) {
-                    Column(modifier = Modifier.padding(20.dp)) {
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            horizontalArrangement = Arrangement.SpaceBetween
-//                        ) {
-//
-//                            Text("Cantidad de items")
-//                            Text(count.toString())
-//                        }
-//                        Spacer(modifier = Modifier.height(8.dp))
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//
-//                            horizontalArrangement = Arrangement.SpaceBetween
-//                        ) {
-//
-//                            Text("Subtotal")
-//                            Text("$${subtotal}")
-//                        }
-//                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { navController.navigate(CheckoutScreenRoute) },
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Text("Ir a pagar")
-                        }
+            }
+
+        ) { it ->
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(cartItems) { it ->
+                        CartItem(
+                            item = it,
+                            addToCart = { viewModel.addToCart(it.id) },
+                            removeFromCart = { viewModel.removeFromCart(it.id) })
                     }
                 }
-
-            }
-        ) { it ->
-            Column(Modifier.padding(it)) {
-                Cart(cartItems, viewModel)
-                CartResume(count, subtotal, navController)
-            }
-        }
-    }
-
-}
-
-@Composable
-fun Cart(
-    cartItems: List<CartItemWithProduct>,
-    viewModel: CartViewModel
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 60.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(cartItems) { it ->
-                CartItem(
-                    item = it,
-                    addToCart = { viewModel.addToCart(it.id) },
-                    removeFromCart = { viewModel.removeFromCart(it.id) })
+                CartSummary(count, subtotal, navController)
             }
         }
     }
 }
 
-
-@Composable
-fun CartResume(count: Int, subtotal: Double, navController: NavController) {
-    Column(modifier = Modifier.padding(20.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-
-            Text("Cantidad de items")
-            Text(count.toString())
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("Subtotal")
-            Text("$${subtotal}")
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { navController.navigate(CheckoutScreenRoute) },
-            modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .fillMaxWidth()
-        ) {
-            Text("Ir a pagar")
-        }
-    }
-}
