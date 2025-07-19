@@ -19,6 +19,9 @@ class CartViewModel @Inject constructor(
 
     var uiState by mutableStateOf<UIState<Boolean>>(UIState.Success(true))
 
+    private val _snackbarMessage = MutableSharedFlow<String>()
+    val snackbarMessage = _snackbarMessage
+
     private val _cartItems = getCartUseCase.invoke().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -47,8 +50,11 @@ class CartViewModel @Inject constructor(
             try {
                 addToCartUseCase.invoke(id)
                 updateTotals()
+                _snackbarMessage.emit("Producto agregado al carrito")
+
             } catch (e: Exception) {
-                TODO()
+                _snackbarMessage.emit("Error al agregar al carrito: ${e.message ?: "desconocido"}")
+
             }
         }
     }
@@ -59,8 +65,10 @@ class CartViewModel @Inject constructor(
             try {
                 removeFromCartUseCase.invoke(id)
                 updateTotals()
+                _snackbarMessage.emit("Producto eliminado del carrito")
             } catch (e: Exception) {
-                TODO()
+                _snackbarMessage.emit("Error al eliminar del carrito: ${e.message ?: "desconocido"}")
+
             }
         }
 

@@ -18,12 +18,22 @@ fun CartScreen(
     val subtotal by viewModel.subtotal.collectAsState()
     val count by viewModel.count.collectAsState()
 
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        viewModel.snackbarMessage.collect { msg ->
+            snackbarHostState.showSnackbar(msg)
+        }
+    }
+
     if (cartItems.isEmpty()) {
         EmptyCart(navController)
     } else {
         Scaffold(
-            modifier = Modifier
-                .fillMaxWidth(), topBar = {
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+            topBar = {
                 CenterAlignedTopAppBar(
                     title = { Text("Mi carrito") },
                     actions = {
@@ -51,9 +61,8 @@ fun CartScreen(
                 ) {
                     items(cartItems) { it ->
                         CartItem(
-                            item = it,
-                            addToCart = { viewModel.addToCart(it.id) },
-                            removeFromCart = { viewModel.removeFromCart(it.id) })
+                            item = it, viewModel = viewModel
+                        )
                     }
                 }
                 CartSummary(count, subtotal, navController)

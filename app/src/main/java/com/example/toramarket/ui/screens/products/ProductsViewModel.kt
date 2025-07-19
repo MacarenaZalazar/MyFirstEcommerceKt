@@ -25,7 +25,6 @@ class ProductsViewModel @Inject constructor(
     var selectedCategory by mutableStateOf<String?>(null)
 
     private val _loadingPerItem = mutableStateMapOf<String, Boolean>()
-    val loadingPerItem: Map<String, Boolean> = _loadingPerItem
     fun isItemLoading(productId: String) = _loadingPerItem[productId] == true
 
     private val _snackbarMessage = MutableSharedFlow<String>()

@@ -16,12 +16,10 @@ import com.example.toramarket.data.local.entity.*
 
 @Composable
 fun CartItem(
-    modifier: Modifier = Modifier,
     item: CartItemWithProduct,
-    removeFromCart: (item: ProductEntity) -> Unit,
-    addToCart: (item: ProductEntity) -> Unit
+    viewModel: CartViewModel,
 ) {
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.Center) {
                 Text(item.product.name, fontWeight = FontWeight.Bold)
@@ -44,7 +42,7 @@ fun CartItem(
                     ), verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(
-                        onClick = { removeFromCart(item.product) },
+                        onClick = { viewModel.removeFromCart(item.product.id) },
                     ) {
                         if (item.cartItem.quantity > 1) {
                             Icon(imageVector = Icons.Filled.Remove, contentDescription = "agregar")
@@ -57,7 +55,7 @@ fun CartItem(
                     }
                     Text(item.cartItem.quantity.toString())
                     IconButton(
-                        onClick = { addToCart(item.product) },
+                        onClick = { viewModel.addToCart(item.product.id) },
 
                         ) {
                         Icon(imageVector = Icons.Filled.Add, contentDescription = "agregar")
