@@ -79,6 +79,29 @@ fun OrdersScreen(
 
         }
 
-        is UIState.Error -> Text(state.message)
+        is UIState.Error ->
+            Scaffold(
+                topBar = {
+                    CenterAlignedTopAppBar(
+                        title = { Text("Mis pedidos") },
+                        actions = {
+                            IconButton(onClick = { ordersViewModel.loadOrders() }) {
+                                Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                            }
+                        }
+                    )
+                }
+            ) { it ->
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(it)
+
+                ) {
+                    Text(state.message, Modifier.align(Alignment.Center))
+                }
+            }
+
+
     }
 }

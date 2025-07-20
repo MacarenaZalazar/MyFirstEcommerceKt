@@ -32,13 +32,10 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
     var showSheet by remember { mutableStateOf(false) }
     var permissionsGranted by remember { mutableStateOf(false) }
     val photoUri = remember { mutableStateOf<Uri?>(null) }
-    val snackMessage by viewModel.snackMessage.collectAsState()
 
     val edit by viewModel.edit.collectAsState()
 
     val image by viewModel.image.collectAsState()
-
-    val scope = rememberCoroutineScope()
 
     val requestPermissionsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()

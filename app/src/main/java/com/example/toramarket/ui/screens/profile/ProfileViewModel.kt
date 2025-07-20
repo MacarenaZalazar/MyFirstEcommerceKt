@@ -47,8 +47,9 @@ class ProfileViewModel @Inject constructor(
     private val _isFormValid = MutableStateFlow<Boolean>(false)
     val isFormValid: MutableStateFlow<Boolean> = _isFormValid
 
-    private val _snackMessage = MutableStateFlow<String?>(null)
-    val snackMessage: MutableStateFlow<String?> = _snackMessage
+    private val _snackbarMessage = MutableSharedFlow<String>()
+    val snackbarMessage = _snackbarMessage
+
     fun getUser() {
         viewModelScope.launch {
             try {
@@ -103,13 +104,13 @@ class ProfileViewModel @Inject constructor(
                     _confirmPassword.value = ""
                     _edit.value = false
                 }
-                _snackMessage.value = "Perfil actualizado correctamente"
+                _snackbarMessage.emit("Perfil actualizado correctamente")
             } catch (e: IOException) {
-                _snackMessage.value = "Sin conexión a internet"
+                _snackbarMessage.emit("Sin conexión a internet")
             } catch (e: HttpException) {
-                _snackMessage.value = "Error del servidor: ${e.message}"
+                _snackbarMessage.emit("Error del servidor: ${e.message}")
             } catch (e: Exception) {
-                _snackMessage.value = "Ocurrió un error inesperado"
+                _snackbarMessage.emit("Ocurrió un error inesperado")
             } finally {
                 uiState = UIState.Success(true)
             }
@@ -137,12 +138,13 @@ class ProfileViewModel @Inject constructor(
                     )
                     _image.value = result
                 }
+                _snackbarMessage.emit("Foto de perfil actualizada correctamente")
             } catch (e: IOException) {
-                _snackMessage.value = "Sin conexión a internet"
+                _snackbarMessage.emit("Sin conexión a internet")
             } catch (e: HttpException) {
-                _snackMessage.value = "Error del servidor: ${e.message}"
+                _snackbarMessage.emit("Error del servidor: ${e.message}")
             } catch (e: Exception) {
-                _snackMessage.value = "Ocurrió un error inesperado"
+                _snackbarMessage.emit("Ocurrió un error inesperado")
             } finally {
                 uiState = UIState.Success(true)
             }
