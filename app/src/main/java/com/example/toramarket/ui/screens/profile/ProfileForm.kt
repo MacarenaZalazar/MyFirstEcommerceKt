@@ -7,11 +7,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
+import androidx.navigation.*
 import com.example.toramarket.ui.components.*
+import com.example.toramarket.ui.navigation.*
 import com.example.toramarket.utils.helpers.*
 
 @Composable
-fun ProfileForm(viewModel: ProfileViewModel, toSplash: () -> Unit) {
+fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
     val name by viewModel.name.collectAsState()
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
@@ -58,7 +60,7 @@ fun ProfileForm(viewModel: ProfileViewModel, toSplash: () -> Unit) {
 
     if (!edit) {
         Spacer(modifier = Modifier.padding(8.dp))
-        LogoutButton { viewModel.logOut(toSplash) }
+        LogoutButton { viewModel.logOut({ navController.navigate(SplashScreenRoute) }) }
     }
 }
 

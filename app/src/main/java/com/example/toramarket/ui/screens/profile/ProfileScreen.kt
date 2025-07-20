@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
 import com.example.toramarket.ui.*
+import com.example.toramarket.ui.navigation.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +58,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), navController: 
                 ) {
                     Text(state.message, textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.padding(16.dp))
-                    LogoutButton { viewModel.logOut() }
+                    LogoutButton { viewModel.logOut { navController.navigate(SplashScreenRoute) } }
                 }
             }
         }
