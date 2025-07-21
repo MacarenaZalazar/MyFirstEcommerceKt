@@ -12,7 +12,7 @@ class MainDispatcherRule
         Dispatchers.setMain(dispatcher = testDispatcher)
     }
 
-    override fun finished(description: org.junit.runner.Description?) {
+    override fun finished(description: Description?) {
         Dispatchers.resetMain()
     }
 }
