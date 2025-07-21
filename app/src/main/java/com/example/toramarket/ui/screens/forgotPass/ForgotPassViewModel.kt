@@ -78,7 +78,10 @@ class ForgotPassViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                updateUserPasswordUseCase.invoke(email = _email.value, password = _password.value)
+                updateUserPasswordUseCase.invoke(
+                    email = _email.value,
+                    password = hashPasswordSHA256(_password.value)
+                )
                 _snackbarMessage.emit("Contraseña actualizada correctamente")
             } catch (e: IOException) {
                 _snackbarMessage.emit("Ocurrió un error actualizar la contraseña: ${e.message ?: "desconocido"}")

@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import androidx.navigation.*
@@ -35,7 +34,8 @@ fun EmptyCart(navController: NavController) {
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
                     .background(
-                        Color.LightGray
+                        MaterialTheme.colorScheme.primaryContainer,
+                        shape = RoundedCornerShape(50)
                     )
                     .padding(dimensionResource(R.dimen.padding_16))
             ) {
@@ -43,7 +43,7 @@ fun EmptyCart(navController: NavController) {
                 Icon(
                     imageVector = Icons.Sharp.ShoppingCart,
                     contentDescription = stringResource(R.string.carrito_vac_o),
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.inverseOnSurface,
                     modifier = Modifier.size(100.dp),
                 )
             }
