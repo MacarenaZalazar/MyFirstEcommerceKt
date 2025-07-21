@@ -1,6 +1,6 @@
 package com.example.toramarket.domain.user
 
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import javax.inject.*
 
 class GetUserByEmailUseCase @Inject constructor(private val repository: UserRepository) {

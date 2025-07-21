@@ -1,7 +1,7 @@
 package com.example.toramarket.domain.image
 
 import android.net.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import javax.inject.*
 
 class UploadImageUseCase @Inject constructor(private val repository: ImageUploadRepository) {

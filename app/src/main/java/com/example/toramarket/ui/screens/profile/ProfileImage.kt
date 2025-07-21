@@ -1,6 +1,6 @@
 package com.example.toramarket.ui.screens.profile
 
-import android.*
+import android.Manifest
 import android.content.*
 import android.content.pm.*
 import android.net.*
@@ -19,14 +19,15 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import coil.compose.*
+import com.example.toramarket.R
 import com.example.toramarket.utils.helpers.*
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostState) {
+fun ProfileImage(viewModel: ProfileViewModel) {
     val context = LocalContext.current
     var showSheet by remember { mutableStateOf(false) }
     var permissionsGranted by remember { mutableStateOf(false) }
@@ -119,12 +120,13 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
                     model = image,
                     modifier = Modifier
                         .size(100.dp),
-                    contentDescription = "Imagen subida", contentScale = ContentScale.Crop
+                    contentDescription = stringResource(R.string.imagen_subida),
+                    contentScale = ContentScale.Crop
                 )
             } else {
                 Image(
                     imageVector = Icons.Filled.CameraAlt,
-                    contentDescription = "Imagen subida",
+                    contentDescription = stringResource(R.string.imagen_subida),
                     colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier
                         .size(60.dp)
@@ -140,9 +142,12 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
             onDismissRequest = { showSheet = false },
             sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("Seleccionar origen", style = MaterialTheme.typography.titleMedium)
-                Spacer(modifier = Modifier.height(16.dp))
+            Column(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16))) {
+                Text(
+                    stringResource(R.string.seleccionar_origen),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_16)))
 
                 Row(
                     Modifier
@@ -153,12 +158,15 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
                                 galleryLauncher.launch("image/*")
                             }, requestPermissionsLauncher)
                         }) {
-                    Icon(imageVector = Icons.Outlined.Photo, contentDescription = "Galería")
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Elegir desde galería")
+                    Icon(
+                        imageVector = Icons.Outlined.Photo,
+                        contentDescription = stringResource(R.string.galer_a)
+                    )
+                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_8)))
+                    Text(stringResource(R.string.elegir_desde_galer_a))
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_8)))
 
                 Row(
                     Modifier
@@ -176,9 +184,13 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
                             )
 
                         }) {
-                    Icon(imageVector = Icons.Outlined.CameraAlt, contentDescription = "Tomar foto")
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Tomar una foto")
+                    Icon(
+                        imageVector = Icons.Outlined.CameraAlt, contentDescription = stringResource(
+                            R.string.tomar_foto
+                        )
+                    )
+                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_8)))
+                    Text(stringResource(R.string.tomar_una_foto))
                 }
             }
         }

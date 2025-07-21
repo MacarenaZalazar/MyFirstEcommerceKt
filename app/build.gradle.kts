@@ -86,7 +86,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.androidx.foundation)
     implementation(libs.material3)
-    implementation(libs.hilt.android.v2511)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.androidx.hilt.compiler)
@@ -107,7 +106,6 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
-    testImplementation(libs.kotlinx.coroutines.test.v173)
 
     implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.core.testing)

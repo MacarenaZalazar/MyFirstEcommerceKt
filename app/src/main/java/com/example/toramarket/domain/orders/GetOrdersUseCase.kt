@@ -1,6 +1,6 @@
 package com.example.toramarket.domain.orders
 
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import com.example.toramarket.utils.data.*
 import javax.inject.*
 

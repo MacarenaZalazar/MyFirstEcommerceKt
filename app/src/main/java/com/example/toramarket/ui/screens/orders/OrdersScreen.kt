@@ -7,18 +7,34 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.res.*
 import androidx.hilt.navigation.compose.*
+import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrdersScreen(
-    ordersViewModel: OrdersViewModel = hiltViewModel()
+    viewModel: OrdersViewModel = hiltViewModel(), navController: NavController
 ) {
-    val state = ordersViewModel.uiState
+    val state = viewModel.uiState
+
+    val showSheet by viewModel.showSheet.collectAsState()
+
+    val orderDetail by viewModel.orderDetail.collectAsState()
+
     LaunchedEffect(Unit) {
-        ordersViewModel.loadOrders()
+        viewModel.loadOrders()
+    }
+
+    if (showSheet && orderDetail != null) {
+        ModalBottomSheet(
+            onDismissRequest = { viewModel.closeDialog() },
+            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        ) {
+            OrderDetail(orderDetail!!)
+        }
     }
 
 
@@ -27,7 +43,11 @@ fun OrdersScreen(
             Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .padding(
+                        top = dimensionResource(R.dimen.padding_16),
+                        start = dimensionResource(R.dimen.padding_16),
+                        end = dimensionResource(R.dimen.padding_16)
+                    )
             ) {
 
                 CircularProgressIndicator(
@@ -40,9 +60,9 @@ fun OrdersScreen(
             Scaffold(
                 topBar = {
                     CenterAlignedTopAppBar(
-                        title = { Text("Mis pedidos") },
+                        title = { Text(stringResource(R.string.mis_pedidos)) },
                         actions = {
-                            IconButton(onClick = { ordersViewModel.loadOrders() }) {
+                            IconButton(onClick = { viewModel.loadOrders() }) {
                                 Icon(Icons.Default.Refresh, contentDescription = "Refresh")
                             }
                         }
@@ -58,19 +78,22 @@ fun OrdersScreen(
                             .fillMaxSize()
                     ) {
 
-                        Text("No se encontraron pedidos.")
+                        Text(stringResource(R.string.no_se_encontraron_pedidos))
                     }
                 } else {
                     LazyColumn(
                         Modifier
                             .padding(it)
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .padding(
+                                horizontal = dimensionResource(R.dimen.padding_16),
+                                vertical = dimensionResource(R.dimen.padding_4)
+                            )
                             .fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                        contentPadding = PaddingValues(vertical = dimensionResource(R.dimen.padding_8)),
+                        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_10))
                     ) {
                         items(orders) { it ->
-                            Order(it)
+                            Order(it, viewModel)
                         }
                     }
 
@@ -83,9 +106,9 @@ fun OrdersScreen(
             Scaffold(
                 topBar = {
                     CenterAlignedTopAppBar(
-                        title = { Text("Mis pedidos") },
+                        title = { Text(stringResource(R.string.mis_pedidos)) },
                         actions = {
-                            IconButton(onClick = { ordersViewModel.loadOrders() }) {
+                            IconButton(onClick = { viewModel.loadOrders() }) {
                                 Icon(Icons.Default.Refresh, contentDescription = "Refresh")
                             }
                         }
@@ -101,7 +124,6 @@ fun OrdersScreen(
                     Text(state.message, Modifier.align(Alignment.Center))
                 }
             }
-
 
     }
 }

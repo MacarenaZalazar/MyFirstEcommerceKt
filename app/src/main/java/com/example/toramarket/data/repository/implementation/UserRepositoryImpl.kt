@@ -3,7 +3,7 @@ package com.example.toramarket.data.repository.implementation
 import com.example.toramarket.data.local.*
 import com.example.toramarket.data.remote.api.*
 import com.example.toramarket.data.remote.dto.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import kotlinx.coroutines.flow.*
 import retrofit2.*
 import javax.inject.*

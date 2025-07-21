@@ -2,7 +2,7 @@ package com.example.toramarket.data.repository.implementation
 
 import com.example.toramarket.data.local.dao.*
 import com.example.toramarket.data.remote.api.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import com.example.toramarket.utils.data.*
 import javax.inject.*
 

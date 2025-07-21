@@ -22,6 +22,22 @@ class OrdersViewModel @Inject constructor(
 
     var uiState by mutableStateOf<UIState<List<Order>>>(UIState.Loading)
 
+    private val _showSheet = MutableStateFlow<Boolean>(false)
+    val showSheet = _showSheet
+
+    private val _orderDetail = MutableStateFlow<Order?>(null)
+    val orderDetail: StateFlow<Order?> = _orderDetail
+
+
+    fun openOrderDetail(order: Order) {
+        _orderDetail.value = order
+        _showSheet.value = true
+    }
+
+    fun closeDialog() {
+        _showSheet.value = false
+    }
+
     fun loadOrders(refresh: Boolean = false) {
         viewModelScope.launch {
             uiState = UIState.Loading

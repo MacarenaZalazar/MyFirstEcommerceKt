@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.res.*
+import com.example.toramarket.R
 import com.example.toramarket.utils.helpers.*
 
 @Composable
@@ -15,9 +16,9 @@ fun PaymentMethodSelector(
     Column {
 
         Text(
-            "¿Cómo querés pagar?",
+            stringResource(R.string.c_mo_quer_s_pagar),
             style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(dimensionResource(R.dimen.padding_16))
         )
         Row {
 
@@ -26,7 +27,7 @@ fun PaymentMethodSelector(
                     selected = selectedMethod == PaymentMethod.CASH,
                     onClick = { onMethodSelected(PaymentMethod.CASH) }
                 )
-                Text("Efectivo")
+                Text(stringResource(R.string.efectivo))
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -34,7 +35,7 @@ fun PaymentMethodSelector(
                     selected = selectedMethod == PaymentMethod.CARD,
                     onClick = { onMethodSelected(PaymentMethod.CARD) }
                 )
-                Text("Tarjeta")
+                Text(stringResource(R.string.tarjeta))
             }
         }
     }

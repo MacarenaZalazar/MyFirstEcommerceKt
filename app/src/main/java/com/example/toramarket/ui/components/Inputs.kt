@@ -7,7 +7,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.input.*
+import com.example.toramarket.R
 
 @Composable
 fun SimpleText(
@@ -93,7 +95,7 @@ fun PasswordField(
     password: String,
     onValueChange: (String) -> Unit,
     enabled: Boolean = true,
-    label: String = "Contraseña",
+    label: String = stringResource(R.string.contrase_a),
     error: (String) -> String?,
     trailingIcon: @Composable (() -> Unit)? = null
 ) {

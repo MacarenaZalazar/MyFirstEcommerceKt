@@ -6,9 +6,11 @@ import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.components.*
 import com.example.toramarket.ui.navigation.*
 import com.example.toramarket.utils.helpers.*
@@ -41,7 +43,7 @@ fun ForgotPassScreen(
             Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(16.dp)
+                .padding(dimensionResource(R.dimen.padding_16))
         ) {
             if (loading) {
                 CircularProgressIndicator(
@@ -51,8 +53,8 @@ fun ForgotPassScreen(
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Volver",
-                        modifier = Modifier.size(24.dp)
+                        contentDescription = stringResource(R.string.volver),
+                        modifier = Modifier.size(dimensionResource(R.dimen.padding_4))
                     )
                 }
                 Column(
@@ -62,8 +64,8 @@ fun ForgotPassScreen(
                 ) {
 
                     AppTitle()
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    Text("Actualizá tu contraseña:")
+                    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
+                    Text(stringResource(R.string.actualiz_tu_contrase_a))
                     Spacer(modifier = Modifier.padding(20.dp))
                     if (!user) {
                         EmailField(
@@ -71,12 +73,12 @@ fun ForgotPassScreen(
                             { viewModel.onEmailChange(it) },
                             error = { emailError(it) }
                         )
-                        Spacer(modifier = Modifier.padding(8.dp))
+                        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
                         Button(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = { viewModel.validateEmail() },
                             enabled = isEmailValid
-                        ) { Text("Siguiente") }
+                        ) { Text(stringResource(R.string.siguiente)) }
                     } else {
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
@@ -84,32 +86,32 @@ fun ForgotPassScreen(
                             onValueChange = {},
                             enabled = false,
                         )
-                        Spacer(modifier = Modifier.padding(8.dp))
+                        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
                         PasswordField(
                             password,
                             { viewModel.onPasswordChange(it, confirmPassword) },
                             error = { passwordError(it) }
                         )
-                        Spacer(modifier = Modifier.padding(8.dp))
+                        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
                         PasswordField(
                             confirmPassword,
                             { viewModel.onPasswordChange(password, it) },
                             error = { confirmPasswordError(password, it) },
-                            label = "Confirmar contraseña"
+                            label = stringResource(R.string.confirmar_contrase_a)
                         )
-                        Spacer(modifier = Modifier.padding(8.dp))
+                        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
                         UpdatePassButton(enabled = enabled) {
-                            viewModel.updatePassword({
+                            viewModel.updatePassword {
                                 navController.navigate(
                                     LogInScreenRoute
                                 )
-                            })
+                            }
                         }
-                        Spacer(modifier = Modifier.padding(8.dp))
+                        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
 
                         Button(modifier = Modifier.fillMaxWidth(), onClick = {
                             navController.popBackStack()
-                        }) { Text("Cancelar") }
+                        }) { Text(stringResource(R.string.cancelar)) }
                     }
                 }
             }
@@ -120,6 +122,6 @@ fun ForgotPassScreen(
 @Composable
 fun UpdatePassButton(enabled: Boolean, updatePass: () -> Unit) {
     Button(onClick = updatePass, enabled = enabled, modifier = Modifier.fillMaxWidth()) {
-        Text("Actualizar")
+        Text(stringResource(R.string.actualizar))
     }
 }

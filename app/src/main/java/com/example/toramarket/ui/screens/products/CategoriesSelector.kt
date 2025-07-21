@@ -5,7 +5,8 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.res.*
+import com.example.toramarket.R
 
 @Composable
 fun CategoriesSelector(
@@ -16,8 +17,8 @@ fun CategoriesSelector(
     LazyRow(
         Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+            .padding(bottom = dimensionResource(R.dimen.padding_8)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_4))
     ) {
         item {
             Button(
@@ -26,7 +27,10 @@ fun CategoriesSelector(
                     containerColor = if (selectedCategory == null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
                 )
             ) {
-                val text = if (selectedCategory == null) "Todos" else "Quitar filtro"
+                val text =
+                    if (selectedCategory == null) stringResource(R.string.todos) else stringResource(
+                        R.string.quitar_filtro
+                    )
                 Text(text)
             }
         }

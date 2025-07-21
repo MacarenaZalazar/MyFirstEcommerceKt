@@ -1,7 +1,7 @@
 package com.example.toramarket.domain.cart
 
 import com.example.toramarket.data.local.entity.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import javax.inject.*
 
 class AddToCartUseCase @Inject constructor(private val repository: CartRepository) {

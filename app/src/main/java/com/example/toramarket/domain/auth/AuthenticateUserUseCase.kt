@@ -1,7 +1,7 @@
 package com.example.toramarket.domain.auth
 
 import com.example.toramarket.data.remote.dto.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import retrofit2.*
 import javax.inject.*
 

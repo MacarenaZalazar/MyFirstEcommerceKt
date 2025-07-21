@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.*
 import com.example.toramarket.ui.components.*
 import com.example.toramarket.ui.navigation.*
@@ -27,7 +29,7 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.padding_16))
     ) {
 
         when (state) {
@@ -38,7 +40,8 @@ fun SplashScreen(
             }
 
             is UIState.Error -> Text(
-                "Ocurrió un error al cargar la aplicación", modifier = Modifier.align(
+                stringResource(R.string.ocurri_un_error_al_cargar_la_aplicaci_n),
+                modifier = Modifier.align(
                     Alignment.Center
                 )
             )
@@ -51,14 +54,14 @@ fun SplashScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp),
+                            .padding(dimensionResource(R.dimen.padding_16)),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
                         AppTitle()
                         Spacer(Modifier.padding(25.dp))
-                        LogInButton({ navController.navigate(LogInScreenRoute) })
-                        Spacer(modifier = Modifier.padding(16.dp))
+                        LogInButton { navController.navigate(LogInScreenRoute) }
+                        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
                         RegisterButton {
                             navController.navigate(LogInScreenRoute)
                         }
@@ -72,14 +75,14 @@ fun SplashScreen(
 @Composable
 fun LogInButton(onClick: () -> Unit) {
     Button(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
-        Text("Iniciá sesión")
+        Text(stringResource(R.string.inici_sesi_n))
     }
 }
 
 @Composable
 fun RegisterButton(onClick: () -> Unit) {
     Text(
-        "Registrate",
+        stringResource(R.string.registrate),
         Modifier.clickable { onClick() }, textDecoration = TextDecoration.Underline,
     )
 }

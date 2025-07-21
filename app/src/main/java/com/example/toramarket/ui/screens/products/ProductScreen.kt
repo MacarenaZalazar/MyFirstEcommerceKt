@@ -9,8 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.res.*
 import androidx.hilt.navigation.compose.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +52,7 @@ fun ProductScreen(
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                 topBar = {
                     CenterAlignedTopAppBar(
-                        title = { Text("Productos") },
+                        title = { Text(stringResource(R.string.productos)) },
                         actions = {
                             IconButton(onClick = { viewModel.loadProducts(true) }) {
                                 Icon(Icons.Default.Refresh, contentDescription = "Refresh")
@@ -63,20 +64,20 @@ fun ProductScreen(
                 Column(
                     modifier = Modifier
                         .padding(it)
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = dimensionResource(R.dimen.padding_16))
                 ) {
                     OutlinedTextField(
                         modifier = Modifier
-                            .padding(vertical = 8.dp)
+                            .padding(vertical = dimensionResource(R.dimen.padding_8))
                             .fillMaxWidth(),
                         value = filter,
                         onValueChange = { viewModel.onFilterChange(it) },
-                        label = { Text("Encontrá tu producto") },
+                        label = { Text(stringResource(R.string.encontr_tu_producto)) },
                         singleLine = true,
                         trailingIcon =
                             {
                                 Icon(
-                                    contentDescription = "buscar",
+                                    contentDescription = stringResource(R.string.buscar),
                                     imageVector = Icons.Outlined.Search, tint = Color.LightGray
                                 )
                             }
@@ -88,8 +89,8 @@ fun ProductScreen(
 
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        contentPadding = PaddingValues(vertical = dimensionResource(R.dimen.padding_8)),
+                        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_8))
                     ) {
                         items(products) { it ->
                             ProductItem(item = it, viewModel = viewModel)
@@ -104,7 +105,7 @@ fun ProductScreen(
             Scaffold(
                 topBar = {
                     CenterAlignedTopAppBar(
-                        title = { Text("Productos") },
+                        title = { Text(stringResource(R.string.productos)) },
                         actions = {
                             IconButton(onClick = { viewModel.loadProducts(true) }) {
                                 Icon(Icons.Default.Refresh, contentDescription = "Refresh")

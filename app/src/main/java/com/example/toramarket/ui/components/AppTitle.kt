@@ -15,7 +15,7 @@ fun AppTitle() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(dimensionResource(R.dimen.padding_16)),
         contentAlignment = Alignment.Center
     ) {
         Image(

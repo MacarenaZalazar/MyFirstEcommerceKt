@@ -5,8 +5,9 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.res.*
 import androidx.navigation.*
+import com.example.toramarket.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,12 +35,12 @@ fun CartScreen(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text("Mi carrito") },
+                    title = { Text(stringResource(R.string.mi_carrito)) },
                     actions = {
                         Button(
                             onClick = { viewModel.clearCart() },
                         ) {
-                            Text("Vaciar")
+                            Text(stringResource(R.string.vaciar))
                         }
                     }
                 )
@@ -55,8 +56,11 @@ fun CartScreen(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    contentPadding = PaddingValues(
+                        horizontal = dimensionResource(R.dimen.padding_16),
+                        vertical = dimensionResource(R.dimen.padding_16)
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_8))
                 ) {
                     items(cartItems) { it ->
                         CartItem(

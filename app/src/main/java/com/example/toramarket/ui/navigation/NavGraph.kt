@@ -36,11 +36,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<RegisterScreenRoute> {
             val viewModel = hiltViewModel<RegisterViewModel>()
-            RegisterScreen(viewModel = viewModel, toLogin = {
-                navController.navigate(
-                    LogInScreenRoute
-                ) { launchSingleTop = true }
-            })
+            RegisterScreen(viewModel = viewModel, navController)
         }
 
         composable<ProductsScreenRoute> {
@@ -66,7 +62,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<OrdersScreenRoute> {
             val viewModel = hiltViewModel<OrdersViewModel>()
-            OrdersScreen(viewModel)
+            OrdersScreen(viewModel, navController)
         }
 
 

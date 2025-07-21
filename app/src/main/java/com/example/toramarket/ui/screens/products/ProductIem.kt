@@ -13,8 +13,10 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.components.*
 import com.example.toramarket.utils.data.*
 
@@ -33,18 +35,20 @@ fun ProductItem(
             Column(
                 Modifier
                     .weight(0.5f)
-                    .padding(16.dp), verticalArrangement = Arrangement.Center
+                    .padding(dimensionResource(R.dimen.padding_16)),
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(item.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                Spacer(modifier = Modifier.padding(4.dp))
+                Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_4)))
                 Text(item.description)
-                Spacer(modifier = Modifier.padding(4.dp))
+                Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_4)))
                 Text("$${"%.2f".format(item.price)}", fontWeight = FontWeight.Bold)
             }
             Box(
                 modifier = Modifier
                     .size(150.dp)
-                    .padding(8.dp), contentAlignment = Alignment.Center
+                    .padding(dimensionResource(R.dimen.padding_8)),
+                contentAlignment = Alignment.Center
             ) {
                 if (item.image.startsWith("data:image")) {
                     LoadImage(
@@ -52,16 +56,16 @@ fun ProductItem(
                         modifier = Modifier
                             .fillMaxSize()
                             .align(Alignment.Center)
-                            .clip(RoundedCornerShape(16.dp)),
+                            .clip(RoundedCornerShape(dimensionResource(R.dimen.padding_16))),
                     )
                 } else {
                     LoadImage(
                         url = item.image,
-                        contentDescription = "Imagen",
+                        contentDescription = stringResource(R.string.imagen),
                         modifier = Modifier
                             .fillMaxSize()
                             .align(Alignment.Center)
-                            .clip(RoundedCornerShape(16.dp))
+                            .clip(RoundedCornerShape(dimensionResource(R.dimen.padding_16)))
                     )
                 }
 
@@ -82,20 +86,21 @@ fun AddToCartButton(
     Box(
         modifier = modifier
             .size(40.dp)
-            .shadow(4.dp, CircleShape)
+            .shadow(dimensionResource(R.dimen.padding_4), CircleShape)
             .background(MaterialTheme.colorScheme.primary, CircleShape)
             .clickable(enabled = !isLoading, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(18.dp), color = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.size(dimensionResource(R.dimen.padding_8)),
+                color = MaterialTheme.colorScheme.onPrimary,
                 strokeWidth = 2.dp
             )
         } else {
             Icon(
                 imageVector = Icons.Filled.Add,
-                contentDescription = "agregar",
+                contentDescription = stringResource(R.string.agregar),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }

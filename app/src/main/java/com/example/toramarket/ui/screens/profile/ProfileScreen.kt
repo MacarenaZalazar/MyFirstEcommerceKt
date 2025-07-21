@@ -6,13 +6,13 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
-import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.*
 import com.example.toramarket.ui.navigation.*
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +42,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), navController: 
         is UIState.Error -> {
             Scaffold(
                 topBar = {
-                    CenterAlignedTopAppBar({ Text("Mi Perfil") }, actions = {
+                    CenterAlignedTopAppBar({ Text(stringResource(R.string.mi_perfil)) }, actions = {
                         IconButton(onClick = { viewModel.getUser() }) {
                             Icon(Icons.Default.Refresh, contentDescription = "Refresh")
                         }
@@ -55,11 +55,11 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), navController: 
                 ) {
                     Column(
                         Modifier
-                            .padding(16.dp),
+                            .padding(dimensionResource(R.dimen.padding_16)),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(state.message, textAlign = TextAlign.Center)
-                        Spacer(modifier = Modifier.padding(16.dp))
+                        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
                         LogoutButton { viewModel.logOut { navController.navigate(SplashScreenRoute) } }
                     }
                 }
@@ -68,15 +68,15 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), navController: 
 
         is UIState.Success -> {
             Scaffold(
-                topBar = { CenterAlignedTopAppBar({ Text("Mi Perfil") }) },
+                topBar = { CenterAlignedTopAppBar({ Text(stringResource(R.string.mi_perfil)) }) },
                 snackbarHost = { SnackbarHost(snackbarHostState) }) { it ->
                 Column(
                     Modifier
                         .padding(it)
-                        .padding(16.dp)
+                        .padding(dimensionResource(R.dimen.padding_16))
                 ) {
-                    ProfileImage(viewModel, snackbarHostState)
-                    Spacer(Modifier.padding(8.dp))
+                    ProfileImage(viewModel)
+                    Spacer(Modifier.padding(dimensionResource(R.dimen.padding_8)))
                     ProfileForm(viewModel, navController)
                 }
             }

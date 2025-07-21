@@ -4,8 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.res.*
 import androidx.hilt.navigation.compose.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.components.*
 import com.example.toramarket.utils.helpers.*
 
@@ -22,14 +23,14 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.padding_16))
     ) {
         Text(
-            "Por favor, ingresá los datos de tu tarjeta",
+            stringResource(R.string.por_favor_ingres_los_datos_de_tu_tarjeta),
             style = MaterialTheme.typography.titleMedium
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_16)))
 
         SimpleText(
             value = number,
@@ -43,11 +44,11 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
             },
             enabled = true,
             error = { validateCardNumber(it) },
-            label = "Número de la tarjeta",
+            label = stringResource(R.string.n_mero_de_la_tarjeta),
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_8)))
 
         SimpleText(
             value = name,
@@ -61,12 +62,12 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
             },
             enabled = true,
             error = { validateName(it) },
-            label = "Nombre (como figura en la tarjeta",
+            label = stringResource(R.string.nombre_como_figura_en_la_tarjeta),
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_8)))
+        Row(horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_8))) {
 
             SimpleText(
                 value = expiration,
@@ -80,11 +81,11 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
                 },
                 enabled = true,
                 error = { validateExpiration(it) },
-                label = "MM/YY",
+                label = stringResource(R.string.mm_yy),
                 modifier = Modifier.weight(0.5f),
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_8)))
 
             SimpleText(
                 value = cvv,
@@ -97,7 +98,7 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
                     )
                 },
                 error = { validateCcv(it, cardType) },
-                label = "CCV",
+                label = stringResource(R.string.ccv),
                 modifier = Modifier.weight(0.5f)
             )
         }

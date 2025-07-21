@@ -1,7 +1,7 @@
 package com.example.toramarket.di
 
 import com.example.toramarket.data.repository.implementation.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import dagger.*
 import dagger.hilt.*
 import dagger.hilt.components.*

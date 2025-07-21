@@ -2,7 +2,7 @@ package com.example.toramarket.data.repository.implementation
 
 import com.example.toramarket.data.local.dao.*
 import com.example.toramarket.data.local.entity.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import kotlinx.coroutines.flow.*
 import javax.inject.*
 

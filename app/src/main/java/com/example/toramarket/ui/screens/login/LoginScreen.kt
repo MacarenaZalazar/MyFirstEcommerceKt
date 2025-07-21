@@ -7,13 +7,14 @@ import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.components.*
 import com.example.toramarket.ui.navigation.*
 import com.example.toramarket.utils.helpers.*
-
 
 @Composable
 fun LoginScreen(
@@ -30,7 +31,7 @@ fun LoginScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .padding(16.dp), contentAlignment = Alignment.Center
+            .padding(dimensionResource(R.dimen.padding_16)), contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(
@@ -43,8 +44,8 @@ fun LoginScreen(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Volver",
-                    modifier = Modifier.size(24.dp)
+                    contentDescription = stringResource(R.string.volver),
+                    modifier = Modifier.size(dimensionResource(R.dimen.padding_4))
                 )
             }
             Column(
@@ -65,23 +66,23 @@ fun LoginScreen(
                             )
                         },
                         error = { emailError(it) })
-                    Spacer(modifier = Modifier.padding(16.dp))
+                    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
                     PasswordField(
                         password = password,
                         onValueChange = { viewModel.onLoginChange(email = email, password = it) },
                         error = { passwordError(it) }
                     )
-                    Spacer(modifier = Modifier.padding(8.dp))
+                    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
                     ForgotPassword(
-                        modifier = Modifier.align(Alignment.End),
-                        { navController.navigate(ForgotPassScreenRoute) })
-                    Spacer(modifier = Modifier.padding(16.dp))
+                        modifier = Modifier.align(Alignment.End)
+                    ) { navController.navigate(ForgotPassScreenRoute) }
+                    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
                     LoginButton(enabled) {
-                        viewModel.logIn({
+                        viewModel.logIn {
                             navController.navigate(ProductsScreenRoute) {
                                 launchSingleTop = true
                             }
-                        })
+                        }
                     }
                 }
             }
@@ -92,7 +93,9 @@ fun LoginScreen(
 
 @Composable
 fun ForgotPassword(modifier: Modifier, forgotPass: () -> Unit) {
-    Text("¿Olvidaste tu contraseña?", modifier = modifier.clickable { forgotPass() })
+    Text(
+        stringResource(R.string.olvidaste_tu_contrase_a),
+        modifier = modifier.clickable { forgotPass() })
 }
 
 
@@ -101,7 +104,7 @@ fun LoginButton(enabled: Boolean, logIn: () -> Unit) {
     Button(
         onClick = { logIn() }, enabled = enabled, modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Ingresar")
+        Text(stringResource(R.string.ingresar))
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.toramarket.data.repository.interfaces
+package com.example.toramarket.domain.repository
 
 import com.example.toramarket.data.remote.dto.*
 

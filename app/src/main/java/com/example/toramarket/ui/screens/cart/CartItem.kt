@@ -10,8 +10,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
+import com.example.toramarket.R
 import com.example.toramarket.data.local.entity.*
 
 @Composable
@@ -21,16 +23,19 @@ fun CartItem(
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.Center) {
+            Column(
+                Modifier.padding(dimensionResource(R.dimen.padding_16)),
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(item.product.name, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.padding(8.dp))
+                Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
                 Text("$${"%.2f".format(item.product.price)}", fontWeight = FontWeight.Bold)
             }
 
             Box(
                 modifier = Modifier
                     .widthIn(min = 120.dp)
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = dimensionResource(R.dimen.padding_16))
                     .clip(RoundedCornerShape(50))
                     .align(
                         Alignment.CenterVertically
@@ -45,11 +50,14 @@ fun CartItem(
                         onClick = { viewModel.removeFromCart(item.product.id) },
                     ) {
                         if (item.cartItem.quantity > 1) {
-                            Icon(imageVector = Icons.Filled.Remove, contentDescription = "agregar")
+                            Icon(
+                                imageVector = Icons.Filled.Remove,
+                                contentDescription = stringResource(R.string.agregar)
+                            )
                         } else {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
-                                contentDescription = "eliminar"
+                                contentDescription = stringResource(R.string.eliminar)
                             )
                         }
                     }
@@ -58,7 +66,10 @@ fun CartItem(
                         onClick = { viewModel.addToCart(item.product.id) },
 
                         ) {
-                        Icon(imageVector = Icons.Filled.Add, contentDescription = "agregar")
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = stringResource(R.string.agregar)
+                        )
                     }
                 }
             }

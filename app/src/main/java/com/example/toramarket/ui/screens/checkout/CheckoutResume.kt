@@ -4,8 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
-import androidx.compose.ui.unit.*
+import com.example.toramarket.R
 import com.example.toramarket.utils.data.*
 import com.example.toramarket.utils.helpers.*
 
@@ -14,16 +15,19 @@ fun CheckoutResume(order: Order) {
     Card(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.padding_16))
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(dimensionResource(R.dimen.padding_16))
 
         ) {
-            Text("Resumen del pedido", style = MaterialTheme.typography.headlineSmall)
-            Spacer(Modifier.padding(8.dp))
+            Text(
+                stringResource(R.string.resumen_del_pedido),
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(Modifier.padding(dimensionResource(R.dimen.padding_8)))
 
             Column {
                 order.items.forEach { it ->
@@ -34,23 +38,23 @@ fun CheckoutResume(order: Order) {
                     )
                 }
             }
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = dimensionResource(R.dimen.padding_8)))
 
             Row(
                 Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Costo de servicio", fontWeight = FontWeight.Bold)
-                Text("$50.00", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.costo_de_servicio), fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string._50_00), fontWeight = FontWeight.Bold)
             }
             Row(
                 Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Costo de envío", fontWeight = FontWeight.Bold)
-                Text("$100.00", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.costo_de_env_o), fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string._100_00), fontWeight = FontWeight.Bold)
             }
 
             Row(
@@ -58,7 +62,7 @@ fun CheckoutResume(order: Order) {
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Total:", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.total), fontWeight = FontWeight.Bold)
                 Text("$${"%.2f".format(totalPrice(order.total))}", fontWeight = FontWeight.Bold)
             }
         }

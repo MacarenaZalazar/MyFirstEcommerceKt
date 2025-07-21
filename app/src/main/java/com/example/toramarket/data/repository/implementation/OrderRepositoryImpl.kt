@@ -2,7 +2,7 @@ package com.example.toramarket.data.repository.implementation
 
 import com.example.toramarket.data.remote.api.*
 import com.example.toramarket.data.remote.dto.*
-import com.example.toramarket.data.repository.interfaces.*
+import com.example.toramarket.domain.repository.*
 import javax.inject.*
 
 class OrderRepositoryImpl @Inject constructor(private val service: OrderService) : OrderRepository {

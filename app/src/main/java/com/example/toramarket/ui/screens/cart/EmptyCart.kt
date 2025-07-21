@@ -10,25 +10,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.navigation.*
-
 
 @Composable
 fun EmptyCart(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp), contentAlignment = Alignment.Center
+            .padding(dimensionResource(R.dimen.padding_16)), contentAlignment = Alignment.Center
     ) {
         Column(
             Modifier.align(alignment = Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Tu carrito se encuentra vacío!", fontSize = 25.sp)
-            Spacer(modifier = Modifier.padding(16.dp))
+            Text(stringResource(R.string.tu_carrito_se_encuentra_vac_o), fontSize = 25.sp)
+            Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -36,19 +37,19 @@ fun EmptyCart(navController: NavController) {
                     .background(
                         Color.LightGray
                     )
-                    .padding(16.dp)
+                    .padding(dimensionResource(R.dimen.padding_16))
             ) {
 
                 Icon(
                     imageVector = Icons.Sharp.ShoppingCart,
-                    contentDescription = "carrito vacío",
+                    contentDescription = stringResource(R.string.carrito_vac_o),
                     tint = Color.White,
                     modifier = Modifier.size(100.dp),
                 )
             }
-            Spacer(modifier = Modifier.padding(16.dp))
-            Text("Sumá productos y comenzá tu compra.")
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
+            Text(stringResource(R.string.sum_productos_y_comenz_tu_compra))
+            Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_16)))
             Button(
                 onClick = {
                     navController.navigate(ProductsScreenRoute) {
@@ -59,7 +60,7 @@ fun EmptyCart(navController: NavController) {
                     .padding(horizontal = 12.dp)
                     .fillMaxWidth()
             ) {
-                Text("Buscar productos")
+                Text(stringResource(R.string.buscar_productos))
             }
         }
     }

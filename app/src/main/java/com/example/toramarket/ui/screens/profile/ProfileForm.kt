@@ -7,8 +7,9 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.res.*
 import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.components.*
 import com.example.toramarket.ui.navigation.*
 import com.example.toramarket.utils.helpers.*
@@ -26,7 +27,7 @@ fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
     SimpleText(
         value = name,
         onChange = { viewModel.onRegisterChange(it) },
-        label = "Nombre completo",
+        label = stringResource(R.string.nombre_completo),
         enabled = editName,
         error = { validateName(it) },
         modifier = Modifier.fillMaxWidth(),
@@ -35,7 +36,7 @@ fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
                 IconButton(onClick = { viewModel.toggleEditName() }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Editar"
+                        contentDescription = stringResource(R.string.editar)
                     )
                 }
             }
@@ -43,40 +44,40 @@ fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
         }
 
     )
-    Spacer(modifier = Modifier.padding(8.dp))
+    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
     EmailField(
         email,
         enabled = false,
         onValueChange = {},
         error = { emailError(it) },
     )
-    Spacer(modifier = Modifier.padding(8.dp))
+    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
     PasswordField(
         password,
         enabled = editPassword,
         onValueChange = { viewModel.onRegisterChange(it, confirmPassword) },
-        label = "Nueva contraseña",
+        label = stringResource(R.string.nueva_contrase_a),
         error = { passwordError(it) },
         trailingIcon = {
             if (!editPassword) {
                 IconButton(onClick = { viewModel.toggleEditPassword() }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Editar"
+                        contentDescription = stringResource(R.string.editar)
                     )
                 }
             }
         },
     )
 
-    Spacer(modifier = Modifier.padding(8.dp))
+    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
     if (editPassword) {
         PasswordField(
             confirmPassword,
             { viewModel.onRegisterChange(password, it) },
-            label = "Confirmar contraseña",
+            label = stringResource(R.string.confirmar_contrase_a),
             error = { confirmPasswordError(password, it) })
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
         UpdateButton(isFormValid) { viewModel.updatePassword() }
 
     }
@@ -86,14 +87,14 @@ fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
 
     }
 
-    Spacer(modifier = Modifier.padding(8.dp))
+    Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_8)))
     if (!editPassword && !editName) {
         LogoutButton {
-            viewModel.logOut({
+            viewModel.logOut {
                 navController.navigate(
                     SplashScreenRoute
                 )
-            })
+            }
         }
     } else {
         Button(
@@ -101,15 +102,16 @@ fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text("Cancelar")
+            Text(stringResource(R.string.cancelar))
         }
     }
+
 }
 
 @Composable
 fun UpdateButton(enabled: Boolean, onClick: () -> Unit) {
     Button(onClick = onClick, modifier = Modifier.fillMaxWidth(), enabled = enabled) {
-        Text("Actualizar")
+        Text(stringResource(R.string.actualizar))
     }
 }
 
@@ -120,11 +122,11 @@ fun LogoutButton(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Text("Cerrar sesión")
+        Text(stringResource(R.string.cerrar_sesi_n))
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.Logout,
             contentDescription = "LogOut",
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_8))
         )
     }
 }

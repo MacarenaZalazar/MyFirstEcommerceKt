@@ -8,9 +8,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
+import com.example.toramarket.R
 import com.example.toramarket.ui.*
 import com.example.toramarket.ui.navigation.*
 import com.example.toramarket.utils.helpers.*
@@ -46,7 +48,7 @@ fun CheckoutScreen(
                         popUpTo(ProductsScreenRoute) { inclusive = true }
                     }
                 }) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             }
         )
@@ -57,7 +59,11 @@ fun CheckoutScreen(
             Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .padding(
+                        top = dimensionResource(R.dimen.padding_16),
+                        start = dimensionResource(R.dimen.padding_16),
+                        end = dimensionResource(R.dimen.padding_16)
+                    )
             ) {
                 CircularProgressIndicator(
                     Modifier.align(Alignment.Center)
@@ -68,8 +74,8 @@ fun CheckoutScreen(
         is UIState.Success -> {
             Scaffold(topBar = {
                 CenterAlignedTopAppBar(
-                    modifier = Modifier.shadow(4.dp),
-                    title = { Text("Confirmá tu pedido") },
+                    modifier = Modifier.shadow(dimensionResource(R.dimen.padding_4)),
+                    title = { Text(stringResource(R.string.confirm_tu_pedido)) },
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
@@ -79,7 +85,7 @@ fun CheckoutScreen(
                         }
                     })
             }, bottomBar = {
-                BottomAppBar(tonalElevation = 4.dp) {
+                BottomAppBar(tonalElevation = dimensionResource(R.dimen.padding_4)) {
                     Button(
                         onClick = { viewModel.pay() },
                         enabled = isValid,
@@ -87,7 +93,7 @@ fun CheckoutScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp)
                     ) {
-                        Text("Pedir ahora")
+                        Text(stringResource(R.string.pedir_ahora))
                     }
                 }
             }) { it ->
