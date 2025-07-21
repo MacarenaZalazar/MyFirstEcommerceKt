@@ -11,13 +11,14 @@ import androidx.compose.ui.text.input.*
 
 @Composable
 fun SimpleText(
+    modifier: Modifier = Modifier,
     value: String,
     onChange: (String) -> Unit,
     label: String = "",
     enabled: Boolean = true,
     placeholder: String = "",
     error: (String) -> String?,
-    trailingIcon: @Composable (() -> Unit)? = null
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -34,7 +35,7 @@ fun SimpleText(
     OutlinedTextField(
         value = value,
         onValueChange = onChange,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         label = { Text(label) },
         singleLine = true,
         enabled = enabled,

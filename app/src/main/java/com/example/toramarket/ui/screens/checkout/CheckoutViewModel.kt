@@ -31,16 +31,19 @@ class CheckoutViewModel @Inject constructor(
     private val _number = MutableStateFlow<String>("")
     val number: MutableStateFlow<String> = _number
 
+    private val _cardType = MutableStateFlow<CardType>(CardType.UNKNOWN)
+    val cardType: MutableStateFlow<CardType> = _cardType
+
     private val _name = MutableStateFlow<String>("")
     val name: MutableStateFlow<String> = _name
 
     private val _expiration = MutableStateFlow<String>("")
     val expiration: MutableStateFlow<String> = _expiration
 
-    private val _ccv = MutableStateFlow<String>("")
-    val ccv: MutableStateFlow<String> = _ccv
+    private val _cvv = MutableStateFlow<String>("")
+    val cvv: MutableStateFlow<String> = _cvv
 
-    private val _isValid = MutableStateFlow<Boolean>(true)
+    private val _isValid = MutableStateFlow<Boolean>(false)
     val isValid: MutableStateFlow<Boolean> = _isValid
 
     private val _success = MutableStateFlow<Boolean>(true)
@@ -78,12 +81,16 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
-    fun onChange(cardNumber: String, cardName: String, expiration: String, ccv: String) {
+    fun onChange(cardNumber: String, cardName: String, expiration: String, cvv: String) {
         _number.value = cardNumber
+        _cardType.value = detectCardType(cardNumber)
         _name.value = cardName
         _expiration.value = expiration
-        _ccv.value = ccv
-        _isValid.value = isValidCard(cardNumber)
+        _cvv.value = cvv
+        _isValid.value =
+            isValidCard(cardNumber) && isValidCVV(cvv, _cardType.value) && isValidExpiryDate(
+                expiration
+            ) && isValidName(cardName)
 
     }
 

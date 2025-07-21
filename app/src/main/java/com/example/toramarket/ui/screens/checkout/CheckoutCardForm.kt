@@ -6,6 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
+import com.example.toramarket.ui.components.*
+import com.example.toramarket.utils.helpers.*
 
 @Composable
 fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
@@ -13,7 +15,9 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
     val name by viewModel.name.collectAsState()
     val number by viewModel.number.collectAsState()
     val expiration by viewModel.expiration.collectAsState()
-    val ccv by viewModel.ccv.collectAsState()
+    val cvv by viewModel.cvv.collectAsState()
+
+    val cardType by viewModel.cardType.collectAsState()
 
     Column(
         modifier = Modifier
@@ -27,58 +31,64 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
+        SimpleText(
             value = number,
-            onValueChange = {
+            onChange = {
                 viewModel.onChange(
                     it,
                     name,
                     expiration,
-                    ccv
+                    cvv
                 )
             },
-            label = { Text("Número de la tarjeta") },
+            enabled = true,
+            error = { validateCardNumber(it) },
+            label = "Número de la tarjeta",
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
+        SimpleText(
             value = name,
-            onValueChange = {
+            onChange = {
                 viewModel.onChange(
                     number,
                     it,
                     expiration,
-                    ccv
+                    cvv
                 )
             },
-            label = { Text("Nombre (como figura en la tarjeta)") },
+            enabled = true,
+            error = { validateName(it) },
+            label = "Nombre (como figura en la tarjeta",
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 
-            OutlinedTextField(
+            SimpleText(
                 value = expiration,
-                onValueChange = {
+                onChange = {
                     viewModel.onChange(
                         number,
                         name,
-                        it,
-                        ccv
+                        formatExpiryInput(it),
+                        cvv
                     )
                 },
-                label = { Text("MM/YY") },
-                modifier = Modifier.weight(0.5f)
+                enabled = true,
+                error = { validateExpiration(it) },
+                label = "MM/YY",
+                modifier = Modifier.weight(0.5f),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = ccv,
-                onValueChange = {
+            SimpleText(
+                value = cvv,
+                onChange = {
                     viewModel.onChange(
                         number,
                         name,
@@ -86,7 +96,8 @@ fun CheckoutCardForm(viewModel: CheckoutViewModel = hiltViewModel()) {
                         it
                     )
                 },
-                label = { Text("CCV") },
+                error = { validateCcv(it, cardType) },
+                label = "CCV",
                 modifier = Modifier.weight(0.5f)
             )
         }

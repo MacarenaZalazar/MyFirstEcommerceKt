@@ -29,6 +29,7 @@ fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
         label = "Nombre completo",
         enabled = editName,
         error = { validateName(it) },
+        modifier = Modifier.fillMaxWidth(),
         trailingIcon = {
             if (!editName) {
                 IconButton(onClick = { viewModel.toggleEditName() }) {

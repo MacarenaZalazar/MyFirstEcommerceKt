@@ -45,13 +45,3 @@ fun validateName(value: String): String? {
     if (words.size < 2) "Debe ingresar al menos dos palabras"
     return null
 }
-
-fun isValidCard(card: String): Boolean {
-    val regex = Regex("^\\d{4} \\d{4} \\d{4} \\d{4}\$")
-    //return regex.matches(card)
-    return true
-}
-
-fun detectCardType(card: String) {
-
-}
