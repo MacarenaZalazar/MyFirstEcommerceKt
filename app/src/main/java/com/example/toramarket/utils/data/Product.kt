@@ -1,6 +1,6 @@
 package com.example.toramarket.utils.data
 
-open class Product(
+data class Product(
     val id: String,
     val name: String,
     val description: String,
