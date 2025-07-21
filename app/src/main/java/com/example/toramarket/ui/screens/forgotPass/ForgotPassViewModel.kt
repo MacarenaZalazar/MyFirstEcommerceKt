@@ -76,14 +76,13 @@ class ForgotPassViewModel @Inject constructor(
 
     fun updatePassword(toLogin: () -> Unit) {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 updateUserPasswordUseCase.invoke(email = _email.value, password = _password.value)
                 _snackbarMessage.emit("Contraseña actualizada correctamente")
             } catch (e: IOException) {
                 _snackbarMessage.emit("Ocurrió un error actualizar la contraseña: ${e.message ?: "desconocido"}")
             }
-            _isLoading.value = true
-            delay(4000)
             _success.value = true
             toLogin()
         }

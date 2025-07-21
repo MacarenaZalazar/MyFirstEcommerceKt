@@ -44,7 +44,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `getUser updates state to Success when user is found`() = runTest {
+    fun `getUser actualiza el estado a Success cuando se encuentra el usuario`() = runTest {
         val user = UserDto("1", "test@mail.com", "Test User", "imgUrl")
         coEvery { getUserEmailUseCase.invoke() } returns "test@mail.com"
         coEvery { getUserByEmailUseCase.invoke("test@mail.com") } returns Response.success(user)
@@ -60,7 +60,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `getUser sets UIState Error if email is empty`() = runTest {
+    fun `getUser setea UIState Error si el email está vacío`() = runTest {
         coEvery { getUserEmailUseCase.invoke() } returns ""
 
         viewModel.getUser()
@@ -74,7 +74,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `getUser sets UIState Error if user not found`() = runTest {
+    fun `getUser setea UIState Error si no se encuentra el usuario`() = runTest {
         coEvery { getUserEmailUseCase.invoke() } returns "test@mail.com"
         coEvery { getUserByEmailUseCase.invoke("test@mail.com") } returns Response.success(null)
 
@@ -85,7 +85,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `getUser sets UIState Error on IOException`() = runTest {
+    fun `getUser setea UIState Error en IOException`() = runTest {
         coEvery { getUserEmailUseCase.invoke() } returns "test@mail.com"
         coEvery { getUserByEmailUseCase.invoke("test@mail.com") } throws IOException()
 
@@ -100,7 +100,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `updateName emits snackbar and updates state on success`() = runTest {
+    fun `updateName emite snackbar y actualiza el estado a success`() = runTest {
         val user = UserDto("1", "mail@mail.com", "New Name", "imgUrl")
         viewModel.name.value = "New Name"
         viewModel.email.value = "mail@mail.com"
@@ -125,7 +125,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `updateName emits error snackbar on IOException`() = runTest {
+    fun `updateName emite error snackbar en IOException`() = runTest {
         viewModel.name.value = "New Name"
         viewModel.email.value = "mail@mail.com"
         coEvery { updateUserNameUseCase.invoke(any(), any()) } throws IOException()
@@ -143,14 +143,14 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `toggleEditName sets editName true and editPassword false`() {
+    fun `toggleEditName setea editName true y editPassword false`() {
         viewModel.toggleEditName()
         Assert.assertTrue(viewModel.editName.value)
         Assert.assertFalse(viewModel.editPassword.value)
     }
 
     @Test
-    fun `toggleEditPassword sets editPassword true, editName false and resets password`() {
+    fun `toggleEditPassword setea editPassword true, editName false y resetea password`() {
         viewModel.toggleEditPassword()
         Assert.assertTrue(viewModel.editPassword.value)
         Assert.assertFalse(viewModel.editName.value)
@@ -158,7 +158,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `cancelEdit disables edit flags and resets password`() {
+    fun `cancelEdit deshabilita editar flags y resetea la password`() {
         viewModel.cancelEdit()
         Assert.assertFalse(viewModel.editName.value)
         Assert.assertFalse(viewModel.editPassword.value)
@@ -166,18 +166,16 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `onRegisterChange name updates isFormValid`() {
+    fun `onRegisterChange nombre actualiza isFormValid`() {
         viewModel.onRegisterChange("Valid Name")
         Assert.assertEquals("Valid Name", viewModel.name.value)
     }
 
     @Test
-    fun `onRegisterChange password updates isFormValid`() {
+    fun `onRegisterChange password actualiza isFormValid`() {
         viewModel.onRegisterChange("pass", "pass")
         Assert.assertEquals("pass", viewModel.password.value)
         Assert.assertEquals("pass", viewModel.confirmPassword.value)
 
     }
-
-
 }

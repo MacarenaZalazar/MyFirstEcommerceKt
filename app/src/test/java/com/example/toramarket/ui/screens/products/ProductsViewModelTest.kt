@@ -42,13 +42,13 @@ class ProductsViewModelTest {
     }
 
     @Test
-    fun `onFilterChange updates filter value`() {
+    fun `onFilterChange actualiza el valor de filter`() {
         viewModel.onFilterChange("abc")
         Assert.assertEquals("abc", viewModel.filter)
     }
 
     @Test
-    fun `filteredProducts returns filtered list by category and name`() {
+    fun `filteredProducts retorna una lista filtrada por categoría y nombre`() {
         val products = listOf(
             Product(
                 id = "1",
@@ -85,7 +85,7 @@ class ProductsViewModelTest {
     }
 
     @Test
-    fun `loadProducts sets UIState Success on success`() = runTest {
+    fun `loadProducts setea UIState Success en success`() = runTest {
         val products = listOf(
             Product(
                 id = "1",
@@ -106,7 +106,7 @@ class ProductsViewModelTest {
     }
 
     @Test
-    fun `loadProducts sets UIState Error on IOException`() = runTest {
+    fun `loadProducts setea UIState Error en IOException`() = runTest {
         coEvery { getProductsUseCase.invoke(any()) } throws IOException()
 
         viewModel.loadProducts()
@@ -117,7 +117,7 @@ class ProductsViewModelTest {
     }
 
     @Test
-    fun `loadProducts sets UIState Error on HttpException`() = runTest {
+    fun `loadProducts setea UIState Error en HttpException`() = runTest {
         val httpException = mockk<HttpException> {
             every { message } returns "Error 500"
         }
@@ -130,7 +130,7 @@ class ProductsViewModelTest {
     }
 
     @Test
-    fun `addToCart emits success message`() = runTest {
+    fun `addToCart emite mensaje de success`() = runTest {
         coEvery { addToCartUseCase.invoke("1") } throws Exception("fallo")
 
         var msg: String? = null
@@ -150,27 +150,20 @@ class ProductsViewModelTest {
     }
 
     @Test
-    fun `addToCart emits error message on exception`() = runTest {
+    fun `addToCart emite mensaje de error message en exception`() = runTest {
         coEvery { addToCartUseCase.invoke("1") } throws Exception("fallo")
 
         viewModel.addToCart("1")
         advanceUntilIdle()
-        @Test
-        fun `addToCart emits error message on exception`() = runTest {
-            coEvery { addToCartUseCase.invoke("1") } throws Exception("fallo")
 
-            viewModel.addToCart("1")
-            advanceUntilIdle()
-
-            val msg = viewModel.snackbarMessage.first()
-            Assert.assertTrue(msg.contains("Error al agregar al carrito"))
-            Assert.assertFalse(viewModel.isItemLoading("1"))
-        }
-
+        val msg = viewModel.snackbarMessage.first()
+        Assert.assertTrue(msg.contains("Error al agregar al carrito"))
+        Assert.assertFalse(viewModel.isItemLoading("1"))
     }
 
+
     @Test
-    fun `isItemLoading returns correct loading state`() = runTest {
+    fun `isItemLoading retorna un loading state`() = runTest {
         coEvery { addToCartUseCase.invoke("1") } coAnswers {
             delay(100)
         }
