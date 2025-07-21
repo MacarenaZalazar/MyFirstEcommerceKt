@@ -45,7 +45,7 @@ fun LoginScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.volver),
-                    modifier = Modifier.size(dimensionResource(R.dimen.padding_4))
+                    modifier = Modifier.size(24.dp)
                 )
             }
             Column(
