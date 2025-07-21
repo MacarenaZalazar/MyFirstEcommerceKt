@@ -6,7 +6,6 @@ import com.example.toramarket.data.remote.dto.*
 import com.example.toramarket.data.repository.interfaces.*
 import kotlinx.coroutines.flow.*
 import retrofit2.*
-import retrofit2.http.*
 import javax.inject.*
 
 class UserRepositoryImpl @Inject constructor(
@@ -19,8 +18,11 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserByEmail(email: String): Response<UserDto> =
         api.getUserByEmail(email)
 
-    override suspend fun updateProfile(@Body request: UserDto): Response<UserDto> =
-        api.updateProfile(email = request.email, request = request)
+    override suspend fun updateName(email: String, request: UpdateNameDto): Response<UserDto> =
+        api.updateName(email, request)
+
+    override suspend fun updatePassword(email: String, request: UpdatePassDto): Response<UserDto> =
+        api.updatePassword(email, request)
 
     override suspend fun updateProfileImg(email: String, request: UserImgDto): Response<UserDto> =
         api.updateProfileImg(email, request)

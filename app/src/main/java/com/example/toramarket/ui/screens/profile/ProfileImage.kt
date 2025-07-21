@@ -33,8 +33,6 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
     var permissionsGranted by remember { mutableStateOf(false) }
     val photoUri = remember { mutableStateOf<Uri?>(null) }
 
-    val edit by viewModel.edit.collectAsState()
-
     val image by viewModel.image.collectAsState()
 
     val requestPermissionsLauncher = rememberLauncherForActivityResult(
@@ -105,40 +103,38 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
         }
     }
 
-    if (!edit) {
-
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .size(100.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .align(Alignment.CenterHorizontally)
+                .clickable(onClick = { showSheet = true }),
+            contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-                    .align(Alignment.CenterHorizontally)
-                    .clickable(onClick = { showSheet = true }),
-                contentAlignment = Alignment.Center
-            ) {
-                if (image.isNotEmpty()) {
-                    AsyncImage(
-                        model = image,
-                        modifier = Modifier
-                            .size(100.dp),
-                        contentDescription = "Imagen subida", contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Image(
-                        imageVector = Icons.Filled.CameraAlt,
-                        contentDescription = "Imagen subida",
-                        colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
-                        modifier = Modifier
-                            .size(60.dp)
+            if (image.isNotEmpty()) {
+                AsyncImage(
+                    model = image,
+                    modifier = Modifier
+                        .size(100.dp),
+                    contentDescription = "Imagen subida", contentScale = ContentScale.Crop
+                )
+            } else {
+                Image(
+                    imageVector = Icons.Filled.CameraAlt,
+                    contentDescription = "Imagen subida",
+                    colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
+                    modifier = Modifier
+                        .size(60.dp)
 
-                    )
-                }
+                )
             }
         }
+
     }
 
     if (showSheet) {

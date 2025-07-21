@@ -5,6 +5,7 @@ import android.util.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import coil.network.*
+import com.example.toramarket.data.remote.dto.*
 import com.example.toramarket.domain.image.*
 import com.example.toramarket.domain.user.*
 import com.example.toramarket.ui.*
@@ -18,7 +19,8 @@ import javax.inject.*
 @HiltViewModel()
 class ProfileViewModel @Inject constructor(
     private val getUserByEmailUseCase: GetUserByEmailUseCase,
-    private val updateUserUseCase: UpdateUserUseCase,
+    private val updateUserNameUseCase: UpdateUserNameUseCase,
+    private val updateUserPasswordUseCase: UpdateUserPasswordUseCase,
     private val updateUserImgUseCase: UpdateUserImgUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
     private val getUserEmailUseCase: GetUserEmailUseCase,
@@ -26,6 +28,7 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     var uiState by mutableStateOf<UIState<Boolean>>(UIState.Loading)
 
+    private val _profile = MutableStateFlow<UserDto?>(null)
     private val _name = MutableStateFlow<String>("")
     val name: MutableStateFlow<String> = _name
 
@@ -41,8 +44,11 @@ class ProfileViewModel @Inject constructor(
     private val _image = MutableStateFlow<String>("")
     val image: MutableStateFlow<String> = _image
 
-    private val _edit = MutableStateFlow<Boolean>(false)
-    val edit: MutableStateFlow<Boolean> = _edit
+    private val _editName = MutableStateFlow<Boolean>(false)
+    val editName: MutableStateFlow<Boolean> = _editName
+
+    private val _editPassword = MutableStateFlow<Boolean>(false)
+    val editPassword: MutableStateFlow<Boolean> = _editPassword
 
     private val _isFormValid = MutableStateFlow<Boolean>(false)
     val isFormValid: MutableStateFlow<Boolean> = _isFormValid
@@ -68,6 +74,8 @@ class ProfileViewModel @Inject constructor(
                         _name.value = profile.fullName
                         _email.value = profile.email
                         _password.value = "********"
+
+                        _profile.value = profile
                         uiState = UIState.Success(true)
                     }
                 }
@@ -82,17 +90,31 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun toggleEditProfile() {
-        _edit.value = !_edit.value
-        _password.value = if (_edit.value) "" else "********"
+    fun toggleEditName() {
+        _editPassword.value = false
+        _editName.value = true
     }
 
-    fun updateProfile() {
+    fun toggleEditPassword() {
+        _editName.value = false
+        _editPassword.value = true
+        _name.value = _profile.value?.fullName ?: ""
+        _password.value = ""
+    }
+
+    fun cancelEdit() {
+        _editName.value = false
+        _editPassword.value = false
+        _password.value = "********"
+    }
+
+
+    fun updatePassword() {
         viewModelScope.launch {
             try {
                 uiState = UIState.Loading
-                val updated = updateUserUseCase.invoke(
-                    _email.value, _name.value, hashPasswordSHA256(_password.value), null
+                val updated = updateUserPasswordUseCase.invoke(
+                    _email.value, hashPasswordSHA256(_password.value)
                 )
                 val data = updated.body()
                 if (data != null) {
@@ -102,9 +124,9 @@ class ProfileViewModel @Inject constructor(
                     _password.value = "********"
                     _confirmPassword.value = ""
                     _confirmPassword.value = ""
-                    _edit.value = false
+                    _editPassword.value = false
                 }
-                _snackbarMessage.emit("Perfil actualizado correctamente")
+                _snackbarMessage.emit("Contraseña actualizada correctamente")
             } catch (e: IOException) {
                 _snackbarMessage.emit("Sin conexión a internet")
             } catch (e: HttpException) {
@@ -118,13 +140,50 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun onRegisterChange(name: String, email: String, password: String, confirmPassword: String) {
+    fun updateName() {
+        viewModelScope.launch {
+            try {
+                uiState = UIState.Loading
+                val updated = updateUserNameUseCase.invoke(
+                    _email.value, _name.value
+                )
+                val data = updated.body()
+                if (data != null) {
+                    uiState = UIState.Success(true)
+                    _name.value = data.fullName
+                    _email.value = data.email
+                    _password.value = "********"
+                    _confirmPassword.value = ""
+                    _confirmPassword.value = ""
+                    _editName.value = false
+                }
+                _snackbarMessage.emit("Nombre actualizado correctamente")
+            } catch (e: IOException) {
+                _snackbarMessage.emit("Sin conexión a internet")
+            } catch (e: HttpException) {
+                _snackbarMessage.emit("Error del servidor: ${e.message}")
+            } catch (e: Exception) {
+                _snackbarMessage.emit("Ocurrió un error inesperado")
+            } finally {
+                uiState = UIState.Success(true)
+            }
+
+        }
+    }
+
+    fun onRegisterChange(name: String) {
         _name.value = name
+        _isFormValid.value =
+            isValidName(name)
+    }
+
+    fun onRegisterChange(password: String, confirmPassword: String) {
         _password.value = password
         _confirmPassword.value = confirmPassword
         _isFormValid.value =
-            isValidName(name) && isValidEmail(email) && isValidPassword(password) && password == confirmPassword
+            isValidPassword(password) && password == confirmPassword
     }
+
 
     fun uploadImage(uri: Uri) {
         viewModelScope.launch {

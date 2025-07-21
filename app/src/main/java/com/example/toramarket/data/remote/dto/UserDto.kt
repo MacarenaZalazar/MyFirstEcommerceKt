@@ -10,6 +10,14 @@ data class UserDto(
     val userImageUrl: String?
 )
 
+data class UpdateNameDto(
+    val fullName: String
+)
+
+data class UpdatePassDto(
+    val encryptedPassword: String
+)
+
 data class UserImgDto(
     val userImageUrl: String
 )

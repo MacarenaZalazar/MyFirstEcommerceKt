@@ -11,10 +11,16 @@ interface UserService {
     @GET("users/{email}")
     suspend fun getUserByEmail(@Path("email") email: String): Response<UserDto>
 
-    @PUT("users/{email}")
-    suspend fun updateProfile(
+    @PUT("users/{email}/name")
+    suspend fun updateName(
         @Path("email") email: String,
-        @Body request: UserDto
+        @Body request: UpdateNameDto
+    ): Response<UserDto>
+
+    @PUT("users/{email}/password")
+    suspend fun updatePassword(
+        @Path("email") email: String,
+        @Body request: UpdatePassDto
     ): Response<UserDto>
 
     @PUT("users/{email}/image")

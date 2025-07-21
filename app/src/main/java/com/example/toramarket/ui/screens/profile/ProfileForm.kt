@@ -3,6 +3,7 @@ package com.example.toramarket.ui.screens.profile
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.automirrored.rounded.*
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -18,57 +19,89 @@ fun ProfileForm(viewModel: ProfileViewModel, navController: NavController) {
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
     val confirmPassword by viewModel.confirmPassword.collectAsState()
-    val edit by viewModel.edit.collectAsState()
+    val editName by viewModel.editName.collectAsState()
+    val editPassword by viewModel.editPassword.collectAsState()
+
     val isFormValid by viewModel.isFormValid.collectAsState()
     SimpleText(
         value = name,
-        onChange = { viewModel.onRegisterChange(it, email, password, confirmPassword) },
+        onChange = { viewModel.onRegisterChange(it) },
         label = "Nombre completo",
-        enabled = edit,
-        error = { validateName(it) }
+        enabled = editName,
+        error = { validateName(it) },
+        trailingIcon = {
+            if (!editName) {
+                IconButton(onClick = { viewModel.toggleEditName() }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Editar"
+                    )
+                }
+            }
+
+        }
 
     )
-    Spacer(modifier = Modifier.padding(16.dp))
+    Spacer(modifier = Modifier.padding(8.dp))
     EmailField(
         email,
         enabled = false,
-        onValueChange = { viewModel.onRegisterChange(name, it, password, confirmPassword) },
-        error = { emailError(it) })
-    Spacer(modifier = Modifier.padding(16.dp))
+        onValueChange = {},
+        error = { emailError(it) },
+    )
+    Spacer(modifier = Modifier.padding(8.dp))
     PasswordField(
         password,
-        enabled = edit,
-        onValueChange = { viewModel.onRegisterChange(name, email, it, confirmPassword) },
+        enabled = editPassword,
+        onValueChange = { viewModel.onRegisterChange(it, confirmPassword) },
         label = "Nueva contraseña",
-        error = { passwordError(it) })
-
-    Spacer(modifier = Modifier.padding(16.dp))
-    if (edit) PasswordField(
-        confirmPassword,
-        { viewModel.onRegisterChange(name, email, password, it) },
-        label = "Confirmar contraseña",
-        error = { confirmPasswordError(password, it) })
+        error = { passwordError(it) },
+        trailingIcon = {
+            if (!editPassword) {
+                IconButton(onClick = { viewModel.toggleEditPassword() }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Editar"
+                    )
+                }
+            }
+        },
+    )
 
     Spacer(modifier = Modifier.padding(8.dp))
-    if (edit) {
-        UpdateButton(isFormValid) { viewModel.updateProfile() }
+    if (editPassword) {
+        PasswordField(
+            confirmPassword,
+            { viewModel.onRegisterChange(password, it) },
+            label = "Confirmar contraseña",
+            error = { confirmPasswordError(password, it) })
         Spacer(modifier = Modifier.padding(8.dp))
+        UpdateButton(isFormValid) { viewModel.updatePassword() }
+
+    }
+    if (editName) {
+        UpdateButton(isFormValid) { viewModel.updateName() }
+
 
     }
 
-    EditButton(edit, viewModel)
-
-    if (!edit) {
-        Spacer(modifier = Modifier.padding(8.dp))
-        LogoutButton { viewModel.logOut({ navController.navigate(SplashScreenRoute) }) }
-    }
-}
-
-@Composable
-fun EditButton(edit: Boolean, viewModel: ProfileViewModel) {
-    val text = if (edit) "Cancelar" else "Editar"
-    Button(onClick = { viewModel.toggleEditProfile() }, modifier = Modifier.fillMaxWidth()) {
-        Text(text)
+    Spacer(modifier = Modifier.padding(8.dp))
+    if (!editPassword && !editName) {
+        LogoutButton {
+            viewModel.logOut({
+                navController.navigate(
+                    SplashScreenRoute
+                )
+            })
+        }
+    } else {
+        Button(
+            onClick = { viewModel.cancelEdit() },
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text("Cancelar")
+        }
     }
 }
 
@@ -94,3 +127,4 @@ fun LogoutButton(onClick: () -> Unit) {
         )
     }
 }
+

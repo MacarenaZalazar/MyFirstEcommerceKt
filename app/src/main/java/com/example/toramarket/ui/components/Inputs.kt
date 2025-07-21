@@ -16,7 +16,8 @@ fun SimpleText(
     label: String = "",
     enabled: Boolean = true,
     placeholder: String = "",
-    error: (String) -> String?
+    error: (String) -> String?,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -45,7 +46,9 @@ fun SimpleText(
             if (errorMessage != null) Text(
                 text = errorMessage, color = MaterialTheme.colorScheme.error
             )
-        })
+        },
+        trailingIcon = trailingIcon
+    )
 }
 
 @Composable
@@ -78,7 +81,7 @@ fun EmailField(
         enabled = enabled,
         isError = errorMessage != null,
         supportingText = {
-            if (errorMessage != null) Text(
+            if (errorMessage != null && enabled) Text(
                 text = errorMessage, color = MaterialTheme.colorScheme.error
             )
         })
@@ -90,14 +93,15 @@ fun PasswordField(
     onValueChange: (String) -> Unit,
     enabled: Boolean = true,
     label: String = "Contraseña",
-    error: (String) -> String?
+    error: (String) -> String?,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     var wasFocused by rememberSaveable { mutableStateOf(false) }
     val showError = wasFocused && !isFocused
     val errorMessage = if (showError) error(password) else null
-    
+
     LaunchedEffect(isFocused) {
         if (isFocused) {
             wasFocused = true
@@ -116,8 +120,10 @@ fun PasswordField(
         enabled = enabled,
         isError = errorMessage != null,
         supportingText = {
-            if (errorMessage != null) Text(
+            if (errorMessage != null && enabled) Text(
                 text = errorMessage, color = MaterialTheme.colorScheme.error
             )
-        })
+        },
+        trailingIcon = trailingIcon
+    )
 }
