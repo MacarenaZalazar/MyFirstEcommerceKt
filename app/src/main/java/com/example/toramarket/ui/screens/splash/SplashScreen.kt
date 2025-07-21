@@ -4,18 +4,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
+import androidx.navigation.*
 import com.example.toramarket.ui.*
 import com.example.toramarket.ui.components.*
+import com.example.toramarket.ui.navigation.*
 
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
-    toLogin: () -> Unit,
-    toRegister: () -> Unit,
-    toProducts: () -> Unit
+    navController: NavController,
 ) {
     val state = viewModel.uiState
 
@@ -44,8 +43,9 @@ fun SplashScreen(
 
             is UIState.Success -> {
                 val logged = state.data
-                if (logged) toProducts()
-                else {
+                if (logged) {
+                    navController.navigate(ProductsScreenRoute)
+                } else {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -53,17 +53,19 @@ fun SplashScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(
-                            "Bienvenid@", textAlign = TextAlign.Center, fontSize = 30.sp
-                        )
-                        Spacer(Modifier.padding(8.dp))
                         AppTitle()
                         Spacer(Modifier.padding(25.dp))
-                        LogInButton(toLogin)
+                        LogInButton({ navController.navigate(LogInScreenRoute) })
                         Spacer(modifier = Modifier.padding(16.dp))
                         Text("O si todavía no tenés una cuenta:")
                         Spacer(modifier = Modifier.padding(16.dp))
-                        RegisterButton(toRegister)
+                        RegisterButton({
+                            navController.navigate(LogInScreenRoute) {
+                                popUpTo(0)
+                                launchSingleTop = true
+                            }
+                        }
+                        )
                     }
                 }
             }

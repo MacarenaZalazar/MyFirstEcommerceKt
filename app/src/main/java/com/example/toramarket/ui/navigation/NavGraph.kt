@@ -24,11 +24,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<SplashScreenRoute> {
             val viewModel = hiltViewModel<SplashViewModel>()
-            SplashScreen(
-                toLogin = { navController.navigate(LogInScreenRoute) },
-                toRegister = { navController.navigate(RegisterScreenRoute) },
-                toProducts = { navController.navigate(ProductsScreenRoute) { popUpTo(0) } })
-
+            SplashScreen(viewModel = viewModel, navController = navController)
         }
 
         composable<LogInScreenRoute> {
@@ -85,7 +81,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable<ForgotPassScreenRoute> {
             val viewModel = hiltViewModel<ForgotPassViewModel>()
-            ForgotPassScreen() { navController.navigate(LogInScreenRoute) }
+            ForgotPassScreen(viewModel, navController)
         }
     }
 }
+
