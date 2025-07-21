@@ -1,9 +1,11 @@
 package com.example.toramarket.ui.screens.splash
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
@@ -57,15 +59,9 @@ fun SplashScreen(
                         Spacer(Modifier.padding(25.dp))
                         LogInButton({ navController.navigate(LogInScreenRoute) })
                         Spacer(modifier = Modifier.padding(16.dp))
-                        Text("O si todavía no tenés una cuenta:")
-                        Spacer(modifier = Modifier.padding(16.dp))
-                        RegisterButton({
-                            navController.navigate(LogInScreenRoute) {
-                                popUpTo(0)
-                                launchSingleTop = true
-                            }
+                        RegisterButton {
+                            navController.navigate(LogInScreenRoute)
                         }
-                        )
                     }
                 }
             }
@@ -82,8 +78,9 @@ fun LogInButton(onClick: () -> Unit) {
 
 @Composable
 fun RegisterButton(onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
-        Text("Registrate")
-    }
+    Text(
+        "Registrate",
+        Modifier.clickable { onClick() }, textDecoration = TextDecoration.Underline,
+    )
 }
 

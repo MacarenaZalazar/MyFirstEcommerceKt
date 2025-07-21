@@ -30,9 +30,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         composable<LogInScreenRoute> {
             val viewModel = hiltViewModel<LoginViewModel>()
             LoginScreen(
-                viewModel = viewModel,
-                toHome = { navController.navigate(ProductsScreenRoute) { popUpTo(0) } },
-                forgotPass = { navController.navigate(ForgotPassScreenRoute) })
+                viewModel = viewModel, navController = navController
+            )
         }
 
         composable<RegisterScreenRoute> {

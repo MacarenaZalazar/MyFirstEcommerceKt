@@ -49,16 +49,19 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), navController: 
                     })
                 },
             ) { it ->
-
-                Column(
+                Box(
                     Modifier
-                        .padding(it)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(it), contentAlignment = Alignment.Center
                 ) {
-                    Text(state.message, textAlign = TextAlign.Center)
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    LogoutButton { viewModel.logOut { navController.navigate(SplashScreenRoute) } }
+                    Column(
+                        Modifier
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(state.message, textAlign = TextAlign.Center)
+                        Spacer(modifier = Modifier.padding(16.dp))
+                        LogoutButton { viewModel.logOut { navController.navigate(SplashScreenRoute) } }
+                    }
                 }
             }
         }
@@ -77,7 +80,9 @@ fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), navController: 
                     ProfileForm(viewModel, navController)
                 }
             }
-        }
-    }
 
+
+        }
+
+    }
 }

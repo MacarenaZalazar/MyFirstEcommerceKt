@@ -6,7 +6,6 @@ import androidx.compose.material.icons.*
 import androidx.compose.material.icons.automirrored.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.unit.*
@@ -14,6 +13,7 @@ import androidx.hilt.navigation.compose.*
 import androidx.navigation.*
 import com.example.toramarket.ui.*
 import com.example.toramarket.ui.navigation.*
+import com.example.toramarket.utils.helpers.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +23,7 @@ fun CheckoutScreen(
 ) {
 
     val state = viewModel.uiState
-    var paymentMethod by rememberSaveable { mutableStateOf("cash") }
+    val paymentMethod by viewModel.paymentMethod.collectAsState()
     val isValid by viewModel.isValid.collectAsState()
 
     val showDialog by viewModel.showDialog.collectAsState()
@@ -68,7 +68,6 @@ fun CheckoutScreen(
         is UIState.Success -> {
             Scaffold(topBar = {
                 CenterAlignedTopAppBar(
-
                     modifier = Modifier.shadow(4.dp),
                     title = { Text("Confirmá tu pedido") },
                     navigationIcon = {
@@ -100,8 +99,8 @@ fun CheckoutScreen(
                         .verticalScroll(scrollState)
                 ) {
                     CheckoutResume(state.data)
-                    PaymentMethodSelector(paymentMethod) { paymentMethod = it }
-                    if (paymentMethod == "card") CheckoutCardForm(viewModel)
+                    PaymentMethodSelector(paymentMethod) { viewModel.changePaymentMethod(it) }
+                    if (paymentMethod == PaymentMethod.CARD) CheckoutCardForm(viewModel)
 
 
                 }

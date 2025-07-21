@@ -52,7 +52,6 @@ class LoginViewModel @Inject constructor(
                     _success.value = true
                     toHome()
                 }
-                _isLoading.value = false
             } catch (e: Exception) {
                 _isLoading.value = false
 

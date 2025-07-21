@@ -8,6 +8,10 @@ enum class CardType {
     VISA, MASTERCARD, AMEX, DISCOVER, UNKNOWN
 }
 
+enum class PaymentMethod {
+    CASH, CARD
+}
+
 fun isValidCard(card: String): Boolean {
     val digits = card.filter { it.isDigit() }
     if (digits.length !in 13..19) return false

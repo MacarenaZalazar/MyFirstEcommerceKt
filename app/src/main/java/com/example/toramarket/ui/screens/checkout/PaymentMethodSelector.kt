@@ -5,11 +5,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
+import com.example.toramarket.utils.helpers.*
 
 @Composable
 fun PaymentMethodSelector(
-    selectedMethod: String,
-    onMethodSelected: (String) -> Unit
+    selectedMethod: PaymentMethod,
+    onMethodSelected: (PaymentMethod) -> Unit
 ) {
     Column {
 
@@ -22,16 +23,16 @@ fun PaymentMethodSelector(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
-                    selected = selectedMethod == "cash",
-                    onClick = { onMethodSelected("cash") }
+                    selected = selectedMethod == PaymentMethod.CASH,
+                    onClick = { onMethodSelected(PaymentMethod.CASH) }
                 )
                 Text("Efectivo")
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
-                    selected = selectedMethod == "card",
-                    onClick = { onMethodSelected("card") }
+                    selected = selectedMethod == PaymentMethod.CARD,
+                    onClick = { onMethodSelected(PaymentMethod.CARD) }
                 )
                 Text("Tarjeta")
             }

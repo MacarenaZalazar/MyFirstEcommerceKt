@@ -27,6 +27,10 @@ class CheckoutViewModel @Inject constructor(
     var uiState by mutableStateOf<UIState<Order>>(UIState.Loading)
     private val _order = MutableStateFlow<Order?>(null)
 
+
+    private val _paymentMethod = MutableStateFlow<PaymentMethod>(PaymentMethod.CASH)
+    val paymentMethod: MutableStateFlow<PaymentMethod> = _paymentMethod
+
     private val _number = MutableStateFlow<String>("")
     val number: MutableStateFlow<String> = _number
 
@@ -42,11 +46,18 @@ class CheckoutViewModel @Inject constructor(
     private val _cvv = MutableStateFlow<String>("")
     val cvv: MutableStateFlow<String> = _cvv
 
-    private val _isValid = MutableStateFlow<Boolean>(false)
+    private val _isValid = MutableStateFlow<Boolean>(true)
     val isValid: MutableStateFlow<Boolean> = _isValid
 
     private val _success = MutableStateFlow<Boolean>(true)
     val success: MutableStateFlow<Boolean> = _success
+
+    private val _showDialog = MutableStateFlow<Boolean>(false)
+    val showDialog = _showDialog
+
+
+    private val _dialogMessage = MutableStateFlow<String>("")
+    val dialogMessage = _dialogMessage
 
     fun getOrder() {
         viewModelScope.launch {
@@ -79,6 +90,11 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
+    fun changePaymentMethod(method: PaymentMethod) {
+        _paymentMethod.value = method
+        _isValid.value = if (_paymentMethod.value == PaymentMethod.CASH) true else false
+    }
+
     fun onChange(cardNumber: String, cardName: String, expiration: String, cvv: String) {
         _number.value = cardNumber
         _cardType.value = detectCardType(cardNumber)
@@ -90,14 +106,10 @@ class CheckoutViewModel @Inject constructor(
                 expiration
             ) && isValidName(cardName)
 
+
     }
 
-    private val _showDialog = MutableStateFlow<Boolean>(false)
-    val showDialog = _showDialog
 
-
-    private val _dialogMessage = MutableStateFlow<String>("")
-    val dialogMessage = _dialogMessage
     fun closeDialog() {
         _showDialog.value = false
     }
