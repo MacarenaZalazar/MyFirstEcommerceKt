@@ -1,7 +1,6 @@
 package com.example.toramarket.data.local
 
 import android.content.*
-import android.util.*
 import androidx.datastore.preferences.core.*
 import com.example.toramarket.*
 import dagger.hilt.android.qualifiers.*
@@ -33,7 +32,6 @@ class UserDataStore @Inject constructor(@ApplicationContext private val context:
 
     suspend fun isUserLoggedIn(): Boolean {
         val mail = userEmail.first()
-        Log.d("LOG_MAIL", mail.toString())
         return !mail.isNullOrBlank()
     }
 

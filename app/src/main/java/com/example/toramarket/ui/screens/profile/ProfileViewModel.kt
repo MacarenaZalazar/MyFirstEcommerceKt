@@ -1,7 +1,6 @@
 package com.example.toramarket.ui.screens.profile
 
 import android.net.*
-import android.util.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import coil.network.*
@@ -189,7 +188,6 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 uiState = UIState.Loading
-                Log.d("ProfileViewModel", "Uploading image: $uri")
                 val result = uploadImageUseCase.invoke(uri)
                 if (result?.isNotEmpty() == true) {
                     updateUserImgUseCase.invoke(

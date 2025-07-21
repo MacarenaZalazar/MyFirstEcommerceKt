@@ -1,6 +1,5 @@
 package com.example.toramarket.ui.screens.orders
 
-import android.util.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import coil.network.*
@@ -28,10 +27,9 @@ class OrdersViewModel @Inject constructor(
             uiState = UIState.Loading
             try {
                 _user.value = getUserIdUseCase.invoke() ?: ""
-                Log.d("OrdersViewModel", "User ID: ${_user.value}")
+
                 if (_user.value.isNotEmpty()) {
                     val orders = getOrdersUseCase.invoke(_user.value)
-                    Log.d("OrdersViewModel", "Orders: $orders")
                     uiState = UIState.Success(orders)
                 } else {
                     uiState = UIState.Error("Usuario no encontrado")

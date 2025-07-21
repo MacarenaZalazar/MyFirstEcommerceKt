@@ -2,7 +2,6 @@ package com.example.toramarket.di
 
 import android.app.*
 import android.content.*
-import android.util.*
 import com.cloudinary.*
 import com.example.toramarket.*
 import com.example.toramarket.data.remote.api.*
@@ -29,7 +28,6 @@ class CloudinaryModule {
     @Provides
     @Singleton
     fun provideCloudinary(): Cloudinary {
-        Log.d("CloudinaryModule", "API Key: $apikey, Cloud Name: $cloudName")
         return cloudinary
     }
 

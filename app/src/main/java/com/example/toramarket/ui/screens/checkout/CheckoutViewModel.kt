@@ -1,6 +1,5 @@
 package com.example.toramarket.ui.screens.checkout
 
-import android.util.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import coil.network.*
@@ -54,7 +53,6 @@ class CheckoutViewModel @Inject constructor(
             try {
                 val userId = getUserIdUseCase.invoke()
                 if (userId != null) {
-                    Log.d("USER_ID", "User ID: $userId")
                     val cart = getCartUseCase.invoke().first()
                     if (cart.isNotEmpty()) {
                         val order = Order(
@@ -109,7 +107,6 @@ class CheckoutViewModel @Inject constructor(
             try {
                 uiState = UIState.Loading
                 if (_order.value != null) {
-                    Log.d("ORDER", "Order: ${_order.value}")
                     createOrderUseCase.invoke(_order.value!!)
                     clearCartUseCase.invoke()
                     _dialogMessage.value = "Tu compra ha sido realizada con éxito"

@@ -5,7 +5,6 @@ import android.content.*
 import android.content.pm.*
 import android.net.*
 import android.os.*
-import android.util.*
 import androidx.activity.compose.*
 import androidx.activity.result.contract.*
 import androidx.compose.foundation.*
@@ -96,7 +95,6 @@ fun ProfileImage(viewModel: ProfileViewModel, snackbarHostState: SnackbarHostSta
     ) { success ->
         if (success) {
             photoUri.value?.let { uri ->
-                Log.d("PHOTO_URI", "Launching camera with URI: ${photoUri.value}")
                 viewModel.uploadImage(uri)
 
             }
