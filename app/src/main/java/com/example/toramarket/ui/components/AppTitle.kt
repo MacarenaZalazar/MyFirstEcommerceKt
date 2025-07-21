@@ -11,6 +11,7 @@ import com.example.toramarket.R
 
 @Composable
 fun AppTitle() {
+    val isDark = isSystemInDarkTheme()
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -18,7 +19,12 @@ fun AppTitle() {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.toramarket_logo),
+            painter = if (isDark) {
+                painterResource(id = R.drawable.toramarket_logo_dark)
+
+            } else {
+                painterResource(id = R.drawable.toramarket_logo)
+            },
             contentDescription = "Logo de Tora",
             modifier = Modifier
                 .size(300.dp),
