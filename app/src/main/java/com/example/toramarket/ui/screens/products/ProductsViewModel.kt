@@ -50,7 +50,7 @@ class ProductsViewModel @Inject constructor(
             } catch (e: IOException) {
                 uiState = UIState.Error("Sin conexión a internet")
             } catch (e: HttpException) {
-                uiState = UIState.Error("Error del servidor: ${e.message}")
+                uiState = UIState.Error("Error del servidor")
             } catch (e: Exception) {
                 uiState = UIState.Error("Ocurrió un error inesperado")
             }
@@ -66,7 +66,7 @@ class ProductsViewModel @Inject constructor(
                 addToCartUseCase.invoke(productId)
                 _snackbarMessage.emit("Producto agregado al carrito")
             } catch (e: Exception) {
-                _snackbarMessage.emit("Error al agregar al carrito: ${e.message ?: "desconocido"}")
+                _snackbarMessage.emit("Error al agregar al carrito")
             } finally {
                 _loadingPerItem[productId] = false
             }

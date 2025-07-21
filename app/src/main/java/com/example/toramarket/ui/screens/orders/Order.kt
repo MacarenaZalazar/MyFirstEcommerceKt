@@ -32,7 +32,11 @@ fun Order(order: Order) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                 )
-                Text("$${order.total}", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(
+                    "$${"%.2f".format(order.total)}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
             }
             Spacer(Modifier.padding(6.dp))
             Row(

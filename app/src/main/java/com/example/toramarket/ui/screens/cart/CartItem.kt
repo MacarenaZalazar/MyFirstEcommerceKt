@@ -24,7 +24,7 @@ fun CartItem(
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.Center) {
                 Text(item.product.name, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.padding(8.dp))
-                Text("$${item.product.price}", fontWeight = FontWeight.Bold)
+                Text("$${"%.2f".format(item.product.price)}", fontWeight = FontWeight.Bold)
             }
 
             Box(

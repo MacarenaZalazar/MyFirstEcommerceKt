@@ -3,6 +3,7 @@ agp = "8.9.3"
 cloudinaryAndroid = "2.3.1"
 coilCompose = "2.5.0"
 converterGson = "2.9.0"
+coreTestingVersion = "2.2.0"
 datastorePreferences = "1.1.7"
 foundation = "1.8.3"
 hiltAndroid = "2.56.2"
@@ -31,6 +32,7 @@ roomCompiler = "2.7.2"
 coroutinesTest = "1.8.0"
 runtimeLivedata = "1.2.1"
 workRuntimeKtx = "2.10.2"
+junitJupiter = "5.8.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,6 +49,7 @@ androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version
 cloudinary-android = { module = "com.cloudinary:cloudinary-android", version.ref = "cloudinaryAndroid" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTestingVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidCompiler" }
 hilt-android-v2511 = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
@@ -72,6 +75,7 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

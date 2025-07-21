@@ -34,7 +34,7 @@ fun CartSummary(count: Int, subtotal: Double, navController: NavController) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("Subtotal")
-            Text("$${subtotal}")
+            Text("$${"%.2f".format(subtotal)}")
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(

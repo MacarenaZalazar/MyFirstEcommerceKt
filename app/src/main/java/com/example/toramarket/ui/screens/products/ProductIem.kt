@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
@@ -40,7 +39,7 @@ fun ProductItem(
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(item.description)
                 Spacer(modifier = Modifier.padding(4.dp))
-                Text("$${item.price}", fontWeight = FontWeight.Bold)
+                Text("$${"%.2f".format(item.price)}", fontWeight = FontWeight.Bold)
             }
             Box(
                 modifier = Modifier
@@ -84,17 +83,21 @@ fun AddToCartButton(
         modifier = modifier
             .size(40.dp)
             .shadow(4.dp, CircleShape)
-            .background(Color.White, CircleShape)
+            .background(MaterialTheme.colorScheme.primary, CircleShape)
             .clickable(enabled = !isLoading, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(18.dp),
+                modifier = Modifier.size(18.dp), color = MaterialTheme.colorScheme.onPrimary,
                 strokeWidth = 2.dp
             )
         } else {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "agregar")
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = "agregar",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }
